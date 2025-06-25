@@ -1,28 +1,28 @@
+import { Ionicons } from '@expo/vector-icons';
+import { LinearGradient } from 'expo-linear-gradient';
+import { router } from 'expo-router';
 import React, { useState } from 'react';
 import {
-  View,
-  Text,
-  StyleSheet,
-  ScrollView,
-  TouchableOpacity,
-  Image,
-  Dimensions
+    Dimensions,
+    Image,
+    ScrollView,
+    StyleSheet,
+    Text,
+    TouchableOpacity,
+    View
 } from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
 import Animated, {
-  useAnimatedStyle,
-  useSharedValue,
-  withSpring,
-  withTiming,
-  FadeIn,
-  FadeOut
+    FadeIn,
+    FadeOut,
+    useAnimatedStyle,
+    useSharedValue,
+    withSpring
 } from 'react-native-reanimated';
-import { Ionicons } from '@expo/vector-icons';
+import Button from '../../components/common/Button';
+import Input from '../../components/common/Input';
+import StatusBar from '../../components/common/StatusBar';
 import { colors } from '../../constants/colors';
 import { config } from '../../constants/config';
-import Input from '../../components/common/Input';
-import Button from '../../components/common/Button';
-import StatusBar from '../../components/common/StatusBar';
 
 const { width } = Dimensions.get('window');
 
@@ -63,7 +63,7 @@ const foodData = {
   ]
 };
 
-const ProfileSetupScreen = ({ navigation }) => {
+const ProfileSetupScreen = () => {
   const [currentStep, setCurrentStep] = useState(0);
   const [profileData, setProfileData] = useState({
     childName: '',
@@ -93,7 +93,11 @@ const ProfileSetupScreen = ({ navigation }) => {
       progress.value = withSpring((currentStep + 1) / steps.length);
     } else {
       // Complete setup
-      navigation.replace('Main');
+      if (router && router.replace) {
+        router.replace('/(tabs)');
+      } else {
+        console.error('Router is not available');
+      }
     }
   };
   

@@ -16,7 +16,7 @@ import Animated, {
     withSpring
 } from 'react-native-reanimated';
 import { colors } from '../../constants/colors';
-import { getFoodsByCategory } from '../../db/foods';
+import { getFoodsByCategory } from '../../constants/foods';
 
 const { width } = Dimensions.get('window');
 

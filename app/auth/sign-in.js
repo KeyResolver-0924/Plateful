@@ -1,21 +1,21 @@
+import { Ionicons } from '@expo/vector-icons';
+import { LinearGradient } from 'expo-linear-gradient';
+import { router } from 'expo-router';
 import React, { useState } from 'react';
 import {
-  View,
-  Text,
-  StyleSheet,
-  ScrollView,
-  Image,
-  TouchableOpacity,
-  KeyboardAvoidingView,
-  Platform
+    Image,
+    KeyboardAvoidingView,
+    Platform,
+    ScrollView,
+    StyleSheet,
+    Text,
+    TouchableOpacity,
+    View
 } from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
-import { Ionicons } from '@expo/vector-icons';
-import { router } from 'expo-router';
-import { colors } from '../../constants/colors';
-import Input from '../../components/common/Input';
 import Button from '../../components/common/Button';
+import Input from '../../components/common/Input';
 import StatusBar from '../../components/common/StatusBar';
+import { colors } from '../../constants/colors';
 
 const SignInScreen = () => {
   const [phoneNumber, setPhoneNumber] = useState('');
@@ -23,7 +23,7 @@ const SignInScreen = () => {
   const [loading, setLoading] = useState(false);
   
   const handleSignIn = async () => {
-    if (!phoneNumber.trim()) {
+    if (!phoneNumber || !phoneNumber.trim()) {
       setError('Phone number is required');
       return;
     }

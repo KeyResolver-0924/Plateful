@@ -1,24 +1,24 @@
-import React, { useState, useRef } from 'react';
+import { Ionicons } from '@expo/vector-icons';
+import { LinearGradient } from 'expo-linear-gradient';
+import { router } from 'expo-router';
+import React, { useRef, useState } from 'react';
 import {
-  View,
-  Text,
-  StyleSheet,
   Dimensions,
   Image,
-  TouchableOpacity
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View
 } from 'react-native';
 import Animated, {
-  useAnimatedStyle,
-  useSharedValue,
-  withSpring,
-  interpolate,
   Extrapolate,
-  useAnimatedScrollHandler
+  interpolate,
+  useAnimatedScrollHandler,
+  useAnimatedStyle,
+  useSharedValue
 } from 'react-native-reanimated';
-import { LinearGradient } from 'expo-linear-gradient';
-import { Ionicons } from '@expo/vector-icons';
-import { colors } from '../../constants/colors';
 import Button from '../../components/common/Button';
+import { colors } from '../../constants/colors';
 
 const { width, height } = Dimensions.get('window');
 
@@ -46,7 +46,7 @@ const onboardingData = [
   }
 ];
 
-const OnboardingScreen = ({ navigation }) => {
+const OnboardingScreen = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const scrollX = useSharedValue(0);
   const scrollRef = useRef(null);
@@ -65,29 +65,41 @@ const OnboardingScreen = ({ navigation }) => {
       });
       setCurrentIndex(currentIndex + 1);
     } else {
-      navigation.replace('Auth');
+      if (router && router.replace) {
+        router.replace('/(tabs)');
+      } else {
+        console.error('Router is not available');
+      }
     }
   };
   
   const handleSkip = () => {
-    navigation.replace('Auth');
+    if (router && router.replace) {
+      router.replace('/(tabs)');
+    } else {
+      console.error('Router is not available');
+    }
   };
   
   const OnboardingItem = ({ item, index }) => {
+    // Define the range for this specific item
     const inputRange = [(index - 1) * width, index * width, (index + 1) * width];
+    //                  [previous page,      current page,   next page]
     
     const animatedStyle = useAnimatedStyle(() => {
+      // Scale animation: items scale down when not in focus
       const scale = interpolate(
-        scrollX.value,
-        inputRange,
-        [0.8, 1, 0.8],
-        Extrapolate.CLAMP
+        scrollX.value,        // Current scroll position
+        inputRange,           // When to trigger animation
+        [0.8, 1, 0.8],       // Scale values: smaller -> normal -> smaller
+        Extrapolate.CLAMP     // Don't go beyond 0.8-1 range
       );
       
+      // Opacity animation: items fade when not in focus
       const opacity = interpolate(
         scrollX.value,
         inputRange,
-        [0.5, 1, 0.5],
+        [0.5, 1, 0.5],       // Opacity values: faded -> full -> faded
         Extrapolate.CLAMP
       );
       

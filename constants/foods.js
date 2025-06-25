@@ -1,9 +1,38 @@
+// Import food images
+import apple from '../assets/images/foods/apple.png';
+import avocado from '../assets/images/foods/avocado.png';
+import banana from '../assets/images/foods/banana.png';
+import beans from '../assets/images/foods/beans.png';
+import beef from '../assets/images/foods/beef.png';
+import broccoli from '../assets/images/foods/broccoli.png';
+import butter from '../assets/images/foods/butter.png';
+import carrots from '../assets/images/foods/carrots.png';
+import cheese from '../assets/images/foods/cheese.png';
+import chicken from '../assets/images/foods/chicken.png';
+import cucumber from '../assets/images/foods/cucumber.png';
+import egg from '../assets/images/foods/egg.png';
+import fish from '../assets/images/foods/fish.png';
+import grapes from '../assets/images/foods/grapes.png';
+import milk from '../assets/images/foods/milk.png';
+import nuts from '../assets/images/foods/nuts.png';
+import peach from '../assets/images/foods/peach.png';
+import pear from '../assets/images/foods/pear.png';
+import spinach from '../assets/images/foods/spinach.png';
+import strawberry from '../assets/images/foods/strawberry.png';
+import sweetpotato from '../assets/images/foods/sweetpotato.png';
+import tofu from '../assets/images/foods/tofu.png';
+import tomato from '../assets/images/foods/tomato.png';
+import turkey from '../assets/images/foods/turkey.png';
+import watermelon from '../assets/images/foods/watermelon.png';
+import yogurt from '../assets/images/foods/yogurt.png';
+
 export const foods = {
   fruits: [
     {
       id: 'apple',
       name: 'Apple',
       category: 'fruits',
+      image: apple,
       nutrients: {
         calories: 52,
         protein: 0.3,
@@ -25,6 +54,7 @@ export const foods = {
       id: 'banana',
       name: 'Banana',
       category: 'fruits',
+      image: banana,
       nutrients: {
         calories: 89,
         protein: 1.1,
@@ -67,6 +97,7 @@ export const foods = {
       id: 'strawberry',
       name: 'Strawberry',
       category: 'fruits',
+      image: strawberry,
       nutrients: {
         calories: 32,
         protein: 0.7,
@@ -88,6 +119,7 @@ export const foods = {
       id: 'grapes',
       name: 'Grapes',
       category: 'fruits',
+      image: grapes,
       nutrients: {
         calories: 69,
         protein: 0.7,
@@ -109,6 +141,7 @@ export const foods = {
       id: 'watermelon',
       name: 'Watermelon',
       category: 'fruits',
+      image: watermelon,
       nutrients: {
         calories: 30,
         protein: 0.6,
@@ -125,6 +158,50 @@ export const foods = {
       ],
       allergens: [],
       ageRecommended: '8+ months'
+    },
+    {
+      id: 'peach',
+      name: 'Peach',
+      category: 'fruits',
+      image: peach,
+      nutrients: {
+        calories: 39,
+        protein: 0.9,
+        carbs: 10,
+        fiber: 1.5,
+        sugar: 8,
+        vitamins: ['A', 'C'],
+        minerals: ['Potassium']
+      },
+      benefits: [
+        'Good source of fiber',
+        'Supports skin health',
+        'Easy to digest'
+      ],
+      allergens: [],
+      ageRecommended: '8+ months'
+    },
+    {
+      id: 'pear',
+      name: 'Pear',
+      category: 'fruits',
+      image: pear,
+      nutrients: {
+        calories: 57,
+        protein: 0.4,
+        carbs: 15,
+        fiber: 3.1,
+        sugar: 10,
+        vitamins: ['C', 'K'],
+        minerals: ['Copper', 'Potassium']
+      },
+      benefits: [
+        'High in fiber',
+        'Supports digestion',
+        'Low glycemic index'
+      ],
+      allergens: [],
+      ageRecommended: '8+ months'
     }
   ],
   vegetables: [
@@ -132,6 +209,7 @@ export const foods = {
       id: 'carrot',
       name: 'Carrot',
       category: 'vegetables',
+      image: carrots,
       nutrients: {
         calories: 41,
         protein: 0.9,
@@ -143,8 +221,8 @@ export const foods = {
       },
       benefits: [
         'Excellent for eye health',
-        'Rich in beta-carotene',
-        'Supports immune system'
+        'Supports immune system',
+        'Good for skin'
       ],
       allergens: [],
       ageRecommended: '6+ months'
@@ -153,17 +231,18 @@ export const foods = {
       id: 'broccoli',
       name: 'Broccoli',
       category: 'vegetables',
+      image: broccoli,
       nutrients: {
         calories: 34,
         protein: 2.8,
         carbs: 7,
         fiber: 2.6,
-        sugar: 1.7,
-        vitamins: ['C', 'K', 'Folate'],
-        minerals: ['Iron', 'Potassium']
+        sugar: 1.5,
+        vitamins: ['C', 'K', 'A'],
+        minerals: ['Iron', 'Calcium']
       },
       benefits: [
-        'High in vitamins',
+        'High in antioxidants',
         'Supports bone health',
         'Anti-inflammatory'
       ],
@@ -171,85 +250,89 @@ export const foods = {
       ageRecommended: '8+ months'
     },
     {
-      id: 'sweetpotato',
-      name: 'Sweet Potato',
+      id: 'spinach',
+      name: 'Spinach',
       category: 'vegetables',
+      image: spinach,
       nutrients: {
-        calories: 86,
-        protein: 1.6,
-        carbs: 20,
-        fiber: 3,
-        sugar: 4,
-        vitamins: ['A', 'C', 'B6'],
-        minerals: ['Potassium', 'Manganese']
+        calories: 23,
+        protein: 2.9,
+        carbs: 3.6,
+        fiber: 2.2,
+        sugar: 0.4,
+        vitamins: ['A', 'C', 'K', 'Folate'],
+        minerals: ['Iron', 'Calcium']
       },
       benefits: [
-        'Rich in fiber',
-        'Good source of energy',
-        'Supports gut health'
+        'Excellent source of iron',
+        'Supports bone health',
+        'Anti-inflammatory'
       ],
       allergens: [],
-      ageRecommended: '6+ months'
-    },
-    {
-      id: 'peas',
-      name: 'Peas',
-      category: 'vegetables',
-      nutrients: {
-        calories: 81,
-        protein: 5.4,
-        carbs: 14,
-        fiber: 5.1,
-        sugar: 6,
-        vitamins: ['K', 'C', 'Folate'],
-        minerals: ['Iron', 'Manganese']
-      },
-      benefits: [
-        'High in protein',
-        'Good source of fiber',
-        'Supports blood sugar control'
-      ],
-      allergens: ['legumes'],
-      ageRecommended: '6+ months'
-    },
-    {
-      id: 'corn',
-      name: 'Corn',
-      category: 'vegetables',
-      nutrients: {
-        calories: 86,
-        protein: 3.3,
-        carbs: 19,
-        fiber: 2,
-        sugar: 6,
-        vitamins: ['B1', 'B5', 'C'],
-        minerals: ['Phosphorus', 'Magnesium']
-      },
-      benefits: [
-        'Good energy source',
-        'Contains antioxidants',
-        'Supports eye health'
-      ],
-      allergens: ['corn'],
       ageRecommended: '8+ months'
     },
     {
       id: 'cucumber',
       name: 'Cucumber',
       category: 'vegetables',
+      image: cucumber,
       nutrients: {
         calories: 16,
         protein: 0.7,
-        carbs: 4,
+        carbs: 3.6,
         fiber: 0.5,
-        sugar: 2,
+        sugar: 1.7,
         vitamins: ['K', 'C'],
-        minerals: ['Potassium', 'Magnesium']
+        minerals: ['Potassium']
       },
       benefits: [
-        'Hydrating',
+        'Excellent hydration',
         'Low calorie',
-        'Good for skin health'
+        'Supports digestion'
+      ],
+      allergens: [],
+      ageRecommended: '6+ months'
+    },
+    {
+      id: 'sweetpotato',
+      name: 'Sweet Potato',
+      category: 'vegetables',
+      image: sweetpotato,
+      nutrients: {
+        calories: 86,
+        protein: 1.6,
+        carbs: 20,
+        fiber: 3,
+        sugar: 4.2,
+        vitamins: ['A', 'C', 'B6'],
+        minerals: ['Potassium', 'Manganese']
+      },
+      benefits: [
+        'Excellent source of vitamin A',
+        'Supports eye health',
+        'Good for digestion'
+      ],
+      allergens: [],
+      ageRecommended: '6+ months'
+    },
+    {
+      id: 'tomato',
+      name: 'Tomato',
+      category: 'vegetables',
+      image: tomato,
+      nutrients: {
+        calories: 18,
+        protein: 0.9,
+        carbs: 3.9,
+        fiber: 1.2,
+        sugar: 2.6,
+        vitamins: ['C', 'K', 'A'],
+        minerals: ['Potassium']
+      },
+      benefits: [
+        'Rich in lycopene',
+        'Supports heart health',
+        'Anti-inflammatory'
       ],
       allergens: [],
       ageRecommended: '8+ months'
@@ -260,27 +343,51 @@ export const foods = {
       id: 'chicken',
       name: 'Chicken',
       category: 'proteins',
+      image: chicken,
       nutrients: {
         calories: 165,
         protein: 31,
         carbs: 0,
         fiber: 0,
         sugar: 0,
-        vitamins: ['B3', 'B6'],
-        minerals: ['Phosphorus', 'Selenium']
+        vitamins: ['B6', 'B12'],
+        minerals: ['Iron', 'Zinc']
       },
       benefits: [
-        'High in protein',
-        'Lean meat option',
-        'Supports muscle growth'
+        'Excellent protein source',
+        'Supports muscle growth',
+        'Easy to digest'
       ],
-      allergens: ['poultry'],
-      ageRecommended: '6+ months'
+      allergens: [],
+      ageRecommended: '8+ months'
+    },
+    {
+      id: 'beef',
+      name: 'Beef',
+      category: 'proteins',
+      image: beef,
+      nutrients: {
+        calories: 250,
+        protein: 26,
+        carbs: 0,
+        fiber: 0,
+        sugar: 0,
+        vitamins: ['B12', 'B6'],
+        minerals: ['Iron', 'Zinc']
+      },
+      benefits: [
+        'Rich in iron',
+        'Supports brain development',
+        'Excellent protein source'
+      ],
+      allergens: [],
+      ageRecommended: '8+ months'
     },
     {
       id: 'fish',
       name: 'Fish',
       category: 'proteins',
+      image: fish,
       nutrients: {
         calories: 206,
         protein: 22,
@@ -288,99 +395,81 @@ export const foods = {
         fiber: 0,
         sugar: 0,
         vitamins: ['D', 'B12'],
-        minerals: ['Selenium', 'Iodine']
+        minerals: ['Omega-3', 'Selenium']
       },
       benefits: [
         'Rich in omega-3',
-        'Brain development',
+        'Supports brain development',
         'Heart healthy'
       ],
       allergens: ['fish'],
-      ageRecommended: '8+ months'
+      ageRecommended: '12+ months'
     },
     {
-      id: 'eggs',
-      name: 'Eggs',
+      id: 'egg',
+      name: 'Egg',
       category: 'proteins',
+      image: egg,
       nutrients: {
         calories: 155,
         protein: 13,
         carbs: 1.1,
         fiber: 0,
         sugar: 1.1,
-        vitamins: ['A', 'D', 'B12'],
-        minerals: ['Iron', 'Phosphorus']
+        vitamins: ['D', 'B12', 'A'],
+        minerals: ['Iron', 'Selenium']
       },
       benefits: [
-        'Complete protein',
-        'Rich in choline',
-        'Supports brain development'
+        'Complete protein source',
+        'Supports brain development',
+        'Rich in choline'
       ],
       allergens: ['eggs'],
-      ageRecommended: '6+ months'
-    },
-    {
-      id: 'beans',
-      name: 'Beans',
-      category: 'proteins',
-      nutrients: {
-        calories: 339,
-        protein: 21,
-        carbs: 63,
-        fiber: 15,
-        sugar: 2,
-        vitamins: ['Folate', 'B1'],
-        minerals: ['Iron', 'Magnesium']
-      },
-      benefits: [
-        'Plant-based protein',
-        'High in fiber',
-        'Heart healthy'
-      ],
-      allergens: ['legumes'],
       ageRecommended: '8+ months'
     },
     {
       id: 'tofu',
       name: 'Tofu',
       category: 'proteins',
+      image: tofu,
       nutrients: {
         calories: 76,
         protein: 8,
-        carbs: 2,
+        carbs: 1.9,
         fiber: 0.3,
-        sugar: 0.7,
-        vitamins: ['K'],
+        sugar: 0.6,
+        vitamins: ['B1', 'B6'],
         minerals: ['Calcium', 'Iron']
       },
       benefits: [
         'Plant-based protein',
-        'Good calcium source',
-        'Low calorie'
+        'Good for bone health',
+        'Low in saturated fat'
       ],
       allergens: ['soy'],
-      ageRecommended: '8+ months'
+      ageRecommended: '12+ months'
     },
     {
-      id: 'nuts',
-      name: 'Nuts',
+      id: 'turkey',
+      name: 'Turkey',
       category: 'proteins',
+      image: turkey,
       nutrients: {
-        calories: 607,
-        protein: 20,
-        carbs: 21,
-        fiber: 8,
-        sugar: 5,
-        vitamins: ['E', 'B6'],
-        minerals: ['Magnesium', 'Phosphorus']
+        calories: 189,
+        protein: 29,
+        carbs: 0,
+        fiber: 0,
+        sugar: 0,
+        vitamins: ['B6', 'B12'],
+        minerals: ['Iron', 'Zinc']
       },
       benefits: [
-        'Healthy fats',
-        'Good protein source',
-        'Brain development'
+        'Lean protein source',
+        'Supports muscle growth',
+        'Heart healthy'
       ],
-      allergens: ['tree nuts'],
-      ageRecommended: '12+ months'
+      allergens: [],
+      ageRecommended: '8+ months'
     }
   ],
   grains: [
@@ -446,6 +535,28 @@ export const foods = {
       ],
       allergens: [],
       ageRecommended: '8+ months'
+    },
+    {
+      id: 'beans',
+      name: 'Beans',
+      category: 'grains',
+      image: beans,
+      nutrients: {
+        calories: 127,
+        protein: 9,
+        carbs: 23,
+        fiber: 6,
+        sugar: 0.3,
+        vitamins: ['B1', 'B6', 'Folate'],
+        minerals: ['Iron', 'Magnesium']
+      },
+      benefits: [
+        'Excellent fiber source',
+        'Plant-based protein',
+        'Supports heart health'
+      ],
+      allergens: [],
+      ageRecommended: '12+ months'
     }
   ],
   dairy: [
@@ -453,19 +564,42 @@ export const foods = {
       id: 'milk',
       name: 'Milk',
       category: 'dairy',
+      image: milk,
       nutrients: {
-        calories: 149,
-        protein: 8,
-        carbs: 12,
+        calories: 42,
+        protein: 3.4,
+        carbs: 5,
         fiber: 0,
-        sugar: 12,
-        vitamins: ['D', 'B12'],
+        sugar: 5,
+        vitamins: ['D', 'B12', 'A'],
         minerals: ['Calcium', 'Phosphorus']
       },
       benefits: [
-        'Calcium for bones',
-        'Protein source',
-        'Vitamin D enriched'
+        'Excellent calcium source',
+        'Supports bone health',
+        'Complete protein'
+      ],
+      allergens: ['milk'],
+      ageRecommended: '12+ months'
+    },
+    {
+      id: 'cheese',
+      name: 'Cheese',
+      category: 'dairy',
+      image: cheese,
+      nutrients: {
+        calories: 113,
+        protein: 7,
+        carbs: 0.4,
+        fiber: 0,
+        sugar: 0.4,
+        vitamins: ['A', 'B12'],
+        minerals: ['Calcium', 'Phosphorus']
+      },
+      benefits: [
+        'Rich in calcium',
+        'Supports bone health',
+        'Good protein source'
       ],
       allergens: ['milk'],
       ageRecommended: '12+ months'
@@ -474,43 +608,91 @@ export const foods = {
       id: 'yogurt',
       name: 'Yogurt',
       category: 'dairy',
+      image: yogurt,
       nutrients: {
         calories: 59,
         protein: 10,
-        carbs: 4,
+        carbs: 3.6,
         fiber: 0,
-        sugar: 4,
-        vitamins: ['B12', 'B2'],
+        sugar: 3.2,
+        vitamins: ['B12', 'D'],
         minerals: ['Calcium', 'Phosphorus']
       },
       benefits: [
-        'Probiotics for gut health',
-        'High in protein',
-        'Easy to digest'
-      ],
-      allergens: ['milk'],
-      ageRecommended: '6+ months'
-    },
-    {
-      id: 'cheese',
-      name: 'Cheese',
-      category: 'dairy',
-      nutrients: {
-        calories: 402,
-        protein: 25,
-        carbs: 1.3,
-        fiber: 0,
-        sugar: 0.5,
-        vitamins: ['A', 'B12'],
-        minerals: ['Calcium', 'Phosphorus']
-      },
-      benefits: [
-        'High in calcium',
-        'Good protein source',
-        'Supports bone health'
+        'Probiotic benefits',
+        'Supports gut health',
+        'Excellent protein source'
       ],
       allergens: ['milk'],
       ageRecommended: '8+ months'
+    }
+  ],
+  fats: [
+    {
+      id: 'avocado',
+      name: 'Avocado',
+      category: 'fats',
+      image: avocado,
+      nutrients: {
+        calories: 160,
+        protein: 2,
+        carbs: 9,
+        fiber: 7,
+        sugar: 0.7,
+        vitamins: ['K', 'E', 'C'],
+        minerals: ['Potassium', 'Folate']
+      },
+      benefits: [
+        'Healthy fats',
+        'Supports brain development',
+        'Heart healthy'
+      ],
+      allergens: [],
+      ageRecommended: '8+ months'
+    },
+    {
+      id: 'butter',
+      name: 'Butter',
+      category: 'fats',
+      image: butter,
+      nutrients: {
+        calories: 717,
+        protein: 0.9,
+        carbs: 0.1,
+        fiber: 0,
+        sugar: 0.1,
+        vitamins: ['A', 'D', 'E'],
+        minerals: ['Calcium']
+      },
+      benefits: [
+        'Good for brain development',
+        'Source of fat-soluble vitamins',
+        'Energy dense'
+      ],
+      allergens: ['milk'],
+      ageRecommended: '12+ months'
+    },
+    {
+      id: 'nuts',
+      name: 'Nuts',
+      category: 'fats',
+      image: nuts,
+      nutrients: {
+        calories: 607,
+        protein: 20,
+        carbs: 21,
+        fiber: 12,
+        sugar: 4.2,
+        vitamins: ['E', 'B1'],
+        minerals: ['Magnesium', 'Zinc']
+      },
+      benefits: [
+        'Healthy fats',
+        'Supports brain health',
+        'Good protein source'
+      ],
+      allergens: ['tree nuts'],
+      ageRecommended: '12+ months'
     }
   ]
 };

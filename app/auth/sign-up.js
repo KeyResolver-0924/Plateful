@@ -1,21 +1,21 @@
+import { Ionicons } from '@expo/vector-icons';
+import { LinearGradient } from 'expo-linear-gradient';
+import { router } from 'expo-router';
 import React, { useState } from 'react';
 import {
-  View,
-  Text,
-  StyleSheet,
-  ScrollView,
   Image,
-  TouchableOpacity,
   KeyboardAvoidingView,
-  Platform
+  Platform,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View
 } from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
-import { Ionicons } from '@expo/vector-icons';
-import { router } from 'expo-router';
-import { colors } from '../../constants/colors';
-import Input from '../../components/common/Input';
 import Button from '../../components/common/Button';
+import Input from '../../components/common/Input';
 import StatusBar from '../../components/common/StatusBar';
+import { colors } from '../../constants/colors';
 
 const SignUpScreen = () => {
   const [formData, setFormData] = useState({
@@ -41,7 +41,7 @@ const SignUpScreen = () => {
       newErrors.email = 'Please enter a valid email';
     }
     
-    if (!formData.phoneNumber.trim()) {
+    if (!formData.phoneNumber || !formData.phoneNumber.trim()) {
       newErrors.phoneNumber = 'Phone number is required';
     } else if (!/^\d{10}$/.test(formData.phoneNumber.replace(/\D/g, ''))) {
       newErrors.phoneNumber = 'Please enter a valid 10-digit phone number';

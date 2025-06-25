@@ -427,6 +427,7 @@ export const getFoodsByCategory = (category: keyof FoodsByCategory): Food[] => {
 export const getFoodsByAge = (ageInMonths: number): Food[] => {
   const allFoods: Food[] = Object.values(foods).flat();
   return allFoods.filter(food => {
+    if (!food.ageRecommended) return false;
     const ageStr = food.ageRecommended.replace(/\D/g, '');
     const recommendedAge = parseInt(ageStr);
     return ageInMonths >= recommendedAge;
