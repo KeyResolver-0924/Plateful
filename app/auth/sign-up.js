@@ -1,7 +1,7 @@
 import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { router } from 'expo-router';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import {
   Image,
   KeyboardAvoidingView,
@@ -9,11 +9,11 @@ import {
   ScrollView,
   StyleSheet,
   Text,
-  TouchableOpacity,
   View
 } from 'react-native';
 import Button from '../../components/common/Button';
 import Input from '../../components/common/Input';
+import PhoneInput from '../../components/common/PhoneInput';
 import StatusBar from '../../components/common/StatusBar';
 import { colors } from '../../constants/colors';
 
@@ -27,6 +27,10 @@ const SignUpScreen = () => {
   });
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
+  const [countryCode, setCountryCode] = useState('US');
+  const [country, setCountry] = useState(null);
+  const [withCountryNameButton, setWithCountryNameButton] = useState(false);
+  const [phone, setPhone] = useState('');
   
   const validateForm = () => {
     const newErrors = {};
@@ -43,8 +47,12 @@ const SignUpScreen = () => {
     
     if (!formData.phoneNumber || !formData.phoneNumber.trim()) {
       newErrors.phoneNumber = 'Phone number is required';
-    } else if (!/^\d{10}$/.test(formData.phoneNumber.replace(/\D/g, ''))) {
-      newErrors.phoneNumber = 'Please enter a valid 10-digit phone number';
+    } else {
+      // Remove the country code to get just the number
+      const phoneWithoutCode = formData.phoneNumber.replace(/^\+\d{1,4}/, '');
+      if (phoneWithoutCode.length < 7) {
+        newErrors.phoneNumber = 'Please enter a valid phone number';
+      }
     }
     
     if (!formData.password) {
@@ -55,6 +63,8 @@ const SignUpScreen = () => {
     
     if (formData.password !== formData.confirmPassword) {
       newErrors.confirmPassword = 'Passwords do not match';
+    } else if (formData.confirmPassword != formData.password) {
+      newErrors.confirmPassword = 'Input the same password';
     }
     
     setErrors(newErrors);
@@ -69,14 +79,17 @@ const SignUpScreen = () => {
     setLoading(true);
     
     try {
-      // Simulate API call
+      // Simulate sending both OTPs (phone and email) simultaneously
+      console.log('Sending phone OTP to:', formData.phoneNumber);
+      console.log('Sending email OTP to:', formData.email);
       await new Promise(resolve => setTimeout(resolve, 1500));
       
-      // Navigate to OTP verification
+      // Navigate to OTP verification with both phone and email
       router.push({
         pathname: '/auth/otp',
         params: { 
           phoneNumber: formData.phoneNumber,
+          email: formData.email,
           isSignUp: true 
         }
       });
@@ -135,16 +148,14 @@ const SignUpScreen = () => {
           
           <View style={styles.form}>
             <Input
-              label="Full Name"
+              placeholder="Enter your full name"
               value={formData.fullName}
               onChangeText={(text) => updateFormData('fullName', text)}
-              placeholder="Enter your full name"
               error={errors.fullName}
               icon={<Ionicons name="person-outline" />}
             />
             
             <Input
-              label="Email"
               value={formData.email}
               onChangeText={(text) => updateFormData('email', text)}
               placeholder="Enter your email"
@@ -153,19 +164,14 @@ const SignUpScreen = () => {
               icon={<Ionicons name="mail-outline" />}
             />
             
-            <Input
-              label="Phone Number"
+            <PhoneInput
               value={formData.phoneNumber}
               onChangeText={(text) => updateFormData('phoneNumber', text)}
               placeholder="Enter your phone number"
-              keyboardType="phone-pad"
-              maxLength={10}
               error={errors.phoneNumber}
-              icon={<Ionicons name="call-outline" />}
             />
             
             <Input
-              label="Password"
               value={formData.password}
               onChangeText={(text) => updateFormData('password', text)}
               placeholder="Create a password"
@@ -175,7 +181,6 @@ const SignUpScreen = () => {
             />
             
             <Input
-              label="Confirm Password"
               value={formData.confirmPassword}
               onChangeText={(text) => updateFormData('confirmPassword', text)}
               placeholder="Confirm your password"
@@ -189,6 +194,13 @@ const SignUpScreen = () => {
               onPress={handleSignUp}
               loading={loading}
               style={styles.signUpButton}
+            />
+            
+            <Button
+              title="Back to Sign In"
+              onPress={() => router.push('/auth/sign-in')}
+              variant="outline"
+              style={styles.backToSignInButton}
             />
             
             <View style={styles.dividerContainer}>
@@ -210,10 +222,7 @@ const SignUpScreen = () => {
             />
             
             <View style={styles.footer}>
-              <Text style={styles.footerText}>Already have an account? </Text>
-              <TouchableOpacity onPress={() => router.push('/auth/sign-in')}>
-                <Text style={styles.linkText}>Sign In here</Text>
-              </TouchableOpacity>
+              <Text style={styles.footerText}>By creating an account, you agree to our Terms of Service and Privacy Policy</Text>
             </View>
           </View>
         </ScrollView>
@@ -282,6 +291,10 @@ const styles = StyleSheet.create({
     marginTop: 8,
     marginBottom: 24,
   },
+  backToSignInButton: {
+    marginTop: 8,
+    marginBottom: 24,
+  },
   dividerContainer: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -309,8 +322,10 @@ const styles = StyleSheet.create({
     marginTop: 32,
   },
   footerText: {
-    fontSize: 16,
-    color: colors.text.primary,
+    fontSize: 12,
+    color: colors.text.secondary,
+    textAlign: 'center',
+    lineHeight: 16,
   },
   linkText: {
     fontSize: 16,

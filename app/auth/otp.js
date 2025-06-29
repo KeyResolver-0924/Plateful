@@ -1,32 +1,34 @@
-import React, { useState, useRef, useEffect } from 'react';
+import { Ionicons } from '@expo/vector-icons';
+import { LinearGradient } from 'expo-linear-gradient';
+import { router, useSearchParams } from 'expo-router';
+import React, { useEffect, useRef, useState } from 'react';
 import {
-  View,
-  Text,
-  StyleSheet,
-  ScrollView,
+  Alert,
   Image,
-  TouchableOpacity,
   KeyboardAvoidingView,
   Platform,
-  Alert
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View
 } from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
-import { Ionicons } from '@expo/vector-icons';
-import { router, useSearchParams } from 'expo-router';
-import { colors } from '../../constants/colors';
-import Input from '../../components/common/Input';
 import Button from '../../components/common/Button';
+import Input from '../../components/common/Input';
 import StatusBar from '../../components/common/StatusBar';
+import { colors } from '../../constants/colors';
 
 const OTPScreen = () => {
   const params = useSearchParams();
-  const { phoneNumber, isSignUp } = params;
+  const { phoneNumber, email, isSignUp } = params;
   
-  const [otp, setOtp] = useState(['', '', '', '']);
+  const [phoneOtp, setPhoneOtp] = useState(['', '', '', '']);
+  const [emailOtp, setEmailOtp] = useState(['', '', '', '', '', '']);
   const [loading, setLoading] = useState(false);
   const [resendLoading, setResendLoading] = useState(false);
   const [timer, setTimer] = useState(30);
-  const inputRefs = useRef([]);
+  const phoneInputRefs = useRef([]);
+  const emailInputRefs = useRef([]);
   
   useEffect(() => {
     let interval = null;
@@ -38,35 +40,60 @@ const OTPScreen = () => {
     return () => clearInterval(interval);
   }, [timer]);
   
-  const handleOtpChange = (text, index) => {
-    const newOtp = [...otp];
+  const handlePhoneOtpChange = (text, index) => {
+    const newOtp = [...phoneOtp];
     newOtp[index] = text;
-    setOtp(newOtp);
+    setPhoneOtp(newOtp);
     
     // Auto-focus next input
     if (text && index < 3) {
-      inputRefs.current[index + 1]?.focus();
+      phoneInputRefs.current[index + 1]?.focus();
     }
   };
   
-  const handleKeyPress = (e, index) => {
-    if (e.nativeEvent.key === 'Backspace' && !otp[index] && index > 0) {
-      inputRefs.current[index - 1]?.focus();
+  const handleEmailOtpChange = (text, index) => {
+    const newOtp = [...emailOtp];
+    newOtp[index] = text;
+    setEmailOtp(newOtp);
+    
+    // Auto-focus next input
+    if (text && index < 5) {
+      emailInputRefs.current[index + 1]?.focus();
+    }
+  };
+  
+  const handlePhoneKeyPress = (e, index) => {
+    if (e.nativeEvent.key === 'Backspace' && !phoneOtp[index] && index > 0) {
+      phoneInputRefs.current[index - 1]?.focus();
+    }
+  };
+  
+  const handleEmailKeyPress = (e, index) => {
+    if (e.nativeEvent.key === 'Backspace' && !emailOtp[index] && index > 0) {
+      emailInputRefs.current[index - 1]?.focus();
     }
   };
   
   const handleVerifyOTP = async () => {
-    const otpString = otp.join('');
+    const phoneOtpString = phoneOtp.join('');
+    const emailOtpString = emailOtp.join('');
     
-    if (otpString.length !== 4) {
-      Alert.alert('Error', 'Please enter the complete 4-digit OTP');
+    if (phoneOtpString.length !== 4) {
+      Alert.alert('Error', 'Please enter the complete 4-digit phone OTP');
+      return;
+    }
+    
+    if (emailOtpString.length !== 6) {
+      Alert.alert('Error', 'Please enter the complete 6-digit email OTP');
       return;
     }
     
     setLoading(true);
     
     try {
-      // Simulate API call
+      // Simulate API call for both OTPs
+      console.log('Verifying phone OTP:', phoneOtpString);
+      console.log('Verifying email OTP:', emailOtpString);
       await new Promise(resolve => setTimeout(resolve, 1500));
       
       // Navigate to verification success
@@ -116,9 +143,10 @@ const OTPScreen = () => {
           source={require('../../assets/images/logo/platefull-mascot.png')}
           style={styles.mascot}
         />
-        <Text style={styles.welcomeText}>Verify Your Phone</Text>
-        <Text style={styles.subtitleText}>Enter the 4-digit code sent to</Text>
+        <Text style={styles.welcomeText}>Verify Your Account</Text>
+        <Text style={styles.subtitleText}>Enter the codes sent to</Text>
         <Text style={styles.phoneNumber}>{phoneNumber}</Text>
+        <Text style={styles.emailText}>{email}</Text>
       </LinearGradient>
       
       <KeyboardAvoidingView 
@@ -130,30 +158,55 @@ const OTPScreen = () => {
           contentContainerStyle={styles.scrollContent}
         >
           <View style={styles.formHeader}>
-            <Text style={styles.formTitle}>Enter OTP</Text>
+            <Text style={styles.formTitle}>Enter OTP Codes</Text>
             <Text style={styles.formSubtitle}>
-              We've sent a verification code to your phone
+              We've sent verification codes to your phone and email
             </Text>
           </View>
           
           <View style={styles.form}>
-            <View style={styles.otpContainer}>
-              {otp.map((digit, index) => (
-                <Input
-                  key={index}
-                  ref={(ref) => inputRefs.current[index] = ref}
-                  value={digit}
-                  onChangeText={(text) => handleOtpChange(text, index)}
-                  onKeyPress={(e) => handleKeyPress(e, index)}
-                  placeholder="0"
-                  keyboardType="numeric"
-                  maxLength={1}
-                  style={styles.otpInput}
-                  textAlign="center"
-                  fontSize={24}
-                  fontWeight="bold"
-                />
-              ))}
+            <View style={styles.otpSection}>
+              <Text style={styles.otpLabel}>Phone Verification Code (4 digits)</Text>
+              <View style={styles.otpContainer}>
+                {phoneOtp.map((digit, index) => (
+                  <Input
+                    key={index}
+                    ref={(ref) => phoneInputRefs.current[index] = ref}
+                    value={digit}
+                    onChangeText={(text) => handlePhoneOtpChange(text, index)}
+                    onKeyPress={(e) => handlePhoneKeyPress(e, index)}
+                    placeholder="0"
+                    keyboardType="numeric"
+                    maxLength={1}
+                    style={styles.otpInput}
+                    textAlign="center"
+                    fontSize={24}
+                    fontWeight="bold"
+                  />
+                ))}
+              </View>
+            </View>
+            
+            <View style={styles.otpSection}>
+              <Text style={styles.otpLabel}>Email Verification Code (6 digits)</Text>
+              <View style={styles.otpContainer}>
+                {emailOtp.map((digit, index) => (
+                  <Input
+                    key={index}
+                    ref={(ref) => emailInputRefs.current[index] = ref}
+                    value={digit}
+                    onChangeText={(text) => handleEmailOtpChange(text, index)}
+                    onKeyPress={(e) => handleEmailKeyPress(e, index)}
+                    placeholder="0"
+                    keyboardType="numeric"
+                    maxLength={1}
+                    style={styles.otpInput}
+                    textAlign="center"
+                    fontSize={24}
+                    fontWeight="bold"
+                  />
+                ))}
+              </View>
             </View>
             
             <Button
@@ -222,6 +275,12 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginBottom: 32,
   },
+  emailText: {
+    fontSize: 14,
+    color: colors.text.inverse,
+    opacity: 0.9,
+    marginTop: 4,
+  },
   formContainer: {
     flex: 1,
     backgroundColor: colors.background,
@@ -248,10 +307,18 @@ const styles = StyleSheet.create({
   form: {
     flex: 1,
   },
+  otpSection: {
+    marginBottom: 24,
+  },
+  otpLabel: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: colors.text.primary,
+    marginBottom: 8,
+  },
   otpContainer: {
     flexDirection: 'row',
     justifyContent: 'center',
-    marginBottom: 24,
   },
   otpInput: {
     width: 60,

@@ -1,18 +1,17 @@
-import React, { useEffect } from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  Image,
-  TouchableOpacity,
-  Animated
-} from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
+import { LinearGradient } from 'expo-linear-gradient';
 import { router, useSearchParams } from 'expo-router';
-import { colors } from '../../constants/colors';
+import React, { useEffect, useState } from 'react';
+import {
+  Animated,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View
+} from 'react-native';
 import Button from '../../components/common/Button';
 import StatusBar from '../../components/common/StatusBar';
+import { colors } from '../../constants/colors';
 
 const VerificationSuccessScreen = () => {
   const params = useSearchParams();
@@ -20,6 +19,11 @@ const VerificationSuccessScreen = () => {
   
   const scaleAnim = new Animated.Value(0);
   const opacityAnim = new Animated.Value(0);
+  
+  const [countryCode, setCountryCode] = useState('US');
+  const [country, setCountry] = useState(null);
+  const [withCountryNameButton, setWithCountryNameButton] = useState(false);
+  const [phone, setPhone] = useState('');
   
   useEffect(() => {
     Animated.parallel([

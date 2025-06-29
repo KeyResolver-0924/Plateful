@@ -1,7 +1,7 @@
 import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { router } from 'expo-router';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import {
     Image,
     KeyboardAvoidingView,
@@ -9,7 +9,6 @@ import {
     ScrollView,
     StyleSheet,
     Text,
-    TouchableOpacity,
     View
 } from 'react-native';
 import Button from '../../components/common/Button';
@@ -18,18 +17,29 @@ import StatusBar from '../../components/common/StatusBar';
 import { colors } from '../../constants/colors';
 
 const SignInScreen = () => {
-  const [phoneNumber, setPhoneNumber] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   
   const handleSignIn = async () => {
-    if (!phoneNumber || !phoneNumber.trim()) {
-      setError('Phone number is required');
+    if (!email || !email.trim()) {
+      setError('Email is required');
       return;
     }
     
-    if (!/^\d{10}$/.test(phoneNumber.replace(/\D/g, ''))) {
-      setError('Please enter a valid 10-digit phone number');
+    if (!/\S+@\S+\.\S+/.test(email)) {
+      setError('Please enter a valid email address');
+      return;
+    }
+    
+    if (!password || !password.trim()) {
+      setError('Password is required');
+      return;
+    }
+    
+    if (password.length < 6) {
+      setError('Password must be at least 6 characters');
       return;
     }
     
@@ -40,17 +50,11 @@ const SignInScreen = () => {
       // Simulate API call
       await new Promise(resolve => setTimeout(resolve, 1500));
       
-      // Navigate to OTP verification using Expo Router
-      router.push({
-        pathname: '/auth/otp',
-        params: { 
-          phoneNumber: phoneNumber,
-          isSignUp: false 
-        }
-      });
+      // Navigate to main app after successful sign in
+      router.replace('/(tabs)');
     } catch (error) {
       console.error('Sign in error:', error);
-      setError('An error occurred. Please try again.');
+      setError('Invalid email or password. Please try again.');
     } finally {
       setLoading(false);
     }
@@ -91,23 +95,34 @@ const SignInScreen = () => {
           <View style={styles.formHeader}>
             <Text style={styles.formTitle}>Welcome Back!</Text>
             <Text style={styles.formSubtitle}>
-              Let's login for explore continues
+              Sign in with your email and password
             </Text>
           </View>
           
           <View style={styles.form}>
             <Input
-              label="Phone Number"
-              value={phoneNumber}
+              value={email}
               onChangeText={(text) => {
-                setPhoneNumber(text);
+                setEmail(text);
                 if (error) setError('');
               }}
-              placeholder="Enter your Phone Number"
-              keyboardType="phone-pad"
-              maxLength={10}
+              placeholder="Enter your Email"
+              keyboardType="email-address"
               error={error}
-              icon={<Ionicons name="call-outline" />}
+              icon={<Ionicons name="mail-outline" />}
+            />
+            
+            <Input
+              value={password}
+              onChangeText={(text) => {
+                setPassword(text);
+                if (error) setError('');
+              }}
+              placeholder="Enter your Password"
+              keyboardType="default"
+              secureTextEntry
+              error={error}
+              icon={<Ionicons name="lock-closed-outline" />}
             />
             
             <Button
@@ -115,6 +130,13 @@ const SignInScreen = () => {
               onPress={handleSignIn}
               loading={loading}
               style={styles.signInButton}
+            />
+            
+            <Button
+              title="Create New Account"
+              onPress={() => router.push('/auth/sign-up')}
+              variant="outline"
+              style={styles.signUpButton}
             />
             
             <View style={styles.dividerContainer}>
@@ -136,10 +158,7 @@ const SignInScreen = () => {
             />
             
             <View style={styles.footer}>
-              <Text style={styles.footerText}>Don't have an account? </Text>
-              <TouchableOpacity onPress={() => router.push('/auth/sign-up')}>
-                <Text style={styles.linkText}>Sign Up here</Text>
-              </TouchableOpacity>
+              <Text style={styles.footerText}>By continuing, you agree to our Terms of Service and Privacy Policy</Text>
             </View>
           </View>
         </ScrollView>
@@ -208,6 +227,10 @@ const styles = StyleSheet.create({
     marginTop: 24,
     marginBottom: 24,
   },
+  signUpButton: {
+    marginTop: 24,
+    marginBottom: 24,
+  },
   dividerContainer: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -235,8 +258,10 @@ const styles = StyleSheet.create({
     marginTop: 32,
   },
   footerText: {
-    fontSize: 16,
-    color: colors.text.primary,
+    fontSize: 12,
+    color: colors.text.secondary,
+    textAlign: 'center',
+    lineHeight: 16,
   },
   linkText: {
     fontSize: 16,

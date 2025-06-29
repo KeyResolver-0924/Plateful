@@ -102,7 +102,7 @@ const SplashScreen: React.FC = () => {
             { opacity: textOpacity }
           ]}
         >
-          <Text style={styles.appName}>PLATEFULL</Text>
+          <Text style={styles.appName}>PLATEFUL</Text>
           <Text style={styles.tagline}>Nourishing Little Ones</Text>
         </Animated.View>
         
