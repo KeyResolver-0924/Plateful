@@ -1,7 +1,6 @@
-import * as admin from 'firebase-admin';
 import * as functions from 'firebase-functions';
 
-const db = admin.firestore();
+// const db = admin.firestore();
 
 export const imageRecognition = {
   // Process uploaded image for food recognition

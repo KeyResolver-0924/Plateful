@@ -1,6 +1,6 @@
 import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
-import { router, useSearchParams } from 'expo-router';
+import { router, useLocalSearchParams } from 'expo-router';
 import React, { useEffect, useRef, useState } from 'react';
 import {
   Alert,
@@ -17,16 +17,19 @@ import Button from '../../components/common/Button';
 import Input from '../../components/common/Input';
 import StatusBar from '../../components/common/StatusBar';
 import { colors } from '../../constants/colors';
+import authService from '../../utils/authService';
 
 const OTPScreen = () => {
-  const params = useSearchParams();
-  const { phoneNumber, email, isSignUp } = params;
+  const params = useLocalSearchParams();
+  const { phoneNumber, email, isSignUp, userId } = params;
   
   const [phoneOtp, setPhoneOtp] = useState(['', '', '', '']);
   const [emailOtp, setEmailOtp] = useState(['', '', '', '', '', '']);
   const [loading, setLoading] = useState(false);
   const [resendLoading, setResendLoading] = useState(false);
   const [timer, setTimer] = useState(30);
+  const [focusedPhoneIndex, setFocusedPhoneIndex] = useState(-1);
+  const [focusedEmailIndex, setFocusedEmailIndex] = useState(-1);
   const phoneInputRefs = useRef([]);
   const emailInputRefs = useRef([]);
   
@@ -91,19 +94,19 @@ const OTPScreen = () => {
     setLoading(true);
     
     try {
-      // Simulate API call for both OTPs
-      console.log('Verifying phone OTP:', phoneOtpString);
-      console.log('Verifying email OTP:', emailOtpString);
-      await new Promise(resolve => setTimeout(resolve, 1500));
+      // Verify OTP with real authentication service
+      const result = await authService.verifyOTP(userId, emailOtpString, phoneOtpString);
       
-      // Navigate to verification success
-      router.push({
-        pathname: '/auth/verification-success',
-        params: { isSignUp: isSignUp === 'true' }
-      });
+      if (result.success) {
+        // Navigate to verification success
+        router.push({
+          pathname: '/auth/verification-success',
+          params: { isSignUp: isSignUp === 'true' }
+        });
+      }
     } catch (error) {
       console.error('OTP verification error:', error);
-      Alert.alert('Error', 'Invalid OTP. Please try again.');
+      Alert.alert('Error', error.message || 'Invalid OTP. Please try again.');
     } finally {
       setLoading(false);
     }
@@ -113,13 +116,17 @@ const OTPScreen = () => {
     setResendLoading(true);
     
     try {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      // Resend OTP using real authentication service
+      await Promise.all([
+        authService.resendOTP(userId, 'email'),
+        authService.resendOTP(userId, 'phone')
+      ]);
+      
       setTimer(30);
-      Alert.alert('Success', 'OTP resent successfully!');
+      Alert.alert('Success', 'OTP codes resent successfully!');
     } catch (error) {
       console.error('Resend OTP error:', error);
-      Alert.alert('Error', 'Failed to resend OTP. Please try again.');
+      Alert.alert('Error', error.message || 'Failed to resend OTP. Please try again.');
     } finally {
       setResendLoading(false);
     }
@@ -175,12 +182,18 @@ const OTPScreen = () => {
                     value={digit}
                     onChangeText={(text) => handlePhoneOtpChange(text, index)}
                     onKeyPress={(e) => handlePhoneKeyPress(e, index)}
+                    onFocus={() => setFocusedPhoneIndex(index)}
+                    onBlur={() => setFocusedPhoneIndex(-1)}
                     placeholder="0"
                     keyboardType="numeric"
                     maxLength={1}
-                    style={styles.otpInput}
+                    style={[
+                      styles.otpInput,
+                      focusedPhoneIndex === index && styles.otpInputFocused,
+                      digit && styles.otpInputFilled
+                    ]}
                     textAlign="center"
-                    fontSize={24}
+                    fontSize={28}
                     fontWeight="bold"
                   />
                 ))}
@@ -197,12 +210,18 @@ const OTPScreen = () => {
                     value={digit}
                     onChangeText={(text) => handleEmailOtpChange(text, index)}
                     onKeyPress={(e) => handleEmailKeyPress(e, index)}
+                    onFocus={() => setFocusedEmailIndex(index)}
+                    onBlur={() => setFocusedEmailIndex(-1)}
                     placeholder="0"
                     keyboardType="numeric"
                     maxLength={1}
-                    style={styles.otpInput}
+                    style={[
+                      styles.otpInput,
+                      focusedEmailIndex === index && styles.otpInputFocused,
+                      digit && styles.otpInputFilled
+                    ]}
                     textAlign="center"
-                    fontSize={24}
+                    fontSize={28}
                     fontWeight="bold"
                   />
                 ))}
@@ -308,29 +327,47 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   otpSection: {
-    marginBottom: 24,
+    marginBottom: 32,
   },
   otpLabel: {
     fontSize: 18,
-    fontWeight: 'bold',
+    fontWeight: '600',
     color: colors.text.primary,
-    marginBottom: 8,
+    marginBottom: 16,
+    textAlign: 'center',
   },
   otpContainer: {
     flexDirection: 'row',
     justifyContent: 'center',
+    alignItems: 'center',
+    gap: 12,
   },
   otpInput: {
-    width: 60,
-    height: 60,
+    width: 20,
+    height: 20,
     borderWidth: 2,
     borderColor: colors.border,
-    borderRadius: 12,
-    fontSize: 24,
+    borderRadius: 16,
+    fontSize: 28,
     fontWeight: 'bold',
     textAlign: 'center',
-    marginHorizontal: 8,
     color: colors.text.primary,
+    backgroundColor: colors.background,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
+  },
+  otpInputFocused: {
+    borderColor: colors.primary,
+  },
+  otpInputFilled: {
+    backgroundColor: colors.primary,
+    color: colors.text.inverse,
   },
   verifyButton: {
     marginTop: 16,

@@ -3,19 +3,21 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { router } from 'expo-router';
 import { useState } from 'react';
 import {
-  Image,
-  KeyboardAvoidingView,
-  Platform,
-  ScrollView,
-  StyleSheet,
-  Text,
-  View
+    Alert,
+    Image,
+    KeyboardAvoidingView,
+    Platform,
+    ScrollView,
+    StyleSheet,
+    Text,
+    View
 } from 'react-native';
 import Button from '../../components/common/Button';
 import Input from '../../components/common/Input';
 import PhoneInput from '../../components/common/PhoneInput';
 import StatusBar from '../../components/common/StatusBar';
 import { colors } from '../../constants/colors';
+import authService from '../../utils/authService';
 
 const SignUpScreen = () => {
   const [formData, setFormData] = useState({
@@ -79,22 +81,29 @@ const SignUpScreen = () => {
     setLoading(true);
     
     try {
-      // Simulate sending both OTPs (phone and email) simultaneously
-      console.log('Sending phone OTP to:', formData.phoneNumber);
-      console.log('Sending email OTP to:', formData.email);
-      await new Promise(resolve => setTimeout(resolve, 1500));
-      
-      // Navigate to OTP verification with both phone and email
-      router.push({
-        pathname: '/auth/otp',
-        params: { 
-          phoneNumber: formData.phoneNumber,
-          email: formData.email,
-          isSignUp: true 
-        }
+      // Register user with real authentication service
+      const result = await authService.registerUser({
+        email: formData.email,
+        password: formData.password,
+        fullName: formData.fullName,
+        phoneNumber: formData.phoneNumber
       });
+      
+      if (result.success) {
+        // Navigate to OTP verification with user data
+        router.push({
+          pathname: '/auth/otp',
+          params: { 
+            phoneNumber: formData.phoneNumber,
+            email: formData.email,
+            isSignUp: 'true',
+            userId: result.userId
+          }
+        });
+      }
     } catch (error) {
       console.error('Sign up error:', error);
+      Alert.alert('Error', error.message || 'Registration failed. Please try again.');
     } finally {
       setLoading(false);
     }

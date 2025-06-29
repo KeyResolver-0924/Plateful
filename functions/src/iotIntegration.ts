@@ -11,7 +11,8 @@ export const iotIntegration = {
     try {
       const device = await iotIntegration.validateDevice(deviceId);
       if (!device) {
-        return res.status(401).send('Unauthorized device');
+        res.status(401).send('Unauthorized device');
+        return;
       }
       
       await iotIntegration.processDeviceReadings(deviceId, readings, timestamp);

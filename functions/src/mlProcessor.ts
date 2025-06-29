@@ -1,7 +1,6 @@
-import * as admin from 'firebase-admin';
 import * as functions from 'firebase-functions';
 
-const db = admin.firestore();
+// const db = admin.firestore();
 
 export const mlProcessor = {
   // Update acceptance model
@@ -12,6 +11,11 @@ export const mlProcessor = {
       
       try {
         const foodData = change.after.data();
+        if (!foodData) {
+          console.log('No food data found');
+          return;
+        }
+        
         await mlProcessor.updateMLModel(foodData.childId, foodData.foodItemId, foodData);
         await mlProcessor.recalculatePredictions(foodData.childId, foodData.foodItemId);
       } catch (error) {

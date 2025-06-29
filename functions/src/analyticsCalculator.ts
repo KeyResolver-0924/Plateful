@@ -1,26 +1,23 @@
 import * as admin from 'firebase-admin';
-import * as functions from 'firebase-functions';
 
 const db = admin.firestore();
 
 export const analyticsCalculator = {
-  // Calculate daily nutrition for all children
-  calculateDailyNutrition: functions.pubsub
-    .schedule('0 23 * * *') // Daily at 11 PM
-    .onRun(async (context) => {
-      try {
-        const children = await db.collection('children').get();
-        
-        for (const child of children.docs) {
-          await analyticsCalculator.calculateChildDailyNutrition(child.id);
-        }
-        
-        console.log('Daily nutrition calculation completed for all children');
-      } catch (error) {
-        console.error('Error in daily nutrition calculation:', error);
-        throw error;
+  // Calculate daily nutrition for all children (called by scheduled function)
+  calculateDailyNutrition: async () => {
+    try {
+      const children = await db.collection('children').get();
+      
+      for (const child of children.docs) {
+        await analyticsCalculator.calculateChildDailyNutrition(child.id);
       }
-    }),
+      
+      console.log('Daily nutrition calculation completed for all children');
+    } catch (error) {
+      console.error('Error in daily nutrition calculation:', error);
+      throw error;
+    }
+  },
 
   // Calculate daily nutrition for a specific child
   calculateChildDailyNutrition: async (childId: string, date?: string) => {
@@ -95,6 +92,8 @@ export const analyticsCalculator = {
           if (!foodItemDetails.exists) continue;
           
           const foodDetails = foodItemDetails.data();
+          if (!foodDetails) continue;
+          
           const consumedWeight = foodItemData.portionData.consumedWeight || 0;
           const consumedPercentage = foodItemData.portionData.consumedPercentage || 0;
           
@@ -187,7 +186,7 @@ export const analyticsCalculator = {
     
     // Get food groups for analysis
     const foodGroupsQuery = await db.collection('foodGroups').get();
-    const foodGroups = foodGroupsQuery.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+    const foodGroups = foodGroupsQuery.docs.map(doc => ({ id: doc.id, ...doc.data() } as any));
     
     for (const group of foodGroups) {
       const consumed = foodGroupConsumption[group.id] || 0;

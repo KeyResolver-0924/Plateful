@@ -110,7 +110,7 @@ export const foodDatabase = {
   // Get food recommendations for a child
   getFoodRecommendations: async (data: any) => {
     try {
-      const { childId, mealType, preferences } = data;
+      const { childId } = data;
       
       // Get child's allergies and restrictions
       const childDoc = await db.collection('children').doc(childId).get();
@@ -130,7 +130,7 @@ export const foodDatabase = {
       
       // Filter out allergens and apply restrictions
       const filteredFoods = foodItems.docs
-        .map(doc => ({ id: doc.id, ...doc.data() }))
+        .map(doc => ({ id: doc.id, ...doc.data() } as any))
         .filter(food => {
           // Check for allergens
           const hasAllergens = food.allergenInfo?.commonAllergens?.some((allergen: string) => 

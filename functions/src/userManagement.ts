@@ -2,7 +2,6 @@ import * as admin from 'firebase-admin';
 import * as functions from 'firebase-functions';
 
 const db = admin.firestore();
-const auth = admin.auth();
 
 export const userManagement = {
   // Create user profile when user signs up

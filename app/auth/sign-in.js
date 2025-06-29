@@ -15,6 +15,7 @@ import Button from '../../components/common/Button';
 import Input from '../../components/common/Input';
 import StatusBar from '../../components/common/StatusBar';
 import { colors } from '../../constants/colors';
+import authService from '../../utils/authService';
 
 const SignInScreen = () => {
   const [email, setEmail] = useState('');
@@ -47,14 +48,16 @@ const SignInScreen = () => {
     setError('');
     
     try {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1500));
+      // Sign in with real authentication service
+      const result = await authService.signInUser(email, password);
       
-      // Navigate to main app after successful sign in
-      router.replace('/(tabs)');
+      if (result.success) {
+        // Navigate to main app after successful sign in
+        router.replace('/(tabs)');
+      }
     } catch (error) {
       console.error('Sign in error:', error);
-      setError('Invalid email or password. Please try again.');
+      setError(error.message || 'Invalid email or password. Please try again.');
     } finally {
       setLoading(false);
     }
