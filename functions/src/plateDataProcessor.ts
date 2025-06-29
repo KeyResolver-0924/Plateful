@@ -2,7 +2,6 @@ import * as admin from 'firebase-admin';
 import * as functions from 'firebase-functions';
 
 const db = admin.firestore();
-const storage = admin.storage();
 
 export const plateDataProcessor = {
   // Process new plate readings
@@ -34,15 +33,13 @@ export const plateDataProcessor = {
 
   // Analyze weight changes from plate readings
   analyzeWeightChange: async (reading: any, mealId: string) => {
-    const { plateSection, weight, change, changeType, timestamp } = reading;
+    const { plateSection, weight, change, timestamp } = reading;
     
     // Get the meal document
     const mealDoc = await db.collection('meals').doc(mealId).get();
     if (!mealDoc.exists) {
       throw new Error(`Meal ${mealId} not found`);
     }
-    
-    const mealData = mealDoc.data();
     
     // Update the meal's plate data
     await db.collection('meals').doc(mealId).update({
@@ -94,6 +91,7 @@ export const plateDataProcessor = {
     if (!mealDoc.exists) return;
     
     const mealData = mealDoc.data();
+    if (!mealData) return;
     
     // Get all food items for this meal
     const foodItemsQuery = await db.collection('mealFoodItems')
@@ -118,7 +116,9 @@ export const plateDataProcessor = {
       });
       
       // Trigger analytics calculation
-      await plateDataProcessor.triggerAnalyticsCalculation(mealData.childId);
+      if (mealData.childId) {
+        await plateDataProcessor.triggerAnalyticsCalculation(mealData.childId);
+      }
     }
   },
 

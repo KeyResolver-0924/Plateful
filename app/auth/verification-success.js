@@ -1,20 +1,20 @@
 import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
-import { router, useSearchParams } from 'expo-router';
+import { router, useLocalSearchParams } from 'expo-router';
 import React, { useEffect, useState } from 'react';
 import {
-  Animated,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View
+    Animated,
+    StyleSheet,
+    Text,
+    TouchableOpacity,
+    View
 } from 'react-native';
 import Button from '../../components/common/Button';
 import StatusBar from '../../components/common/StatusBar';
 import { colors } from '../../constants/colors';
 
 const VerificationSuccessScreen = () => {
-  const params = useSearchParams();
+  const params = useLocalSearchParams();
   const { isSignUp } = params;
   
   const scaleAnim = new Animated.Value(0);

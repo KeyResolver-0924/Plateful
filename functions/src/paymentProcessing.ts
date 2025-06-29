@@ -1,6 +1,5 @@
-import * as admin from 'firebase-admin';
 
-const db = admin.firestore();
+// const db = admin.firestore();
 
 export const paymentProcessing = {
   // Create subscription

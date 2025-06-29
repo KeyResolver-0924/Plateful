@@ -1,74 +1,69 @@
-import * as functions from 'firebase-functions';
 import * as admin from 'firebase-admin';
+import * as functions from 'firebase-functions';
 
 // Initialize Firebase Admin
 admin.initializeApp();
 
 // Import function modules
-import { plateDataProcessor } from './plateDataProcessor';
-import { imageRecognition } from './imageRecognition';
 import { analyticsCalculator } from './analyticsCalculator';
-import { mlProcessor } from './mlProcessor';
-import { iotIntegration } from './iotIntegration';
-import { notifications } from './notifications';
-import { userManagement } from './userManagement';
+import { authentication } from './authentication';
 import { foodDatabase } from './foodDatabase';
+import { imageRecognition } from './imageRecognition';
+import { iotIntegration } from './iotIntegration';
 import { learningContent } from './learningContent';
+import { mlProcessor } from './mlProcessor';
+import { notifications } from './notifications';
 import { paymentProcessing } from './paymentProcessing';
+import { plateDataProcessor } from './plateDataProcessor';
+import { userManagement } from './userManagement';
 
 // Export all functions
-export {
-  // Plate Data Processing
-  processPlateReading: plateDataProcessor.processPlateReading,
-  analyzeWeightChange: plateDataProcessor.analyzeWeightChange,
-  updateFoodConsumption: plateDataProcessor.updateFoodConsumption,
-  checkMealCompletion: plateDataProcessor.checkMealCompletion,
-  
-  // Image Recognition
-  processUploadedImage: imageRecognition.processUploadedImage,
-  analyzeFood: imageRecognition.analyzeFood,
-  matchFoodsToDatabase: imageRecognition.matchFoodsToDatabase,
-  
-  // Analytics
-  calculateDailyNutrition: analyticsCalculator.calculateDailyNutrition,
-  calculateChildDailyNutrition: analyticsCalculator.calculateChildDailyNutrition,
-  generateNutritionReport: analyticsCalculator.generateNutritionReport,
-  
-  // ML Processing
-  updateAcceptanceModel: mlProcessor.updateAcceptanceModel,
-  updateMLModel: mlProcessor.updateMLModel,
-  recalculatePredictions: mlProcessor.recalculatePredictions,
-  
-  // IoT Integration
-  handlePlateDeviceData: iotIntegration.handlePlateDeviceData,
-  validateDevice: iotIntegration.validateDevice,
-  processDeviceReadings: iotIntegration.processDeviceReadings,
-  
-  // Notifications
-  sendMealReminders: notifications.sendMealReminders,
-  sendAchievementNotifications: notifications.sendAchievementNotifications,
-  sendNutritionAlerts: notifications.sendNutritionAlerts,
-  
-  // User Management
-  createUserProfile: userManagement.createUserProfile,
-  createChildProfile: userManagement.createChildProfile,
-  updateUserPreferences: userManagement.updateUserPreferences,
-  
-  // Food Database
-  seedFoodDatabase: foodDatabase.seedFoodDatabase,
-  updateFoodItem: foodDatabase.updateFoodItem,
-  getFoodRecommendations: foodDatabase.getFoodRecommendations,
-  
-  // Learning Content
-  processVideoUpload: learningContent.processVideoUpload,
-  generateVideoThumbnail: learningContent.generateVideoThumbnail,
-  updateWatchHistory: learningContent.updateWatchHistory,
-  
-  // Payment Processing
-  createSubscription: paymentProcessing.createSubscription,
-  handlePaymentWebhook: paymentProcessing.handlePaymentWebhook,
-  cancelSubscription: paymentProcessing.cancelSubscription
-};
+export const processPlateReading = plateDataProcessor.processPlateReading;
+export const analyzeWeightChange = plateDataProcessor.analyzeWeightChange;
+export const updateFoodConsumption = plateDataProcessor.updateFoodConsumption;
+export const checkMealCompletion = plateDataProcessor.checkMealCompletion;
+
+export const processUploadedImage = imageRecognition.processUploadedImage;
+export const analyzeFood = imageRecognition.analyzeFood;
+export const matchFoodsToDatabase = imageRecognition.matchFoodsToDatabase;
+
+export const calculateDailyNutrition = analyticsCalculator.calculateDailyNutrition;
+export const calculateChildDailyNutrition = analyticsCalculator.calculateChildDailyNutrition;
+export const generateNutritionReport = analyticsCalculator.generateNutritionReport;
+
+export const updateAcceptanceModel = mlProcessor.updateAcceptanceModel;
+export const updateMLModel = mlProcessor.updateMLModel;
+export const recalculatePredictions = mlProcessor.recalculatePredictions;
+
+export const handlePlateDeviceData = iotIntegration.handlePlateDeviceData;
+export const validateDevice = iotIntegration.validateDevice;
+export const processDeviceReadings = iotIntegration.processDeviceReadings;
+
+export const sendMealReminders = notifications.sendMealReminders;
+export const sendAchievementNotifications = notifications.sendAchievementNotifications;
+export const sendNutritionAlerts = notifications.sendNutritionAlerts;
+
+export const createUserProfile = userManagement.createUserProfile;
+export const createChildProfile = userManagement.createChildProfile;
+export const updateUserPreferences = userManagement.updateUserPreferences;
+
+export const seedFoodDatabase = foodDatabase.seedFoodDatabase;
+export const updateFoodItem = foodDatabase.updateFoodItem;
+export const getFoodRecommendations = foodDatabase.getFoodRecommendations;
+
+export const processVideoUpload = learningContent.processVideoUpload;
+export const generateVideoThumbnail = learningContent.generateVideoThumbnail;
+export const updateWatchHistory = learningContent.updateWatchHistory;
+
+export const createSubscription = paymentProcessing.createSubscription;
+export const handlePaymentWebhook = paymentProcessing.handlePaymentWebhook;
+export const cancelSubscription = paymentProcessing.cancelSubscription;
+
+export const registerUser = authentication.registerUser;
+export const verifyOTP = authentication.verifyOTP;
+export const signInUser = authentication.signInUser;
+export const resendOTP = authentication.resendOTP;
+export const resetPassword = authentication.resetPassword;
 
 // HTTP Functions
 export const api = functions.https.onRequest(async (req, res) => {
