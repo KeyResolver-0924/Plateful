@@ -1,0 +1,115 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Helper function to check if user is authenticated
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+    
+    // Helper function to check if user is admin
+    function isAdmin() {
+      return isAuthenticated() && 
+        get(/databases/$(database)/documents/users/$(request.auth.uid)).data.userType == 'admin';
+    }
+    
+    // Helper function to check if user is parent of child
+    function isParentOfChild(childId) {
+      return isAuthenticated() && 
+        request.auth.uid in get(/databases/$(database)/documents/children/$(childId)).data.parentIds;
+    }
+    
+    // Helper function to check if user owns the document
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+    
+    // User Management
+    match /users/{userId} {
+      allow read, write: if isOwner(userId);
+      allow read: if isAdmin();
+    }
+    
+    // Children - Parents can access their children's data
+    match /children/{childId} {
+      allow read, write: if isParentOfChild(childId);
+      allow read: if isAdmin();
+    }
+    
+    // Meals - Parents can access meals for their children
+    match /meals/{mealId} {
+      allow read, write: if isAuthenticated() && 
+        isParentOfChild(resource.data.childId);
+      allow read: if isAdmin();
+    }
+    
+    // Meal Food Items - Parents can access food items for their children's meals
+    match /mealFoodItems/{itemId} {
+      allow read, write: if isAuthenticated() && 
+        isParentOfChild(resource.data.childId);
+      allow read: if isAdmin();
+    }
+    
+    // Plate Readings - Sub-collection of meals
+    match /meals/{mealId}/plateReadings/{readingId} {
+      allow read, write: if isAuthenticated() && 
+        isParentOfChild(get(/databases/$(database)/documents/meals/$(mealId)).data.childId);
+    }
+    
+    // Nutrition Analytics - Parents can access their children's analytics
+    match /nutritionAnalytics/{analyticsId} {
+      allow read, write: if isAuthenticated() && 
+        isParentOfChild(resource.data.childId);
+      allow read: if isAdmin();
+    }
+    
+    // Food Acceptance ML - Parents can access their children's ML data
+    match /foodAcceptanceML/{mlAnalysisId} {
+      allow read, write: if isAuthenticated() && 
+        isParentOfChild(resource.data.childId);
+      allow read: if isAdmin();
+    }
+    
+    // Watch History - Parents can access their children's video history
+    match /watchHistory/{watchId} {
+      allow read, write: if isAuthenticated() && 
+        isParentOfChild(resource.data.childId);
+      allow read: if isAdmin();
+    }
+    
+    // Reference Data - Read-only for authenticated users, write for admins
+    match /foodGroups/{groupId} {
+      allow read: if isAuthenticated();
+      allow write: if isAdmin();
+    }
+    
+    match /foodSubTypes/{subTypeId} {
+      allow read: if isAuthenticated();
+      allow write: if isAdmin();
+    }
+    
+    match /foodItems/{foodItemId} {
+      allow read: if isAuthenticated();
+      allow write: if isAdmin();
+    }
+    
+    match /learningVideos/{videoId} {
+      allow read: if isAuthenticated();
+      allow write: if isAdmin();
+    }
+    
+    match /nutritionStandards/{standardId} {
+      allow read: if isAuthenticated();
+      allow write: if isAdmin();
+    }
+    
+    match /foodAllergens/{allergenId} {
+      allow read: if isAuthenticated();
+      allow write: if isAdmin();
+    }
+    
+    match /dietaryRestrictions/{restrictionId} {
+      allow read: if isAuthenticated();
+      allow write: if isAdmin();
+    }
+  }
+} 
