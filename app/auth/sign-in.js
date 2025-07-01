@@ -181,8 +181,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   mascot: {
-    width: 80,
-    height: 80,
+    width: 180,
+    height: 180,
     resizeMode: 'contain',
     marginBottom: 16,
   },

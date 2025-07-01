@@ -21,6 +21,22 @@ This document summarizes the comprehensive cleanup and TypeScript conversion per
 - **Problem**: Mixed routing approaches and inconsistent naming
 - **Solution**: Standardized on Expo Router with proper file structure
 
+### 5. **React.jsx Component Structure Errors**
+- **Problem**: Components defined inside other components were causing "React.jsx: type is invalid" errors.
+- **Solution**: Moved `CameraView` and `FoodSelector` components outside the main `MealLoggingScreen` component in `app/(tabs)/meals.js`
+
+### 6. **ImagePicker API Deprecation**
+- **Problem**: Using deprecated ImagePicker API (`result.cancelled` instead of `result.canceled`).
+- **Solution**: Updated all ImagePicker usage to use the new API
+
+### 7. **Missing Food Image Imports**
+- **Problem**: Some food items were missing image imports, causing undefined image references.
+- **Solution**: Added missing imports: `orange`, `rice`, `bread`, `pasta`
+
+### 8. **Navigation Safety**
+- **Problem**: Potential "Cannot read property 'navigate' of undefined" errors.
+- **Solution**: Added null checks for navigation prop before calling navigate
+
 ## Files Converted to TypeScript
 
 ### Components
@@ -202,3 +218,40 @@ Plateful/
 - ✅ Cleaned up duplicate files
 
 The project is now significantly cleaner and more maintainable with proper TypeScript support and consistent code patterns. 
+
+## Additional Recommendations
+
+### 1. TypeScript Migration
+Consider migrating JavaScript files to TypeScript for better type safety:
+- `app/(tabs)/meals.js` → `meals.tsx`
+- `app/(tabs)/profile.js` → `profile.tsx`
+- `constants/foods.js` → `foods.ts`
+
+### 2. Component Organization
+- Consider moving `CameraView` and `FoodSelector` to separate component files
+- Create a `components/meals/` directory for meal-related components
+
+### 3. Error Handling
+- Add proper error boundaries for React components
+- Implement better error handling for camera and image picker operations
+
+### 4. Performance Optimization
+- Consider using `React.memo` for components that don't need frequent re-renders
+- Implement proper loading states for async operations
+
+## Testing Checklist
+
+After applying these fixes, test the following:
+
+- [ ] App starts without React.jsx errors
+- [ ] Camera functionality works (or gracefully falls back to gallery picker)
+- [ ] Food selection modal opens and displays images correctly
+- [ ] Image picker works for profile photos
+- [ ] Navigation between screens works properly
+- [ ] All food images display correctly in the food selector
+
+## Notes
+
+- The app uses a mock camera service for Android emulator development
+- Firebase is not configured, using mock authentication
+- Some food images use placeholder images (bread for oats, pasta for quinoa) - consider adding proper images 

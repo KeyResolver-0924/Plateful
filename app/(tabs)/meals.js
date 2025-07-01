@@ -21,6 +21,119 @@ import { getFoodsByCategory } from '../../constants/foods';
 
 const { width, height } = Dimensions.get('window');
 
+// Move CameraView component outside the main component
+const CameraView = ({ visible, onClose, onCapture, cameraRef }) => (
+  <Modal visible={visible} animationType="slide">
+    <View style={styles.cameraContainer}>
+      <Camera
+        ref={cameraRef}
+        style={styles.camera}
+        type="back"
+      >
+        <View style={styles.cameraOverlay}>
+          <TouchableOpacity
+            style={styles.closeButton}
+            onPress={onClose}
+          >
+            <Ionicons name="close" size={30} color={colors.text.inverse} />
+          </TouchableOpacity>
+        </View>
+      </Camera>
+      
+      <View style={styles.cameraControls}>
+        <TouchableOpacity style={styles.captureButton} onPress={onCapture}>
+          <View style={styles.captureButtonInner} />
+        </TouchableOpacity>
+      </View>
+    </View>
+  </Modal>
+);
+
+// Move FoodSelector component outside the main component
+const FoodSelector = ({ 
+  visible, 
+  onClose, 
+  categories, 
+  activeCategory, 
+  onCategoryChange, 
+  selectedFoods, 
+  onToggleFood,
+  getFoodsByCategory 
+}) => (
+  <Modal
+    visible={visible}
+    animationType="slide"
+    transparent={true}
+  >
+    <View style={styles.modalContainer}>
+      <View style={styles.modalContent}>
+        <View style={styles.modalHeader}>
+          <Text style={styles.modalTitle}>Select Foods</Text>
+          <TouchableOpacity onPress={onClose}>
+            <Ionicons name="close" size={24} color={colors.text.primary} />
+          </TouchableOpacity>
+        </View>
+
+        <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+          <View style={styles.categoryTabs}>
+            {categories.map((category) => (
+              <TouchableOpacity
+                key={category.id}
+                style={[
+                  styles.categoryTab,
+                  activeCategory === category.id && styles.categoryTabActive
+                ]}
+                onPress={() => onCategoryChange(category.id)}
+              >
+                <Text style={styles.categoryIcon}>{category.icon}</Text>
+                <Text style={[
+                  styles.categoryName,
+                  activeCategory === category.id && styles.categoryNameActive
+                ]}>
+                  {category.name}
+                </Text>
+              </TouchableOpacity>
+            ))}
+          </View>
+        </ScrollView>
+
+        <ScrollView style={styles.foodGrid} showsVerticalScrollIndicator={false}>
+          <View style={styles.foodGridContent}>
+            {getFoodsByCategory(activeCategory)?.map((food) => (
+              <TouchableOpacity
+                key={food.id}
+                style={[
+                  styles.foodItem,
+                  selectedFoods.includes(food.id) && styles.foodItemSelected
+                ]}
+                onPress={() => onToggleFood(food.id)}
+              >
+                <Image 
+                  source={food.image} 
+                  style={styles.foodImage}
+                  resizeMode="contain"
+                />
+                <Text style={styles.foodName}>{food.name}</Text>
+                {selectedFoods.includes(food.id) && (
+                  <View style={styles.checkmark}>
+                    <Ionicons name="checkmark" size={16} color={colors.text.inverse} />
+                  </View>
+                )}
+              </TouchableOpacity>
+            ))}
+          </View>
+        </ScrollView>
+
+        <Button
+          title="Done"
+          onPress={onClose}
+          style={styles.modalButton}
+        />
+      </View>
+    </View>
+  </Modal>
+);
+
 const MealLoggingScreen = ({ navigation }) => {
   const [hasPermission, setHasPermission] = useState(null);
   const [showCamera, setShowCamera] = useState(false);
@@ -71,9 +184,9 @@ const MealLoggingScreen = ({ navigation }) => {
       quality: 1,
     });
 
-    if (!result.cancelled) {
-      setCapturedImage(result.uri);
-      analyzeFoodImage(result.uri);
+    if (!result.canceled && result.assets && result.assets[0]) {
+      setCapturedImage(result.assets[0].uri);
+      analyzeFoodImage(result.assets[0].uri);
     }
   };
 
@@ -109,110 +222,10 @@ const MealLoggingScreen = ({ navigation }) => {
 
     // Save meal and navigate to success
     console.log('Saving meal:', mealData);
-    navigation.navigate('MealDetail', { meal: mealData });
+    if (navigation && navigation.navigate) {
+      navigation.navigate('MealDetail', { meal: mealData });
+    }
   };
-
-  const CameraView = () => (
-    <Modal visible={showCamera} animationType="slide">
-      <View style={styles.cameraContainer}>
-        <Camera
-          ref={cameraRef}
-          style={styles.camera}
-          type="back"
-        >
-          <View style={styles.cameraOverlay}>
-            <TouchableOpacity
-              style={styles.closeButton}
-              onPress={() => setShowCamera(false)}
-            >
-              <Ionicons name="close" size={30} color={colors.text.inverse} />
-            </TouchableOpacity>
-          </View>
-        </Camera>
-        
-        <View style={styles.cameraControls}>
-          <TouchableOpacity style={styles.captureButton} onPress={takePicture}>
-            <View style={styles.captureButtonInner} />
-          </TouchableOpacity>
-        </View>
-      </View>
-    </Modal>
-  );
-
-  const FoodSelector = () => (
-    <Modal
-      visible={showFoodSelector}
-      animationType="slide"
-      transparent={true}
-    >
-      <View style={styles.modalContainer}>
-        <View style={styles.modalContent}>
-          <View style={styles.modalHeader}>
-            <Text style={styles.modalTitle}>Select Foods</Text>
-            <TouchableOpacity onPress={() => setShowFoodSelector(false)}>
-              <Ionicons name="close" size={24} color={colors.text.primary} />
-            </TouchableOpacity>
-          </View>
-
-          <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-            <View style={styles.categoryTabs}>
-              {categories.map((category) => (
-                <TouchableOpacity
-                  key={category.id}
-                  style={[
-                    styles.categoryTab,
-                    activeCategory === category.id && styles.categoryTabActive
-                  ]}
-                  onPress={() => setActiveCategory(category.id)}
-                >
-                  <Text style={styles.categoryIcon}>{category.icon}</Text>
-                  <Text style={[
-                    styles.categoryName,
-                    activeCategory === category.id && styles.categoryNameActive
-                  ]}>
-                    {category.name}
-                  </Text>
-                </TouchableOpacity>
-              ))}
-            </View>
-          </ScrollView>
-
-          <ScrollView style={styles.foodGrid} showsVerticalScrollIndicator={false}>
-            <View style={styles.foodGridContent}>
-              {getFoodsByCategory(activeCategory)?.map((food) => (
-                <TouchableOpacity
-                  key={food.id}
-                  style={[
-                    styles.foodItem,
-                    selectedFoods.includes(food.id) && styles.foodItemSelected
-                  ]}
-                  onPress={() => toggleFood(food.id)}
-                >
-                  <Image 
-                    source={food.image} 
-                    style={styles.foodImage}
-                    resizeMode="contain"
-                  />
-                  <Text style={styles.foodName}>{food.name}</Text>
-                  {selectedFoods.includes(food.id) && (
-                    <View style={styles.checkmark}>
-                      <Ionicons name="checkmark" size={16} color={colors.text.inverse} />
-                    </View>
-                  )}
-                </TouchableOpacity>
-              ))}
-            </View>
-          </ScrollView>
-
-          <Button
-            title="Done"
-            onPress={() => setShowFoodSelector(false)}
-            style={styles.modalButton}
-          />
-        </View>
-      </View>
-    </Modal>
-  );
 
   return (
     <View style={styles.container}>
@@ -346,8 +359,22 @@ const MealLoggingScreen = ({ navigation }) => {
         <View style={{ height: 40 }} />
       </ScrollView>
 
-      <CameraView />
-      <FoodSelector />
+      <CameraView
+        visible={showCamera}
+        onClose={() => setShowCamera(false)}
+        onCapture={takePicture}
+        cameraRef={cameraRef}
+      />
+      <FoodSelector
+        visible={showFoodSelector}
+        onClose={() => setShowFoodSelector(false)}
+        categories={categories}
+        activeCategory={activeCategory}
+        onCategoryChange={(id) => setActiveCategory(id)}
+        selectedFoods={selectedFoods}
+        onToggleFood={toggleFood}
+        getFoodsByCategory={getFoodsByCategory}
+      />
     </View>
   );
 };

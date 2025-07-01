@@ -1,22 +1,21 @@
-// Firebase configuration
-// Replace these values with your actual Firebase project configuration
-// Get this from Firebase Console → Project Settings → Your Apps → Web App
+// Firebase configuration using environment variables
+// Create a .env file in the root directory with your Firebase credentials
 
 export const firebaseConfig = {
-  apiKey: "your-api-key-here",
-  authDomain: "your-project-id.firebaseapp.com",
-  projectId: "your-project-id",
-  storageBucket: "your-project-id.appspot.com",
-  messagingSenderId: "your-sender-id",
-  appId: "your-app-id"
+  apiKey: process.env.EXPO_PUBLIC_FIREBASE_API_KEY,
+  authDomain: process.env.EXPO_PUBLIC_FIREBASE_AUTH_DOMAIN,
+  projectId: process.env.EXPO_PUBLIC_FIREBASE_PROJECT_ID,
+  storageBucket: process.env.EXPO_PUBLIC_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: process.env.EXPO_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
+  appId: process.env.EXPO_PUBLIC_FIREBASE_APP_ID
 };
 
-// Example configuration (replace with your actual values):
+// For Expo, you can also use EXPO_PUBLIC_ prefix for client-side variables:
 // export const firebaseConfig = {
-//   apiKey: "AIzaSyC1234567890abcdefghijklmnopqrstuvwxyz",
-//   authDomain: "my-plateful-app.firebaseapp.com",
-//   projectId: "my-plateful-app",
-//   storageBucket: "my-plateful-app.appspot.com",
-//   messagingSenderId: "123456789012",
-//   appId: "1:123456789012:web:abcdef1234567890"
+//   apiKey: process.env.EXPO_PUBLIC_FIREBASE_API_KEY,
+//   authDomain: process.env.EXPO_PUBLIC_FIREBASE_AUTH_DOMAIN,
+//   projectId: process.env.EXPO_PUBLIC_FIREBASE_PROJECT_ID,
+//   storageBucket: process.env.EXPO_PUBLIC_FIREBASE_STORAGE_BUCKET,
+//   messagingSenderId: process.env.EXPO_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
+//   appId: process.env.EXPO_PUBLIC_FIREBASE_APP_ID
 // }; 
