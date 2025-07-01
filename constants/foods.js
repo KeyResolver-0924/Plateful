@@ -4,6 +4,7 @@ import avocado from '../assets/images/foods/avocado.png';
 import banana from '../assets/images/foods/banana.png';
 import beans from '../assets/images/foods/beans.png';
 import beef from '../assets/images/foods/beef.png';
+import bread from '../assets/images/foods/bread.png';
 import broccoli from '../assets/images/foods/broccoli.png';
 import butter from '../assets/images/foods/butter.png';
 import carrots from '../assets/images/foods/carrots.png';
@@ -15,8 +16,11 @@ import fish from '../assets/images/foods/fish.png';
 import grapes from '../assets/images/foods/grapes.png';
 import milk from '../assets/images/foods/milk.png';
 import nuts from '../assets/images/foods/nuts.png';
+import orange from '../assets/images/foods/orange.png';
+import pasta from '../assets/images/foods/pasta.png';
 import peach from '../assets/images/foods/peach.png';
 import pear from '../assets/images/foods/pear.png';
+import rice from '../assets/images/foods/rice.png';
 import spinach from '../assets/images/foods/spinach.png';
 import strawberry from '../assets/images/foods/strawberry.png';
 import sweetpotato from '../assets/images/foods/sweetpotato.png';
@@ -76,6 +80,7 @@ export const foods = {
       id: 'orange',
       name: 'Orange',
       category: 'fruits',
+      image: orange,
       nutrients: {
         calories: 47,
         protein: 0.9,
@@ -477,6 +482,7 @@ export const foods = {
       id: 'rice',
       name: 'Rice',
       category: 'grains',
+      image: rice,
       nutrients: {
         calories: 130,
         protein: 2.7,
@@ -498,6 +504,7 @@ export const foods = {
       id: 'oats',
       name: 'Oats',
       category: 'grains',
+      image: bread,
       nutrients: {
         calories: 389,
         protein: 17,
@@ -519,6 +526,7 @@ export const foods = {
       id: 'quinoa',
       name: 'Quinoa',
       category: 'grains',
+      image: pasta,
       nutrients: {
         calories: 368,
         protein: 14,

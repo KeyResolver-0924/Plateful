@@ -41,10 +41,10 @@ const ChildProfileScreen = ({ navigation }) => {
       quality: 1,
     });
 
-    if (!result.cancelled) {
+    if (!result.canceled && result.assets && result.assets[0]) {
       const updatedChildren = children.map(child => 
         child.id === childId 
-          ? { ...child, avatar: result.uri, hasPhoto: true }
+          ? { ...child, avatar: result.assets[0].uri, hasPhoto: true }
           : child
       );
       setChildren(updatedChildren);
@@ -177,8 +177,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   mascot: {
-    width: 80,
-    height: 80,
+    width: 180,
+    height: 180,
     resizeMode: 'contain',
     marginBottom: 16,
   },

@@ -3,15 +3,15 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { router, useLocalSearchParams } from 'expo-router';
 import React, { useEffect, useRef, useState } from 'react';
 import {
-  Alert,
-  Image,
-  KeyboardAvoidingView,
-  Platform,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View
+    Alert,
+    Image,
+    KeyboardAvoidingView,
+    Platform,
+    ScrollView,
+    StyleSheet,
+    Text,
+    TouchableOpacity,
+    View
 } from 'react-native';
 import Button from '../../components/common/Button';
 import Input from '../../components/common/Input';
@@ -272,8 +272,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   mascot: {
-    width: 80,
-    height: 80,
+    width: 180,
+    height: 180,
     resizeMode: 'contain',
     marginBottom: 16,
   },

@@ -1,15 +1,16 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { default as AsyncStorage, default as ReactNativeAsyncStorage } from '@react-native-async-storage/async-storage';
 import { initializeApp } from 'firebase/app';
 import {
-  getAuth,
-  onAuthStateChanged,
-  signOut
+    getReactNativePersistence,
+    initializeAuth,
+    onAuthStateChanged,
+    signOut
 } from 'firebase/auth';
 import {
-  doc,
-  getDoc,
-  getFirestore,
-  updateDoc
+    doc,
+    getDoc,
+    getFirestore,
+    updateDoc
 } from 'firebase/firestore';
 import { getFunctions, httpsCallable } from 'firebase/functions';
 import { firebaseConfig } from './firebaseConfig';
@@ -22,7 +23,9 @@ let app, auth, db, functions;
 
 if (isFirebaseConfigured) {
   app = initializeApp(firebaseConfig);
-  auth = getAuth(app);
+  auth = initializeAuth(app, {
+    persistence: getReactNativePersistence(ReactNativeAsyncStorage)
+  });
   db = getFirestore(app);
   functions = getFunctions(app);
 } else {
