@@ -1,5 +1,62 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
+// Type definitions
+export interface ChildProfile {
+  id: string;
+  name: string;
+  age: number;
+  birthdate: string;
+  gender: string;
+  avatar?: string;
+}
+
+export interface FoodItem {
+  id: string;
+  name: string;
+  category: string;
+  nutrients: {
+    calories: number;
+    protein: number;
+    carbs: number;
+    fat: number;
+    fiber: number;
+    sugar: number;
+    sodium: number;
+    calcium: number;
+    iron: number;
+    vitaminA: number;
+    vitaminC: number;
+  };
+  image?: string;
+}
+
+export interface MealData {
+  id: string;
+  timestamp: string;
+  childId: string;
+  mealType: 'breakfast' | 'lunch' | 'dinner' | 'snack';
+  foods: FoodItem[];
+  totalNutrients: {
+    calories: number;
+    protein: number;
+    carbs: number;
+    fat: number;
+    fiber: number;
+    sugar: number;
+    sodium: number;
+    calcium: number;
+    iron: number;
+    vitaminA: number;
+    vitaminC: number;
+  };
+}
+
+export interface UserData {
+  id: string;
+  name: string;
+  email: string;
+}
+
 // Storage Keys
 export const STORAGE_KEYS = {
   USER_TOKEN: '@user_token',
@@ -12,7 +69,7 @@ export const STORAGE_KEYS = {
 
 // Storage Functions
 export const storage = {
-  async get(key) {
+  async get<T>(key: string): Promise<T | null> {
     try {
       const value = await AsyncStorage.getItem(key);
       return value ? JSON.parse(value) : null;
@@ -22,7 +79,7 @@ export const storage = {
     }
   },
 
-  async set(key, value) {
+  async set<T>(key: string, value: T): Promise<boolean> {
     try {
       await AsyncStorage.setItem(key, JSON.stringify(value));
       return true;
@@ -32,7 +89,7 @@ export const storage = {
     }
   },
 
-  async remove(key) {
+  async remove(key: string): Promise<boolean> {
     try {
       await AsyncStorage.removeItem(key);
       return true;
@@ -42,7 +99,7 @@ export const storage = {
     }
   },
 
-  async clear() {
+  async clear(): Promise<boolean> {
     try {
       await AsyncStorage.clear();
       return true;
@@ -55,49 +112,49 @@ export const storage = {
 
 // Validation Functions
 export const validators = {
-  email(email) {
+  email(email: string): boolean {
     const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return re.test(email);
   },
 
-  password(password) {
+  password(password: string): boolean {
     // At least 8 characters, 1 uppercase, 1 lowercase, 1 number, 1 special character
     const re = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
     return re.test(password);
   },
 
-  phone(phone) {
+  phone(phone: string): boolean {
     const re = /^\+?[1-9]\d{1,14}$/;
     return re.test(phone.replace(/\s/g, ''));
   },
 
-  name(name) {
-    return name && name.trim().length >= 2;
+  name(name: string): boolean {
+    return Boolean(name && name.trim().length >= 2);
   },
 
-  age(age) {
-    const ageNum = parseInt(age);
+  age(age: string | number): boolean {
+    const ageNum = typeof age === 'string' ? parseInt(age) : age;
     return !isNaN(ageNum) && ageNum >= 0 && ageNum <= 18;
   },
 };
 
 // Date Utilities
 export const dateUtils = {
-  formatDate(date) {
-    const options = { year: 'numeric', month: 'long', day: 'numeric' };
+  formatDate(date: Date | string): string {
+    const options: Intl.DateTimeFormatOptions = { year: 'numeric', month: 'long', day: 'numeric' };
     return new Date(date).toLocaleDateString(undefined, options);
   },
 
-  formatTime(date) {
-    const options = { hour: '2-digit', minute: '2-digit' };
+  formatTime(date: Date | string): string {
+    const options: Intl.DateTimeFormatOptions = { hour: '2-digit', minute: '2-digit' };
     return new Date(date).toLocaleTimeString(undefined, options);
   },
 
-  formatDateTime(date) {
+  formatDateTime(date: Date | string): string {
     return `${this.formatDate(date)} - ${this.formatTime(date)}`;
   },
 
-  getAgeFromBirthdate(birthdate) {
+  getAgeFromBirthdate(birthdate: string): number {
     const today = new Date();
     const birth = new Date(birthdate);
     let age = today.getFullYear() - birth.getFullYear();
@@ -110,7 +167,7 @@ export const dateUtils = {
     return age;
   },
 
-  getAgeString(birthdate) {
+  getAgeString(birthdate: string): string {
     const ageInMonths = this.getAgeInMonths(birthdate);
     
     if (ageInMonths < 12) {
@@ -125,7 +182,7 @@ export const dateUtils = {
     }
   },
 
-  getAgeInMonths(birthdate) {
+  getAgeInMonths(birthdate: string): number {
     const today = new Date();
     const birth = new Date(birthdate);
     
@@ -143,16 +200,16 @@ export const dateUtils = {
 
 // Number Utilities
 export const numberUtils = {
-  formatNumber(num) {
+  formatNumber(num: number): string {
     return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
   },
 
-  formatPercentage(value, total) {
+  formatPercentage(value: number, total: number): string {
     if (total === 0) return '0%';
     return `${Math.round((value / total) * 100)}%`;
   },
 
-  calculateBMI(weight, height) {
+  calculateBMI(weight: number, height: number): string {
     // weight in kg, height in cm
     const heightInMeters = height / 100;
     return (weight / (heightInMeters * heightInMeters)).toFixed(1);
@@ -161,15 +218,15 @@ export const numberUtils = {
 
 // String Utilities
 export const stringUtils = {
-  capitalize(str) {
+  capitalize(str: string): string {
     return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
   },
 
-  truncate(str, length = 50) {
+  truncate(str: string, length: number = 50): string {
     return str.length > length ? str.substring(0, length) + '...' : str;
   },
 
-  getInitials(name) {
+  getInitials(name: string): string {
     return name
       .split(' ')
       .map(word => word[0])
@@ -181,8 +238,8 @@ export const stringUtils = {
 
 // Food & Nutrition Utilities
 export const nutritionUtils = {
-  calculateDailyValues(nutrients) {
-    const dailyValues = {
+  calculateDailyValues(nutrients: Record<string, number>): Record<string, number> {
+    const dailyValues: Record<string, number> = {
       protein: 50, // grams
       carbs: 275, // grams
       fat: 78, // grams
@@ -195,7 +252,7 @@ export const nutritionUtils = {
       vitaminC: 90, // mg
     };
 
-    const percentages = {};
+    const percentages: Record<string, number> = {};
     
     Object.keys(nutrients).forEach(nutrient => {
       if (dailyValues[nutrient]) {
@@ -206,8 +263,8 @@ export const nutritionUtils = {
     return percentages;
   },
 
-  getFoodCategory(food) {
-    const categories = {
+  getFoodCategory(food: string): string {
+    const categories: Record<string, string[]> = {
       fruits: ['apple', 'banana', 'orange', 'grape', 'strawberry', 'pear'],
       vegetables: ['carrot', 'broccoli', 'spinach', 'tomato', 'cucumber', 'potato'],
       proteins: ['chicken', 'fish', 'beef', 'eggs', 'beans', 'nuts'],
@@ -227,19 +284,19 @@ export const nutritionUtils = {
 
 // Gamification Utilities
 export const gamificationUtils = {
-  calculateLevel(xp) {
+  calculateLevel(xp: number): number {
     const xpPerLevel = 1000;
     return Math.floor(xp / xpPerLevel) + 1;
   },
 
-  calculateProgress(xp) {
+  calculateProgress(xp: number): number {
     const xpPerLevel = 1000;
     const currentLevelXP = xp % xpPerLevel;
     return (currentLevelXP / xpPerLevel) * 100;
   },
 
-  getBadgeForAchievement(achievement) {
-    const badges = {
+  getBadgeForAchievement(achievement: string): string {
+    const badges: Record<string, string> = {
       firstFood: '🥇',
       tenFoods: '🌟',
       varietyEater: '🌈',
@@ -250,7 +307,7 @@ export const gamificationUtils = {
     return badges[achievement] || '🏆';
   },
 
-  getStreakBonus(days) {
+  getStreakBonus(days: number): number {
     if (days >= 30) return 100;
     if (days >= 14) return 50;
     if (days >= 7) return 25;
@@ -261,7 +318,7 @@ export const gamificationUtils = {
 
 // API Utilities (Mock for now)
 export const api = {
-  async login(email, password) {
+  async login(email: string, password: string): Promise<{ success: boolean; token: string; user: UserData }> {
     // Simulate API call
     await new Promise(resolve => setTimeout(resolve, 1000));
     
@@ -280,7 +337,7 @@ export const api = {
     throw new Error('Invalid credentials');
   },
 
-  async register(userData) {
+  async register(userData: any): Promise<{ success: boolean; token: string; user: any }> {
     // Simulate API call
     await new Promise(resolve => setTimeout(resolve, 1000));
     
@@ -294,7 +351,7 @@ export const api = {
     };
   },
 
-  async saveChildProfile(profileData) {
+  async saveChildProfile(profileData: any): Promise<{ success: boolean; profile: any }> {
     // Simulate API call
     await new Promise(resolve => setTimeout(resolve, 500));
     
@@ -307,7 +364,7 @@ export const api = {
     };
   },
 
-  async saveMealData(mealData) {
+  async saveMealData(mealData: any): Promise<{ success: boolean; meal: any }> {
     // Simulate API call
     await new Promise(resolve => setTimeout(resolve, 500));
     
@@ -332,4 +389,4 @@ export default {
   nutritionUtils,
   gamificationUtils,
   api,
-};
+}; 

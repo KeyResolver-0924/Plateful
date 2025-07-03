@@ -1,5 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
     Alert,
     ScrollView,
@@ -12,15 +12,15 @@ import { colors } from '../../constants/colors';
 import authService from '../../utils/authService';
 
 const UserDataDebugScreen = () => {
-  const [userData, setUserData] = useState(null);
-  const [storedData, setStoredData] = useState(null);
+  const [userData, setUserData] = useState<any>(null);
+  const [storedData, setStoredData] = useState<any>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     loadUserData();
   }, []);
 
-  const loadUserData = async () => {
+  const loadUserData = async (): Promise<void> => {
     try {
       setLoading(true);
       
@@ -47,14 +47,14 @@ const UserDataDebugScreen = () => {
     }
   };
 
-  const getAllStoredData = async () => {
+  const getAllStoredData = async (): Promise<any> => {
     const keys = await AsyncStorage.getAllKeys();
-    const data = {};
+    const data: any = {};
     
     for (const key of keys) {
       const value = await AsyncStorage.getItem(key);
       try {
-        data[key] = JSON.parse(value);
+        data[key] = JSON.parse(value || '');
       } catch {
         data[key] = value;
       }
@@ -63,7 +63,7 @@ const UserDataDebugScreen = () => {
     return data;
   };
 
-  const clearAllData = async () => {
+  const clearAllData = async (): Promise<void> => {
     try {
       await AsyncStorage.clear();
       await authService.clearStoredData();

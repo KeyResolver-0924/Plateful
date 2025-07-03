@@ -19,23 +19,39 @@ import StatusBar from '../../components/common/StatusBar';
 import { colors } from '../../constants/colors';
 import authService from '../../utils/authService';
 
+interface FormData {
+  fullName: string;
+  email: string;
+  phoneNumber: string;
+  password: string;
+  confirmPassword: string;
+}
+
+interface FormErrors {
+  fullName?: string;
+  email?: string;
+  phoneNumber?: string;
+  password?: string;
+  confirmPassword?: string;
+}
+
 const SignUpScreen = () => {
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<FormData>({
     fullName: '',
     email: '',
     phoneNumber: '',
     password: '',
     confirmPassword: ''
   });
-  const [errors, setErrors] = useState({});
+  const [errors, setErrors] = useState<FormErrors>({});
   const [loading, setLoading] = useState(false);
   const [countryCode, setCountryCode] = useState('US');
   const [country, setCountry] = useState(null);
   const [withCountryNameButton, setWithCountryNameButton] = useState(false);
   const [phone, setPhone] = useState('');
   
-  const validateForm = () => {
-    const newErrors = {};
+  const validateForm = (): boolean => {
+    const newErrors: FormErrors = {};
     
     if (!formData.fullName.trim()) {
       newErrors.fullName = 'Full name is required';
@@ -73,7 +89,7 @@ const SignUpScreen = () => {
     return Object.keys(newErrors).length === 0;
   };
   
-  const handleSignUp = async () => {
+  const handleSignUp = async (): Promise<void> => {
     if (!validateForm()) {
       return;
     }
@@ -103,13 +119,13 @@ const SignUpScreen = () => {
       }
     } catch (error) {
       console.error('Sign up error:', error);
-      Alert.alert('Error', error.message || 'Registration failed. Please try again.');
+      Alert.alert('Error', (error as Error).message || 'Registration failed. Please try again.');
     } finally {
       setLoading(false);
     }
   };
   
-  const handleGoogleSignUp = async () => {
+  const handleGoogleSignUp = async (): Promise<void> => {
     try {
       // Implement Google OAuth
       console.log('Google Sign Up');
@@ -118,7 +134,7 @@ const SignUpScreen = () => {
     }
   };
   
-  const updateFormData = (field, value) => {
+  const updateFormData = (field: keyof FormData, value: string): void => {
     setFormData(prev => ({ ...prev, [field]: value }));
     if (errors[field]) {
       setErrors(prev => ({ ...prev, [field]: '' }));
@@ -175,9 +191,11 @@ const SignUpScreen = () => {
             
             <PhoneInput
               value={formData.phoneNumber}
-              onChangeText={(text) => updateFormData('phoneNumber', text)}
+              onChangeText={(text: string) => updateFormData('phoneNumber', text)}
               placeholder="Enter your phone number"
               error={errors.phoneNumber}
+              style={{}}
+              containerStyle={{}}
             />
             
             <Input
@@ -343,4 +361,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default SignUpScreen;
+export default SignUpScreen; 

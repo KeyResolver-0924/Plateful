@@ -23,7 +23,7 @@ const SignInScreen = () => {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   
-  const handleSignIn = async () => {
+  const handleSignIn = async (): Promise<void> => {
     if (!email || !email.trim()) {
       setError('Email is required');
       return;
@@ -57,13 +57,13 @@ const SignInScreen = () => {
       }
     } catch (error) {
       console.error('Sign in error:', error);
-      setError(error.message || 'Invalid email or password. Please try again.');
+      setError((error as Error).message || 'Invalid email or password. Please try again.');
     } finally {
       setLoading(false);
     }
   };
   
-  const handleGoogleSignIn = async () => {
+  const handleGoogleSignIn = async (): Promise<void> => {
     try {
       // Implement Google OAuth
       console.log('Google Sign In');
@@ -105,7 +105,7 @@ const SignInScreen = () => {
           <View style={styles.form}>
             <Input
               value={email}
-              onChangeText={(text) => {
+              onChangeText={(text: string) => {
                 setEmail(text);
                 if (error) setError('');
               }}
@@ -117,7 +117,7 @@ const SignInScreen = () => {
             
             <Input
               value={password}
-              onChangeText={(text) => {
+              onChangeText={(text: string) => {
                 setPassword(text);
                 if (error) setError('');
               }}
@@ -273,4 +273,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default SignInScreen;
+export default SignInScreen; 

@@ -1,7 +1,7 @@
 import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { router, useLocalSearchParams } from 'expo-router';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
     Animated,
     StyleSheet,
@@ -52,7 +52,7 @@ const VerificationSuccessScreen = () => {
     return () => clearTimeout(timer);
   }, []);
   
-  const handleContinue = () => {
+  const handleContinue = (): void => {
     if (isSignUp === 'true') {
       router.push('/profile/setup');
     } else {
@@ -212,4 +212,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default VerificationSuccessScreen;
+export default VerificationSuccessScreen; 
