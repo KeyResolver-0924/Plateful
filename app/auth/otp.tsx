@@ -1,7 +1,7 @@
 import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { router, useLocalSearchParams } from 'expo-router';
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import {
     Alert,
     Image,
@@ -23,27 +23,29 @@ const OTPScreen = () => {
   const params = useLocalSearchParams();
   const { phoneNumber, email, isSignUp, userId } = params;
   
-  const [phoneOtp, setPhoneOtp] = useState(['', '', '', '']);
-  const [emailOtp, setEmailOtp] = useState(['', '', '', '', '', '']);
+  const [phoneOtp, setPhoneOtp] = useState<string[]>(['', '', '', '']);
+  const [emailOtp, setEmailOtp] = useState<string[]>(['', '', '', '', '', '']);
   const [loading, setLoading] = useState(false);
   const [resendLoading, setResendLoading] = useState(false);
   const [timer, setTimer] = useState(30);
   const [focusedPhoneIndex, setFocusedPhoneIndex] = useState(-1);
   const [focusedEmailIndex, setFocusedEmailIndex] = useState(-1);
-  const phoneInputRefs = useRef([]);
-  const emailInputRefs = useRef([]);
+  const phoneInputRefs = useRef<any[]>([]);
+  const emailInputRefs = useRef<any[]>([]);
   
   useEffect(() => {
-    let interval = null;
+    let interval: ReturnType<typeof setInterval> | null = null;
     if (timer > 0) {
       interval = setInterval(() => {
         setTimer(timer - 1);
       }, 1000);
     }
-    return () => clearInterval(interval);
+    return () => {
+      if (interval) clearInterval(interval);
+    };
   }, [timer]);
   
-  const handlePhoneOtpChange = (text, index) => {
+  const handlePhoneOtpChange = (text: string, index: number): void => {
     const newOtp = [...phoneOtp];
     newOtp[index] = text;
     setPhoneOtp(newOtp);
@@ -54,7 +56,7 @@ const OTPScreen = () => {
     }
   };
   
-  const handleEmailOtpChange = (text, index) => {
+  const handleEmailOtpChange = (text: string, index: number): void => {
     const newOtp = [...emailOtp];
     newOtp[index] = text;
     setEmailOtp(newOtp);
@@ -65,19 +67,19 @@ const OTPScreen = () => {
     }
   };
   
-  const handlePhoneKeyPress = (e, index) => {
+  const handlePhoneKeyPress = (e: any, index: number): void => {
     if (e.nativeEvent.key === 'Backspace' && !phoneOtp[index] && index > 0) {
       phoneInputRefs.current[index - 1]?.focus();
     }
   };
   
-  const handleEmailKeyPress = (e, index) => {
+  const handleEmailKeyPress = (e: any, index: number): void => {
     if (e.nativeEvent.key === 'Backspace' && !emailOtp[index] && index > 0) {
       emailInputRefs.current[index - 1]?.focus();
     }
   };
   
-  const handleVerifyOTP = async () => {
+  const handleVerifyOTP = async (): Promise<void> => {
     const phoneOtpString = phoneOtp.join('');
     const emailOtpString = emailOtp.join('');
     
@@ -95,38 +97,38 @@ const OTPScreen = () => {
     
     try {
       // Verify OTP with real authentication service
-      const result = await authService.verifyOTP(userId, emailOtpString, phoneOtpString);
+      const result = await authService.verifyOTP(userId as string, emailOtpString, phoneOtpString);
       
       if (result.success) {
         // Navigate to verification success
         router.push({
           pathname: '/auth/verification-success',
-          params: { isSignUp: isSignUp === 'true' }
+          params: { isSignUp: (isSignUp === 'true').toString() }
         });
       }
     } catch (error) {
       console.error('OTP verification error:', error);
-      Alert.alert('Error', error.message || 'Invalid OTP. Please try again.');
+      Alert.alert('Error', (error as Error).message || 'Invalid OTP. Please try again.');
     } finally {
       setLoading(false);
     }
   };
   
-  const handleResendOTP = async () => {
+  const handleResendOTP = async (): Promise<void> => {
     setResendLoading(true);
     
     try {
       // Resend OTP using real authentication service
       await Promise.all([
-        authService.resendOTP(userId, 'email'),
-        authService.resendOTP(userId, 'phone')
+        authService.resendOTP(userId as string, 'email'),
+        authService.resendOTP(userId as string, 'phone')
       ]);
       
       setTimer(30);
       Alert.alert('Success', 'OTP codes resent successfully!');
     } catch (error) {
       console.error('Resend OTP error:', error);
-      Alert.alert('Error', error.message || 'Failed to resend OTP. Please try again.');
+      Alert.alert('Error', (error as Error).message || 'Failed to resend OTP. Please try again.');
     } finally {
       setResendLoading(false);
     }
@@ -178,10 +180,9 @@ const OTPScreen = () => {
                 {phoneOtp.map((digit, index) => (
                   <Input
                     key={index}
-                    ref={(ref) => phoneInputRefs.current[index] = ref}
                     value={digit}
-                    onChangeText={(text) => handlePhoneOtpChange(text, index)}
-                    onKeyPress={(e) => handlePhoneKeyPress(e, index)}
+                    onChangeText={(text: string) => handlePhoneOtpChange(text, index)}
+                    onKeyPress={(e: any) => handlePhoneKeyPress(e, index)}
                     onFocus={() => setFocusedPhoneIndex(index)}
                     onBlur={() => setFocusedPhoneIndex(-1)}
                     placeholder="0"
@@ -189,12 +190,10 @@ const OTPScreen = () => {
                     maxLength={1}
                     style={[
                       styles.otpInput,
-                      focusedPhoneIndex === index && styles.otpInputFocused,
-                      digit && styles.otpInputFilled
-                    ]}
+                      focusedPhoneIndex === index ? styles.otpInputFocused : {},
+                      digit ? styles.otpInputFilled : {}
+                    ] as any}
                     textAlign="center"
-                    fontSize={28}
-                    fontWeight="bold"
                   />
                 ))}
               </View>
@@ -206,10 +205,9 @@ const OTPScreen = () => {
                 {emailOtp.map((digit, index) => (
                   <Input
                     key={index}
-                    ref={(ref) => emailInputRefs.current[index] = ref}
                     value={digit}
-                    onChangeText={(text) => handleEmailOtpChange(text, index)}
-                    onKeyPress={(e) => handleEmailKeyPress(e, index)}
+                    onChangeText={(text: string) => handleEmailOtpChange(text, index)}
+                    onKeyPress={(e: any) => handleEmailKeyPress(e, index)}
                     onFocus={() => setFocusedEmailIndex(index)}
                     onBlur={() => setFocusedEmailIndex(-1)}
                     placeholder="0"
@@ -219,10 +217,8 @@ const OTPScreen = () => {
                       styles.otpInput,
                       focusedEmailIndex === index && styles.otpInputFocused,
                       digit && styles.otpInputFilled
-                    ]}
+                    ] as any}
                     textAlign="center"
-                    fontSize={28}
-                    fontWeight="bold"
                   />
                 ))}
               </View>
@@ -271,6 +267,12 @@ const styles = StyleSheet.create({
     paddingBottom: 30,
     alignItems: 'center',
   },
+  backButton: {
+    position: 'absolute',
+    top: 60,
+    left: 20,
+    zIndex: 1,
+  },
   mascot: {
     width: 180,
     height: 180,
@@ -308,6 +310,9 @@ const styles = StyleSheet.create({
     marginTop: -20,
     paddingHorizontal: 24,
     paddingTop: 32,
+  },
+  scrollContent: {
+    flexGrow: 1,
   },
   formHeader: {
     alignItems: 'center',
@@ -405,4 +410,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default OTPScreen;
+export default OTPScreen; 
