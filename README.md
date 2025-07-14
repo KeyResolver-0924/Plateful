@@ -1,50 +1,163 @@
-# Welcome to your Expo app 👋
+# Plateful - Child Nutrition App
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+A React Native application for tracking and managing children's nutrition with Firebase backend integration.
 
-## Get started
+## Project Structure
 
-1. Install dependencies
-
-   ```bash
-   npm install
-   ```
-
-2. Start the app
-
-   ```bash
-   npx expo start
-   ```
-
-In the output, you'll find options to open the app in a
-
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
-
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
-
-```bash
-npm run reset-project
+```
+Plateful/
+├── app/                    # React Native Frontend (Expo Router)
+│   ├── (tabs)/            # Main app tabs
+│   ├── auth/              # Authentication screens
+│   ├── food/              # Food tracking screens
+│   ├── meals/             # Meal logging screens
+│   ├── profile/           # User profile screens
+│   ├── gamification/      # Gamification features
+│   └── debug/             # Debug screens
+├── components/            # Reusable UI components
+├── constants/             # App constants and configurations
+├── utils/                 # Utility functions and services
+├── types/                 # TypeScript type definitions
+├── assets/                # Images, fonts, and static assets
+├── functions/             # Firebase Cloud Functions (Backend)
+│   ├── src/              # TypeScript source files
+│   └── lib/              # Compiled JavaScript files
+└── SomeGuide/            # Project documentation and guides
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+## Features
 
-## Learn more
+- **Authentication**: Firebase Auth with email/password and phone verification
+- **Food Tracking**: Camera-based food recognition and manual logging
+- **Meal Management**: Comprehensive meal logging and history
+- **Nutrition Analytics**: Detailed nutrition reports and insights
+- **Gamification**: Badges, leaderboards, and quests for engagement
+- **Child Profiles**: Multiple child profile management
+- **Learning Content**: Educational content about nutrition
 
-To learn more about developing your project with Expo, look at the following resources:
+## Tech Stack
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+### Frontend
+- **React Native** with Expo
+- **TypeScript** for type safety
+- **Expo Router** for navigation
+- **Firebase SDK** for client-side operations
 
-## Join the community
+### Backend
+- **Firebase Cloud Functions** (Node.js)
+- **Firestore** for database
+- **Firebase Storage** for file uploads
+- **Firebase Auth** for authentication
 
-Join our community of developers creating universal apps.
+## Setup Instructions
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+### Prerequisites
+- Node.js (v18 or higher)
+- Expo CLI
+- Firebase CLI
+- Android Studio / Xcode (for mobile development)
+
+### 1. Environment Setup
+
+Create a `.env` file in the root directory:
+
+```env
+EXPO_PUBLIC_FIREBASE_API_KEY=your-api-key
+EXPO_PUBLIC_FIREBASE_AUTH_DOMAIN=your-project.firebaseapp.com
+EXPO_PUBLIC_FIREBASE_PROJECT_ID=your-project-id
+EXPO_PUBLIC_FIREBASE_STORAGE_BUCKET=your-project.appspot.com
+EXPO_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=your-sender-id
+EXPO_PUBLIC_FIREBASE_APP_ID=your-app-id
+```
+
+### 2. Install Dependencies
+
+```bash
+# Install frontend dependencies
+npm install
+
+# Install backend dependencies
+cd functions
+npm install
+```
+
+### 3. Firebase Setup
+
+1. Create a Firebase project at [Firebase Console](https://console.firebase.google.com/)
+2. Enable Authentication, Firestore, Storage, and Functions
+3. Download `google-services.json` and place it in the root directory
+4. Deploy Firebase Functions:
+
+```bash
+firebase login
+firebase init
+firebase deploy --only functions
+```
+
+### 4. Run the Application
+
+```bash
+# Start the development server
+npm start
+
+# Run on Android
+npm run android
+
+# Run on iOS
+npm run ios
+```
+
+## Development
+
+### Frontend Development
+- The app uses Expo Router for file-based routing
+- Components are organized in the `components/` directory
+- Utilities and services are in the `utils/` directory
+- TypeScript types are defined in `types/`
+
+### Backend Development
+- Firebase Functions are in the `functions/` directory
+- Source code is in TypeScript (`functions/src/`)
+- Compiled JavaScript is in `functions/lib/`
+- Functions include:
+  - Authentication management
+  - Food database operations
+  - Image recognition
+  - Analytics calculations
+  - Notification handling
+
+### Database Schema
+
+The app uses Firestore with the following collections:
+- `users`: User profiles and preferences
+- `children`: Child profiles and data
+- `meals`: Meal logging data
+- `foods`: Food database
+- `analytics`: Nutrition analytics
+- `notifications`: Push notifications
+
+## Deployment
+
+### Frontend
+```bash
+# Build for production
+eas build --platform all
+```
+
+### Backend
+```bash
+# Deploy Firebase Functions
+firebase deploy --only functions
+```
+
+## Contributing
+
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Test thoroughly
+5. Submit a pull request
+
+## License
+
+This project is licensed under the MIT License.

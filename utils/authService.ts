@@ -8,7 +8,7 @@ import {
 } from 'firebase/firestore';
 import { getFunctions, httpsCallable } from 'firebase/functions';
 import { auth } from '../app/firebase';
-import { firebaseConfig } from './firebaseConfig';
+import { isFirebaseConfigured } from './firebaseConfig';
 
 // Type definitions
 export interface UserData {
@@ -71,13 +71,10 @@ export interface AuthResponse {
   message: string;
 }
 
-// Check if Firebase config is properly set up
-const isFirebaseConfigured = firebaseConfig.apiKey !== "your-api-key-here";
-
 // Initialize Firebase only if config is properly set up
 let db: any, functions: any;
 
-if (isFirebaseConfigured) {
+if (isFirebaseConfigured()) {
   // Firebase is initialized in app/firebase.ts
   db = getFirestore();
   functions = getFunctions();
@@ -103,11 +100,11 @@ const STORAGE_KEYS = {
 class AuthService {
   private currentUser: User | CompleteUser | null = null;
   private authStateListeners: AuthStateListener[] = [];
-  private isMockMode: boolean = !isFirebaseConfigured;
+  private isMockMode: boolean = !isFirebaseConfigured();
   private confirmationResult: any;
 
   constructor() {
-    if (isFirebaseConfigured) {
+    if (isFirebaseConfigured()) {
       this.setupAuthStateListener();
     } else {
       this.setupMockAuthState();
