@@ -140,7 +140,7 @@ The app uses Firestore with the following collections:
 
 ### Frontend
 ```bash
-# Build for production
+# Build
 eas build --platform all
 ```
 
