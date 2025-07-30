@@ -4,7 +4,7 @@
  */
 
 import { useColorScheme as _useColorScheme } from 'react-native';
-import { colors } from '../constants/colors';
+import { colors } from '../constants/Colors';
 
 // The useColorScheme value is not properly typed, so we cast it to a ColorSchemeName.
 export function useColorScheme(): NonNullable<ReturnType<typeof _useColorScheme>> {

@@ -1,79 +1,82 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { LinearGradient } from 'expo-linear-gradient';
 import { router } from 'expo-router';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import {
-    Animated,
     Dimensions,
     Image,
     StyleSheet,
     Text,
     View
 } from 'react-native';
-import { colors } from '../constants/colors';
+import Animated, {
+    runOnJS,
+    useAnimatedStyle,
+    useSharedValue,
+    withDelay,
+    withSpring,
+    withTiming
+} from 'react-native-reanimated';
+import { colors } from '../constants/Colors';
 
-const { width, height } = Dimensions.get('window');
+const { width } = Dimensions.get('window');
 
 const SplashScreen: React.FC = () => {
-  const [isLoading, setIsLoading] = useState(true);
-  const logoScale = new Animated.Value(0);
-  const logoOpacity = new Animated.Value(0);
-  const textOpacity = new Animated.Value(0);
+  // Animation values
+  const logoScale = useSharedValue(0);
+  const logoOpacity = useSharedValue(0);
+  const textOpacity = useSharedValue(0);
+  const loadingOpacity = useSharedValue(1);
+  
+  const navigateToApp = async () => {
+    try {
+      const userToken = await AsyncStorage.getItem('userToken');
+      const onboardingComplete = await AsyncStorage.getItem('onboardingComplete');
+      
+      if (userToken) {
+        router.replace('/main');
+      } else if (onboardingComplete === 'true') {
+        router.replace('/auth/sign-in');
+      } else {
+        router.replace('/auth/onboarding');
+      }
+    } catch (error) {
+      console.error('Navigation error:', error);
+      router.replace('/auth/onboarding');
+    }
+  };
   
   useEffect(() => {
-    const initializeApp = async () => {
-      try {
-        // Animate logo entrance
-        Animated.parallel([
-          Animated.spring(logoScale, {
-            toValue: 1,
-            useNativeDriver: true,
-            tension: 100,
-            friction: 8,
-            delay: 500
-          }),
-          Animated.timing(logoOpacity, {
-            toValue: 1,
-            duration: 1000,
-            useNativeDriver: true,
-            delay: 500
-          })
-        ]).start();
-        
-        // Animate text entrance
-        Animated.timing(textOpacity, {
-          toValue: 1,
-          duration: 800,
-          useNativeDriver: true,
-          delay: 1200
-        }).start();
-        
-        // Check authentication state
-        await new Promise(resolve => setTimeout(resolve, 2500));
-        
-        const userToken = await AsyncStorage.getItem('userToken');
-        const onboardingComplete = await AsyncStorage.getItem('onboardingComplete');
-        
-        if (userToken) {
-          // User is authenticated, go to main app
-          router.replace('../(tabs)');
-        } else if (onboardingComplete === 'true') {
-          // User has completed onboarding but not authenticated
-          router.replace('../auth/sign-in');
-        } else {
-          // First time user, show onboarding
-          router.replace('../auth/onboarding');
-        }
-      } catch (error) {
-        // Fallback to sign-in screen
-        router.replace('../auth/sign-in');
-      } finally {
-        setIsLoading(false);
-      }
-    };
+    // Logo entrance animation
+    logoScale.value = withSpring(1, {
+      damping: 15,
+      stiffness: 100,
+      mass: 1,
+    });
     
-    initializeApp();
-  }, []);
+    logoOpacity.value = withDelay(300, withTiming(1, { duration: 800 }));
+    
+    // Text entrance animation
+    textOpacity.value = withDelay(800, withTiming(1, { duration: 600 }));
+    
+    // Loading animation
+    loadingOpacity.value = withDelay(2000, withTiming(0, { duration: 500 }, () => {
+      runOnJS(navigateToApp)();
+    }));
+  }, [logoOpacity, logoScale, textOpacity, loadingOpacity, navigateToApp]);
+  
+  const logoAnimatedStyle = useAnimatedStyle(() => ({
+    transform: [{ scale: logoScale.value }],
+    opacity: logoOpacity.value,
+  }));
+  
+  const textAnimatedStyle = useAnimatedStyle(() => ({
+    opacity: textOpacity.value,
+  }));
+  
+  const loadingAnimatedStyle = useAnimatedStyle(() => ({
+    opacity: loadingOpacity.value,
+  }));
   
   return (
     <View style={styles.container}>
@@ -81,36 +84,21 @@ const SplashScreen: React.FC = () => {
         colors={[colors.primary, colors.primaryDark]}
         style={styles.gradient}
       >
-        <Animated.View
-          style={[
-            styles.logoContainer,
-            {
-              transform: [{ scale: logoScale }],
-              opacity: logoOpacity
-            }
-          ]}
-        >
+        <Animated.View style={[styles.logoContainer, logoAnimatedStyle]}>
           <Image 
             source={require('../assets/images/logo/platefull-mascot.png')}
             style={styles.logo}
           />
         </Animated.View>
         
-        <Animated.View
-          style={[
-            styles.textContainer,
-            { opacity: textOpacity }
-          ]}
-        >
+        <Animated.View style={[styles.textContainer, textAnimatedStyle]}>
           <Text style={styles.appName}>PLATEFUL</Text>
           <Text style={styles.tagline}>Nourishing Little Ones</Text>
         </Animated.View>
         
-        {isLoading && (
-          <View style={styles.loadingContainer}>
-            <Text style={styles.loadingText}>Loading...</Text>
-          </View>
-        )}
+        <Animated.View style={[styles.loadingContainer, loadingAnimatedStyle]}>
+          <Text style={styles.loadingText}>Loading...</Text>
+        </Animated.View>
       </LinearGradient>
     </View>
   );

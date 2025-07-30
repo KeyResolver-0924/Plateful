@@ -14,7 +14,7 @@ import Animated, {
     useSharedValue,
     withSpring
 } from 'react-native-reanimated';
-import { colors } from '../../constants/colors';
+import { colors } from '../../constants/Colors';
 
 const AnimatedTouchable = Animated.createAnimatedComponent(TouchableOpacity);
 

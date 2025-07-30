@@ -1,5 +1,5 @@
 import { Ionicons } from '@expo/vector-icons';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import {
     FlatList,
     Modal,
@@ -10,7 +10,7 @@ import {
     TouchableOpacity,
     View
 } from 'react-native';
-import { colors } from '../../constants/colors';
+import { colors } from '../../constants/Colors';
 import { countries, searchCountries } from '../../constants/countries';
 
 const CountryPicker = ({ 
@@ -116,9 +116,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 12,
     paddingVertical: 8,
     borderRadius: 8,
-    backgroundColor: colors.background,
-    borderWidth: 1,
-    borderColor: colors.border,
+    backgroundColor: 'transparent',
     marginRight: 8,
   },
   flagText: {

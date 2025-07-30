@@ -1,45 +1,37 @@
-import { Ionicons } from '@expo/vector-icons';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { LinearGradient } from 'expo-linear-gradient';
 import { router } from 'expo-router';
 import { useState } from 'react';
 import {
-    Image,
-    KeyboardAvoidingView,
-    Platform,
-    ScrollView,
-    StyleSheet,
-    Text,
-    View
+  Image,
+  KeyboardAvoidingView,
+  Platform,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View
 } from 'react-native';
 import Button from '../../components/common/Button';
-import Input from '../../components/common/Input';
+import PhoneInput from '../../components/common/PhoneInput';
 import StatusBar from '../../components/common/StatusBar';
-import { colors } from '../../constants/colors';
+import { colors } from '../../constants/Colors';
 
 const SignInScreen = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   
   const handleSignIn = async () => {
-    if (!email || !email.trim()) {
-      setError('Email is required');
+    if (!phoneNumber || !phoneNumber.trim()) {
+      setError('Phone number is required');
       return;
     }
     
-    if (!/\S+@\S+\.\S+/.test(email)) {
-      setError('Please enter a valid email address');
-      return;
-    }
-    
-    if (!password || !password.trim()) {
-      setError('Password is required');
-      return;
-    }
-    
-    if (password.length < 6) {
-      setError('Password must be at least 6 characters');
+    // Remove the country code to get just the number
+    const phoneWithoutCode = phoneNumber.replace(/^\+\d{1,4}/, '');
+    if (phoneWithoutCode.length < 7) {
+      setError('Please enter a valid phone number');
       return;
     }
     
@@ -50,11 +42,18 @@ const SignInScreen = () => {
       // Simulate API call
       await new Promise(resolve => setTimeout(resolve, 1500));
       
+      // Save user token and data
+      await AsyncStorage.setItem('userToken', 'dummy-token');
+      await AsyncStorage.setItem('userData', JSON.stringify({
+        name: 'User', // Default name for phone-based sign in
+        phoneNumber: phoneNumber
+      }));
+      
       // Navigate to main app after successful sign in
-      router.replace('/(tabs)');
+      router.replace('/main');
     } catch (error) {
       console.error('Sign in error:', error);
-      setError('Invalid email or password. Please try again.');
+      setError('Invalid phone number. Please try again.');
     } finally {
       setLoading(false);
     }
@@ -81,7 +80,7 @@ const SignInScreen = () => {
           style={styles.mascot}
         />
         <Text style={styles.welcomeText}>Welcome to PLATEFULL</Text>
-        <Text style={styles.subtitleText}>Let's get started.</Text>
+        <Text style={styles.subtitleText}>Let&apos;s get started.</Text>
       </LinearGradient>
       
       <KeyboardAvoidingView 
@@ -95,34 +94,21 @@ const SignInScreen = () => {
           <View style={styles.formHeader}>
             <Text style={styles.formTitle}>Welcome Back!</Text>
             <Text style={styles.formSubtitle}>
-              Sign in with your email and password
+              Sign in with your phone number
             </Text>
           </View>
           
           <View style={styles.form}>
-            <Input
-              value={email}
-              onChangeText={(text) => {
-                setEmail(text);
+            <PhoneInput
+              value={phoneNumber}
+              onChangeText={(text: string) => {
+                setPhoneNumber(text);
                 if (error) setError('');
               }}
-              placeholder="Enter your Email"
-              keyboardType="email-address"
+              placeholder="Enter your phone number"
               error={error}
-              icon={<Ionicons name="mail-outline" />}
-            />
-            
-            <Input
-              value={password}
-              onChangeText={(text) => {
-                setPassword(text);
-                if (error) setError('');
-              }}
-              placeholder="Enter your Password"
-              keyboardType="default"
-              secureTextEntry
-              error={error}
-              icon={<Ionicons name="lock-closed-outline" />}
+              style={{}}
+              containerStyle={{}}
             />
             
             <Button
@@ -132,12 +118,12 @@ const SignInScreen = () => {
               style={styles.signInButton}
             />
             
-            <Button
+            {/* <Button
               title="Create New Account"
               onPress={() => router.push('/auth/sign-up')}
               variant="outline"
               style={styles.signUpButton}
-            />
+            /> */}
             
             <View style={styles.dividerContainer}>
               <View style={styles.divider} />
@@ -159,6 +145,13 @@ const SignInScreen = () => {
             
             <View style={styles.footer}>
               <Text style={styles.footerText}>By continuing, you agree to our Terms of Service and Privacy Policy</Text>
+            </View>
+            
+            <View style={styles.signUpContainer}>
+              <Text style={styles.signUpText}>Don&apos;t have an account? </Text>
+              <TouchableOpacity onPress={() => router.push('/auth/sign-up')}>
+                <Text style={styles.signUpLink}>Sign Up</Text>
+              </TouchableOpacity>
             </View>
           </View>
         </ScrollView>
@@ -265,6 +258,21 @@ const styles = StyleSheet.create({
   },
   linkText: {
     fontSize: 16,
+    color: colors.primary,
+    fontWeight: '600',
+  },
+  signUpContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 16,
+  },
+  signUpText: {
+    fontSize: 14,
+    color: colors.text.secondary,
+  },
+  signUpLink: {
+    fontSize: 14,
     color: colors.primary,
     fontWeight: '600',
   },

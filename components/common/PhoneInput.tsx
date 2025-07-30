@@ -9,7 +9,24 @@ import { colors } from '../../constants/Colors';
 import { getCountryByCode } from '../../constants/countries';
 import CountryPicker from './CountryPicker';
 
-const PhoneInput = ({
+interface Country {
+  name: string;
+  flag: string;
+  code: string;
+  callingCode: string;
+  phoneLength: number;
+}
+
+interface PhoneInputProps {
+  value: string;
+  onChangeText: (text: string) => void;
+  placeholder?: string;
+  error?: string;
+  style?: any;
+  containerStyle?: any;
+}
+
+const PhoneInput: React.FC<PhoneInputProps> = ({
   value,
   onChangeText,
   placeholder = "Enter phone number",
@@ -18,7 +35,7 @@ const PhoneInput = ({
   containerStyle,
   ...props
 }) => {
-  const [selectedCountry, setSelectedCountry] = useState(getCountryByCode('US'));
+  const [selectedCountry, setSelectedCountry] = useState<Country | null>(getCountryByCode('US') || null);
   const [phoneNumber, setPhoneNumber] = useState('');
 
   useEffect(() => {
@@ -27,14 +44,16 @@ const PhoneInput = ({
     }
   }, [value]);
 
-  const handleCountrySelect = (country) => {
+  const handleCountrySelect = (country: Country) => {
     setSelectedCountry(country);
     // Update the full phone number with new country code
     const fullNumber = phoneNumber;
     onChangeText(fullNumber);
   };
 
-  const handlePhoneChange = (text) => {
+  const handlePhoneChange = (text: string) => {
+    if (!selectedCountry) return;
+    
     // Remove any non-digit characters except +
     const cleanedText = text.replace(/[^\d+]/g, '');
     
@@ -65,9 +84,9 @@ const PhoneInput = ({
         />
         
         <View style={styles.phoneInputContainer}>
-          <Text style={styles.callingCode}>
-            {selectedCountry.callingCode}
-          </Text>
+          {/* <Text style={styles.callingCode}>
+            {selectedCountry?.callingCode || '+1'}
+          </Text> */}
           <TextInput
             style={styles.phoneInput}
             value={getDisplayValue()}
@@ -132,4 +151,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default PhoneInput; 
+export default PhoneInput;

@@ -17,7 +17,7 @@ import Animated, {
     withTiming
 } from 'react-native-reanimated';
 import StatusBar from '../../components/common/StatusBar';
-import { colors } from '../../constants/colors';
+import { colors } from '../../constants/Colors';
 
 const { width, height } = Dimensions.get('window');
 
@@ -267,7 +267,6 @@ const styles = StyleSheet.create({
     backgroundColor: colors.primary,
     justifyContent: 'center',
     alignItems: 'center',
-    elevation: 6,
     boxShadow: `0 4px 6px ${colors.shadow.dark}40`,
   },
   questCompleted: {

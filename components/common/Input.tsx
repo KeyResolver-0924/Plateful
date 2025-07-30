@@ -1,22 +1,20 @@
-import { Ionicons } from '@expo/vector-icons';
 import React, { useEffect, useRef, useState } from 'react';
 import {
-    StyleSheet,
-    Text,
-    TextInput,
-    TextInputProps,
-    TextStyle,
-    TouchableOpacity,
-    View,
-    ViewStyle
+  StyleSheet,
+  Text,
+  TextInput,
+  TextInputProps,
+  TextStyle,
+  TouchableOpacity,
+  View,
+  ViewStyle
 } from 'react-native';
 import Animated, {
-    interpolate,
-    useAnimatedStyle,
-    useSharedValue,
-    withTiming
+  useAnimatedStyle,
+  useSharedValue,
+  withTiming
 } from 'react-native-reanimated';
-import { colors } from '../../constants/colors';
+import { colors } from '../../constants/Colors';
 
 interface InputProps extends TextInputProps {
   label?: string;
@@ -65,30 +63,30 @@ const Input: React.FC<InputProps> = ({
     }
   };
   
-  const labelAnimatedStyle = useAnimatedStyle(() => {
-    const translateY = interpolate(
-      focusAnimation.value,
-      [0, 1],
-      [18, -8]
-    );
-    const scale = interpolate(
-      focusAnimation.value,
-      [0, 1],
-      [1, 0.8]
-    );
+  // const labelAnimatedStyle = useAnimatedStyle(() => {
+  //   const translateY = interpolate(
+  //     focusAnimation.value,
+  //     [0, 1],
+  //     [18, -8]
+  //   );
+  //   const scale = interpolate(
+  //     focusAnimation.value,
+  //     [0, 1],
+  //     [1, 0.8]
+  //   );
     
-    return {
-      transform: [
-        { translateY },
-        { scale }
-      ]
-    };
-  });
+  //   return {
+  //     transform: [
+  //       { translateY },
+  //       { scale }
+  //     ]
+  //   };
+  // });
   
   const borderAnimatedStyle = useAnimatedStyle(() => {
     return {
       borderColor: withTiming(
-        error ? colors.error : isFocused ? colors.primary : colors.border,
+        error ? colors.error : colors.border,
         { duration: 200 }
       ),
       borderWidth: withTiming(isFocused ? 2 : 1, { duration: 200 })
@@ -99,7 +97,7 @@ const Input: React.FC<InputProps> = ({
     if (value) {
       focusAnimation.value = withTiming(1, { duration: 200 });
     }
-  }, [value]);
+  }, [value, focusAnimation]);
   
   return (
     <View style={[styles.container, containerStyle]}>
@@ -118,11 +116,11 @@ const Input: React.FC<InputProps> = ({
           )}
           
           <View style={styles.inputWrapper}>
-            {label && (
+            {/* {label && (
               <Animated.Text style={[styles.label, labelAnimatedStyle]}>
                 {label}
               </Animated.Text>
-            )}
+            )} */}
             
             <TextInput
               ref={inputRef}
@@ -133,7 +131,7 @@ const Input: React.FC<InputProps> = ({
               placeholderTextColor={colors.text.disabled}
               onFocus={handleFocus}
               onBlur={handleBlur}
-              secureTextEntry={secureTextEntry && !showPassword}
+              // secureTextEntry={secureTextEntry && !showPassword}
               keyboardType={keyboardType}
               maxLength={maxLength}
               editable={editable}
@@ -141,7 +139,7 @@ const Input: React.FC<InputProps> = ({
             />
           </View>
           
-          {secureTextEntry && (
+          {/* {secureTextEntry && (
             <TouchableOpacity
               style={styles.eyeIcon}
               onPress={() => setShowPassword(!showPassword)}
@@ -152,7 +150,7 @@ const Input: React.FC<InputProps> = ({
                 color={colors.text.secondary}
               />
             </TouchableOpacity>
-          )}
+          )} */}
         </Animated.View>
       </TouchableOpacity>
       

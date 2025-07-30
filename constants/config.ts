@@ -1,4 +1,61 @@
-export const config = {
+export interface AgeRange {
+  label: string;
+  value: string;
+}
+
+export interface DietaryRestriction {
+  label: string;
+  value: string;
+}
+
+export interface AnimationConfig {
+  duration: {
+    fast: number;
+    normal: number;
+    slow: number;
+  };
+  easing: {
+    standard: string;
+    decelerate: string;
+    accelerate: string;
+  };
+}
+
+export interface OtpConfig {
+  length: number;
+  resendDelay: number;
+  expiryTime: number;
+}
+
+export interface ImageUploadConfig {
+  maxSize: number;
+  allowedTypes: string[];
+  quality: number;
+}
+
+export interface FoodCategories {
+  fruits: string;
+  vegetables: string;
+  proteins: string;
+  grains: string;
+  dairy: string;
+}
+
+export interface Config {
+  APP_NAME: string;
+  API_BASE_URL: string;
+  GOOGLE_IOS_CLIENT_ID: string;
+  GOOGLE_ANDROID_CLIENT_ID: string;
+  GOOGLE_WEB_CLIENT_ID: string;
+  animation: AnimationConfig;
+  otp: OtpConfig;
+  imageUpload: ImageUploadConfig;
+  foodCategories: FoodCategories;
+  ageRanges: AgeRange[];
+  dietaryRestrictions: DietaryRestriction[];
+}
+
+export const config: Config = {
   APP_NAME: 'PlateFull',
   API_BASE_URL: 'https://api.platefull.com',
   
@@ -68,4 +125,4 @@ export const config = {
   ]
 };
 
-export default config;
+export default config; 

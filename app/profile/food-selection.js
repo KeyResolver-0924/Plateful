@@ -15,7 +15,7 @@ import Animated, {
     useSharedValue,
     withSpring
 } from 'react-native-reanimated';
-import { colors } from '../../constants/colors';
+import { colors } from '../../constants/Colors';
 import { getFoodsByCategory } from '../../constants/foods';
 
 const { width } = Dimensions.get('window');
@@ -145,7 +145,7 @@ const FoodSelectionScreen = ({ route, navigation }) => {
         showsVerticalScrollIndicator={false}
         contentContainerStyle={styles.scrollContent}
       >
-        <Text style={styles.subtitle}>Let's Learn About Your Family!</Text>
+        <Text style={styles.subtitle}>Let&apos;s Learn About Your Family!</Text>
         <Text style={styles.title}>{categoryData.title}</Text>
 
         <View style={styles.foodGrid}>
@@ -289,11 +289,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.primary,
     justifyContent: 'center',
     alignItems: 'center',
-    elevation: 4,
-    shadowColor: colors.primary,
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
+    boxShadow: `0 2px 4px ${colors.primary}40`,
   },
 });
 

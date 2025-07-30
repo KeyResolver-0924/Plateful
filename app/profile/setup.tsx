@@ -3,28 +3,55 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { router } from 'expo-router';
 import React, { useState } from 'react';
 import {
-    Dimensions,
-    Image,
-    ScrollView,
-    StyleSheet,
-    Text,
-    TouchableOpacity,
-    View
+  Dimensions,
+  Image,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View
 } from 'react-native';
 import Animated, {
-    FadeIn,
-    FadeOut,
-    useAnimatedStyle,
-    useSharedValue,
-    withSpring
+  FadeIn,
+  FadeOut,
+  useAnimatedStyle,
+  useSharedValue,
+  withSpring
 } from 'react-native-reanimated';
 import Button from '../../components/common/Button';
 import Input from '../../components/common/Input';
 import StatusBar from '../../components/common/StatusBar';
-import { colors } from '../../constants/colors';
+import { colors } from '../../constants/Colors';
 import { config } from '../../constants/config';
 
 const { width } = Dimensions.get('window');
+
+// Types
+interface Food {
+  id: string;
+  name: string;
+  image: any;
+}
+
+interface ProfileData {
+  childName: string;
+  age: string;
+  gender: string;
+  restrictions: string[];
+  fruits: string[];
+  vegetables: string[];
+  proteins: string[];
+}
+
+interface StepProps {
+  profileData: ProfileData;
+  setProfileData: (data: ProfileData) => void;
+}
+
+interface FoodSelectionStepProps extends StepProps {
+  type: 'fruits' | 'vegetables' | 'proteins';
+  foods: Food[];
+}
 
 // Food data
 const foodData = {
@@ -65,7 +92,7 @@ const foodData = {
 
 const ProfileSetupScreen = () => {
   const [currentStep, setCurrentStep] = useState(0);
-  const [profileData, setProfileData] = useState({
+  const [profileData, setProfileData] = useState<ProfileData>({
     childName: '',
     age: '',
     gender: '',
@@ -94,7 +121,7 @@ const ProfileSetupScreen = () => {
     } else {
       // Complete setup
       if (router && router.replace) {
-        router.replace('/(tabs)');
+        router.replace('/main');
       } else {
         console.error('Router is not available');
       }
@@ -162,7 +189,7 @@ const ProfileSetupScreen = () => {
           style={styles.mascot}
         />
         <Text style={styles.welcomeText}>Welcome to PLATEFULL</Text>
-        <Text style={styles.subtitleText}>Let's get started.</Text>
+        <Text style={styles.subtitleText}>Let&apos;s get started.</Text>
       </LinearGradient>
       
       <View style={styles.contentContainer}>
@@ -205,10 +232,10 @@ const ProfileSetupScreen = () => {
 };
 
 // Step Components
-const ChildNameStep = ({ profileData, setProfileData }) => (
+const ChildNameStep: React.FC<StepProps> = ({ profileData, setProfileData }) => (
   <View style={styles.stepContainer}>
-    <Text style={styles.stepTitle}>Let's Learn About Your Family!</Text>
-    <Text style={styles.stepQuestion}>What's your child name?</Text>
+    <Text style={styles.stepTitle}>Let&apos;s Learn About Your Family!</Text>
+    <Text style={styles.stepQuestion}>What&apos;s your child name?</Text>
     
     <Input
       value={profileData.childName}
@@ -220,9 +247,9 @@ const ChildNameStep = ({ profileData, setProfileData }) => (
   </View>
 );
 
-const AgeStep = ({ profileData, setProfileData }) => (
+const AgeStep: React.FC<StepProps> = ({ profileData, setProfileData }) => (
   <View style={styles.stepContainer}>
-    <Text style={styles.stepTitle}>Let's Learn About Your Family!</Text>
+    <Text style={styles.stepTitle}>Let&apos;s Learn About Your Family!</Text>
     <Text style={styles.stepQuestion}>How old is your child?</Text>
     
     <TouchableOpacity style={styles.dropdown}>
@@ -233,7 +260,7 @@ const AgeStep = ({ profileData, setProfileData }) => (
     </TouchableOpacity>
     
     <View style={styles.ageOptions}>
-      {config.ageRanges.map((age) => (
+      {config.ageRanges.map((age: { label: string; value: string }) => (
         <TouchableOpacity
           key={age.value}
           style={[
@@ -254,9 +281,9 @@ const AgeStep = ({ profileData, setProfileData }) => (
   </View>
 );
 
-const GenderStep = ({ profileData, setProfileData }) => (
+const GenderStep: React.FC<StepProps> = ({ profileData, setProfileData }) => (
   <View style={styles.stepContainer}>
-    <Text style={styles.stepTitle}>Let's Learn About Your Family!</Text>
+    <Text style={styles.stepTitle}>Let&apos;s Learn About Your Family!</Text>
     <Text style={styles.stepQuestion}>Tell Us About Your Child Gender?</Text>
     
     <View style={styles.genderContainer}>
@@ -291,9 +318,9 @@ const GenderStep = ({ profileData, setProfileData }) => (
   </View>
 );
 
-const RestrictionsStep = ({ profileData, setProfileData }) => (
+const RestrictionsStep: React.FC<StepProps> = ({ profileData, setProfileData }) => (
   <View style={styles.stepContainer}>
-    <Text style={styles.stepTitle}>Let's Learn About Your Family!</Text>
+    <Text style={styles.stepTitle}>Let&apos;s Learn About Your Family!</Text>
     <Text style={styles.stepQuestion}>
       Does your child have allergies or dietary restrictions?
     </Text>
@@ -309,7 +336,7 @@ const RestrictionsStep = ({ profileData, setProfileData }) => (
     </TouchableOpacity>
     
     <View style={styles.restrictionOptions}>
-      {config.dietaryRestrictions.map((restriction) => (
+      {config.dietaryRestrictions.map((restriction: { label: string; value: string }) => (
         <TouchableOpacity
           key={restriction.value}
           style={[
@@ -320,7 +347,7 @@ const RestrictionsStep = ({ profileData, setProfileData }) => (
           onPress={() => {
             const current = profileData.restrictions;
             const updated = current.includes(restriction.value)
-              ? current.filter(r => r !== restriction.value)
+              ? current.filter((r: string) => r !== restriction.value)
               : [...current, restriction.value];
             setProfileData({ ...profileData, restrictions: updated });
           }}
@@ -338,24 +365,24 @@ const RestrictionsStep = ({ profileData, setProfileData }) => (
   </View>
 );
 
-const FoodSelectionStep = ({ type, profileData, setProfileData, foods }) => {
-  const handleFoodToggle = (foodId) => {
+const FoodSelectionStep: React.FC<FoodSelectionStepProps> = ({ type, profileData, setProfileData, foods }) => {
+  const handleFoodToggle = (foodId: string) => {
     const current = profileData[type] || [];
     const updated = current.includes(foodId)
-      ? current.filter(f => f !== foodId)
+      ? current.filter((f: string) => f !== foodId)
       : [...current, foodId];
     setProfileData({ ...profileData, [type]: updated });
   };
   
   return (
     <View style={styles.stepContainer}>
-      <Text style={styles.stepTitle}>Let's Learn About Your Family!</Text>
+      <Text style={styles.stepTitle}>Let&apos;s Learn About Your Family!</Text>
       <Text style={styles.stepQuestion}>
         What {type.charAt(0).toUpperCase() + type.slice(1)} have been Introduced?
       </Text>
       
       <View style={styles.foodGrid}>
-        {foods.map((food) => (
+        {foods.map((food: Food) => (
           <TouchableOpacity
             key={food.id}
             style={styles.foodItem}

@@ -1,5 +1,5 @@
 import { Ionicons } from '@expo/vector-icons';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import {
     Dimensions,
     Image,
@@ -20,14 +20,19 @@ import Animated, {
 } from 'react-native-reanimated';
 import Button from '../../components/common/Button';
 import StatusBar from '../../components/common/StatusBar';
-import { colors } from '../../constants/colors';
+import { colors } from '../../constants/Colors';
 import { getAllFoods } from '../../db/foods';
 
 const { width } = Dimensions.get('window');
 
-const MealTrackingScreen = ({ navigation }) => {
+interface NavigationProps {
+  navigate: (screen: string, params?: any) => void;
+  goBack: () => void;
+}
+
+const MealTrackingScreen = ({ navigation }: { navigation: NavigationProps }) => {
   const [selectedMealType, setSelectedMealType] = useState('breakfast');
-  const [selectedFoods, setSelectedFoods] = useState([]);
+  const [selectedFoods, setSelectedFoods] = useState<string[]>([]);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [showPairingModal, setShowPairingModal] = useState(false);
   const [showReportModal, setShowReportModal] = useState(false);
@@ -43,7 +48,7 @@ const MealTrackingScreen = ({ navigation }) => {
   // Get all foods from database
   const foods = getAllFoods();
 
-  const FoodItem = ({ food, index }) => {
+  const FoodItem = ({ food, index }: { food: any, index: number }) => {
     const isSelected = selectedFoods.includes(food.id);
     const scale = useSharedValue(1);
 

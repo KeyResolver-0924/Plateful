@@ -1,28 +1,98 @@
 import { Ionicons } from '@expo/vector-icons';
 import React, { useState } from 'react';
 import {
-    Dimensions,
-    Image,
-    ScrollView,
-    StyleSheet,
-    Text,
-    TextInput,
-    TouchableOpacity,
-    View
+  Dimensions,
+  Image,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View
 } from 'react-native';
 import Animated, {
-    FadeInUp,
-    useAnimatedStyle,
-    useSharedValue,
-    withSpring
+  FadeInUp,
+  useAnimatedStyle,
+  useSharedValue,
+  withSpring
 } from 'react-native-reanimated';
 import StatusBar from '../../components/common/StatusBar';
-import { colors } from '../../constants/colors';
+import { colors } from '../../constants/Colors';
+import { Food } from '../../constants/foods';
 import { getAllFoods } from '../../db/foods';
 
 const { width } = Dimensions.get('window');
 
-const FoodReportScreen = ({ navigation }) => {
+interface NavigationProps {
+  navigate: (screen: string, params?: any) => void;
+  goBack: () => void;
+}
+
+interface FoodItemProps {
+  food: Food;
+  index: number;
+  onPress: (food: Food) => void;
+}
+
+// Image mapping for food items
+const foodImages: { [key: string]: any } = {
+  apple: require('../../assets/images/foods/apple.png'),
+  banana: require('../../assets/images/foods/banana.png'),
+  orange: require('../../assets/images/foods/orange.png'),
+  strawberry: require('../../assets/images/foods/strawberry.png'),
+  grapes: require('../../assets/images/foods/grapes.png'),
+  watermelon: require('../../assets/images/foods/watermelon.png'),
+  mango: require('../../assets/images/foods/mango.png'),
+  pear: require('../../assets/images/foods/pear.png'),
+  peach: require('../../assets/images/foods/peach.png'),
+  carrot: require('../../assets/images/foods/carrot.png'),
+  broccoli: require('../../assets/images/foods/broccoli.png'),
+  sweetpotato: require('../../assets/images/foods/sweetpotato.png'),
+  peas: require('../../assets/images/foods/peas.png'),
+  corn: require('../../assets/images/foods/corn.png'),
+  cucumber: require('../../assets/images/foods/cucumber.png'),
+  bellpepper: require('../../assets/images/foods/bellpepper.png'),
+  spinach: require('../../assets/images/foods/spinach.png'),
+  tomato: require('../../assets/images/foods/tomato.png'),
+  chicken: require('../../assets/images/foods/chicken.png'),
+  fish: require('../../assets/images/foods/fish.png'),
+  eggs: require('../../assets/images/foods/eggs.png'),
+  beans: require('../../assets/images/foods/beans.png'),
+  lentils: require('../../assets/images/foods/lentils.png'),
+  tofu: require('../../assets/images/foods/tofu.png'),
+  beef: require('../../assets/images/foods/beef.png'),
+  turkey: require('../../assets/images/foods/turkey.png'),
+  nuts: require('../../assets/images/foods/nuts.png'),
+  rice: require('../../assets/images/foods/rice.png'),
+  yogurt: require('../../assets/images/foods/yogurt.png'),
+  cheese: require('../../assets/images/foods/cheese.png'),
+  bread: require('../../assets/images/foods/bread.png'),
+  potato: require('../../assets/images/foods/potato.png'),
+  garlic: require('../../assets/images/foods/garlic.png'),
+  avocado: require('../../assets/images/foods/avocado.png'),
+  almonds: require('../../assets/images/foods/almonds.png'),
+  pistachios: require('../../assets/images/foods/pistachios.png'),
+  pineapple: require('../../assets/images/foods/pineapple.png'),
+  cream: require('../../assets/images/foods/cream.png'),
+  coconut_oil: require('../../assets/images/foods/coconut_oil.png'),
+  chocolate: require('../../assets/images/foods/chocolate.png'),
+  butter: require('../../assets/images/foods/butter.png'),
+  honey: require('../../assets/images/foods/honey.png'),
+  ice_cream: require('../../assets/images/foods/ice_cream.png'),
+  shellfish: require('../../assets/images/foods/shellfish.png'),
+  tofus: require('../../assets/images/foods/tofus.png'),
+  meal: require('../../assets/images/foods/meal.png'),
+  meat: require('../../assets/images/foods/meat.png'),
+  milk: require('../../assets/images/foods/milk.png'),
+  fruits: require('../../assets/images/foods/fruits.png'),
+  egg: require('../../assets/images/foods/egg.png'),
+  clock: require('../../assets/images/foods/clock.png'),
+  box: require('../../assets/images/foods/box.png'),
+  // Default fallback image
+  default: require('../../assets/images/foods/apple.png'),
+};
+
+const FoodReportScreen = ({ navigation }: { navigation: NavigationProps }) => {
   const [activeTab, setActiveTab] = useState('foods');
   const [searchQuery, setSearchQuery] = useState('');
   
@@ -45,7 +115,7 @@ const FoodReportScreen = ({ navigation }) => {
     ]
   };
 
-  const FoodItem = ({ food, index, onPress }) => {
+  const FoodItem: React.FC<FoodItemProps> = ({ food, index, onPress }) => {
     const scale = useSharedValue(1);
 
     const animatedStyle = useAnimatedStyle(() => {
@@ -79,7 +149,8 @@ const FoodReportScreen = ({ navigation }) => {
           
           <View style={styles.foodImageContainer}>
             <Image 
-              source={food.image} 
+              source={foodImages[food.id] || foodImages.default} 
+              defaultSource={foodImages.default}
               style={styles.foodImage}
               resizeMode="contain"
             />
@@ -91,12 +162,12 @@ const FoodReportScreen = ({ navigation }) => {
     );
   };
 
-  const handleFoodPress = (food) => {
+  const handleFoodPress = (food: Food) => {
     // Navigate to food detail or add to meal
     navigation.navigate('FoodDetail', { food });
   };
 
-  const filteredFoods = foodCategories[activeTab].filter(food =>
+  const filteredFoods = (foodCategories as any)[activeTab].filter((food: Food) =>
     food.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
@@ -179,7 +250,7 @@ const FoodReportScreen = ({ navigation }) => {
           contentContainerStyle={styles.scrollContent}
         >
           <View style={styles.foodGrid}>
-            {filteredFoods.map((food, index) => (
+            {filteredFoods.map((food: Food, index: number) => (
               <FoodItem
                 key={food.id}
                 food={food}
