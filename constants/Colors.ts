@@ -44,29 +44,54 @@ export interface ColorScheme {
   };
 }
 
-export const colors: ColorScheme = {
-  primary: '#FF9A00',
-  primaryDark: '#E88800',
-  primaryLight: '#FFB84D',
-  
-  secondary: '#4CAF50',
-  secondaryDark: '#388E3C',
-  secondaryLight: '#81C784',
+const tintColorLight = '#0a7ea4';
+const tintColorDark = '#fff';
+
+export const Colors = {
+  light: {
+    text: '#11181C',
+    background: '#fff',
+    tint: tintColorLight,
+    icon: '#687076',
+    tabIconDefault: '#687076',
+    tabIconSelected: tintColorLight,
+  },
+  dark: {
+    text: '#ECEDEE',
+    background: '#151718',
+    tint: tintColorDark,
+    icon: '#9BA1A6',
+    tabIconDefault: '#9BA1A6',
+    tabIconSelected: tintColorDark,
+  },
+};
+
+// App-specific colors for consistency - FIXED STRUCTURE
+export const colors = {
+  primary: '#F8930F',
+  primaryDark: '#F8930F',
+  secondary: '#FF6B6B',
+  secondaryDark: '#E55555',
+  accent: '#FFE66D',
+  success: '#4CAF50',
+  warning: '#FF9800',
+  error: '#F44336',
+  info: '#2196F3',
+  whiteGrey: '#E7E7E6',
+  goldB: '#E5A339',
+  goldW: '#FFB380',
   
   background: '#FFFFFF',
   surface: '#F5F5F5',
+  background2: '#FFF5EC',
   
   text: {
     primary: '#212121',
     secondary: '#757575',
     disabled: '#BDBDBD',
-    inverse: '#FFFFFF'
+    inverse: '#FFFFFF',
+    green: '#3B9F21',
   },
-  
-  error: '#F44336',
-  warning: '#FF9800',
-  success: '#4CAF50',
-  info: '#2196F3',
   
   border: '#E0E0E0',
   divider: '#F0F0F0',
@@ -90,12 +115,20 @@ export const colors: ColorScheme = {
     peas: '#3CB371'
   },
   
-  gradient: {
-    primary: ['#FF9A00', '#FFB84D'],
-    secondary: ['#4CAF50', '#81C784'],
-    sunset: ['#FF9A00', '#FF6B35'],
-    fresh: ['#81C784', '#4CAF50']
-  }
-};
-
-export default colors; 
+  gamification: {
+    bronze: '#CD7F32',
+    silver: '#C0C0C0',
+    gold: '#FFD700',
+    platinum: '#E5E4E2',
+    xp: '#9B59B6',
+    streak: '#E74C3C',
+  },
+  
+  gradients: {
+    primary: ['#4ECDC4', '#F8930F'] as const,
+    secondary: ['#FF6B6B', '#E55555'] as const,
+    accent: ['#FFE66D', '#F4D03F'] as const,
+    success: ['#4CAF50', '#45A049'] as const,
+    food: ['#FF8A80', '#FF5722'] as const,
+  },
+}; 

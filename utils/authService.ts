@@ -1,528 +1,321 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword, signInWithPhoneNumber, signOut, updateProfile, User } from 'firebase/auth';
-import {
-    doc,
-    getDoc,
-    getFirestore,
-    updateDoc
-} from 'firebase/firestore';
-import { getFunctions, httpsCallable } from 'firebase/functions';
-import { auth } from '../app/firebase';
-import { isFirebaseConfigured } from './firebaseConfig';
+import { Platform } from 'react-native';
+import { safeGetItem, safeRemoveItem, safeSetItem } from './storage';
+import apiClient from './apiClient';
 
-// Type definitions
-export interface UserData {
-  userId: string;
+interface User {
+  id: string;
   email: string;
-  fullName: string;
-  phoneNumber: string;
-  isSignUp?: boolean;
+  name: string;
+  phone?: string;
+  age?: string;
+  dietaryRestrictions?: string[];
+  avatar?: string;
+  createdAt?: string;
+  updatedAt?: string;
 }
 
-export interface UserProfile {
-  firstName: string;
-  lastName: string;
-  email: string;
-  phoneNumber: string;
-  emailVerified?: boolean;
-  phoneVerified?: boolean;
-}
-
-export interface UserPreferences {
-  notifications: {
-    mealReminders: boolean;
-    reportGeneration: boolean;
-    achievements: boolean;
-  };
-  language: string;
-  units: string;
-}
-
-export interface UserSubscription {
-  planType: string;
-  status: string;
-}
-
-export interface CompleteUser {
-  userId: string;
-  email?: string;
-  profile: UserProfile;
-  userType: string;
-  subscription: UserSubscription;
-  preferences: UserPreferences;
-}
-
-export interface AuthStateListener {
-  (isAuthenticated: boolean, user: User | CompleteUser | null): void;
-}
-
-export interface RegistrationData {
-  email: string;
-  password: string;
-  fullName: string;
-  phoneNumber: string;
-}
-
-export interface AuthResponse {
+interface SignInResult {
   success: boolean;
-  userId?: string;
+  user?: User;
   token?: string;
-  user?: CompleteUser;
+  message?: string;
+}
+
+interface SignUpResult {
+  success: boolean;
+  user?: User;
+  token?: string;
+  message?: string;
+}
+
+interface AuthResponse {
+  success: boolean;
+  user: User;
+  token: string;
   message: string;
 }
 
-// Initialize Firebase only if config is properly set up
-let db: any, functions: any;
-
-if (isFirebaseConfigured()) {
-  // Firebase is initialized in app/firebase.ts
-  db = getFirestore();
-  functions = getFunctions();
-} else {
-  console.warn('Firebase not configured. Using mock authentication for development.');
-}
-
-// Storage Keys - You can customize these if needed
-// These keys are used to store data in AsyncStorage
-const STORAGE_KEYS = {
-  USER_TOKEN: '@plateful_user_token',        // Stores authentication token
-  USER_DATA: '@plateful_user_data',          // Stores user profile data
-  AUTH_STATE: '@plateful_auth_state'         // Stores authentication state
-};
-
-// You can customize the keys like this:
-// const STORAGE_KEYS = {
-//   USER_TOKEN: '@your_app_name_user_token',
-//   USER_DATA: '@your_app_name_user_data',
-//   AUTH_STATE: '@your_app_name_auth_state'
-// };
-
 class AuthService {
-  private currentUser: User | CompleteUser | null = null;
-  private authStateListeners: AuthStateListener[] = [];
-  private isMockMode: boolean = !isFirebaseConfigured();
-  private confirmationResult: any;
+  private static instance: AuthService;
 
-  constructor() {
-    if (isFirebaseConfigured()) {
-      this.setupAuthStateListener();
-    } else {
-      this.setupMockAuthState();
+  static getInstance(): AuthService {
+    if (!AuthService.instance) {
+      AuthService.instance = new AuthService();
     }
+    return AuthService.instance;
   }
 
-  // Setup Firebase Auth state listener
-  private setupAuthStateListener(): void {
-    if (!auth) return;
-    
-    onAuthStateChanged(auth, async (user: User | null) => {
-      if (user) {
-        this.currentUser = user;
-        await this.loadUserProfile(user.uid);
-        this.notifyAuthStateListeners(true, user);
-      } else {
-        this.currentUser = null;
-        await this.clearStoredData();
-        this.notifyAuthStateListeners(false, null);
-      }
-    });
-  }
-
-  // Setup mock auth state for development
-  private setupMockAuthState(): void {
-    // Check if user is already logged in (stored in AsyncStorage)
-    this.checkMockAuthState();
-  }
-
-  private async checkMockAuthState(): Promise<void> {
+  // Sign in user with email and password
+  async signInUser(email: string, password: string): Promise<SignInResult> {
     try {
-      const userData = await AsyncStorage.getItem(STORAGE_KEYS.USER_DATA);
-      if (userData) {
-        const user = JSON.parse(userData);
-        this.currentUser = user;
-        this.notifyAuthStateListeners(true, user);
-      }
-    } catch (error) {
-      console.error('Error checking mock auth state:', error);
-    }
-  }
-
-  // Add auth state listener
-  addAuthStateListener(listener: AuthStateListener): () => void {
-    this.authStateListeners.push(listener);
-    return () => {
-      this.authStateListeners = this.authStateListeners.filter(l => l !== listener);
-    };
-  }
-
-  // Notify all auth state listeners
-  private notifyAuthStateListeners(isAuthenticated: boolean, user: User | CompleteUser | null): void {
-    this.authStateListeners.forEach(listener => {
-      try {
-        listener(isAuthenticated, user);
-      } catch (error) {
-        console.error('Auth state listener error:', error);
-      }
-    });
-  }
-
-  // User Registration
-  async registerUser(userData: RegistrationData): Promise<AuthResponse> {
-    try {
-      const { email, password, fullName, phoneNumber } = userData;
-
-      // Validate input
-      if (!email || !password || !fullName || !phoneNumber) {
-        throw new Error('All fields are required');
-      }
-
-      if (this.isMockMode) {
-        // Mock registration for development
-        const mockUserId = `mock_${Date.now()}`;
-        const mockUser: UserData = {
-          userId: mockUserId,
-          email,
-          fullName,
-          phoneNumber,
-          isSignUp: true
-        };
-        await AsyncStorage.setItem(STORAGE_KEYS.USER_DATA, JSON.stringify(mockUser));
-        return {
-          success: true,
-          userId: mockUserId,
-          message: 'Mock registration successful. OTP codes sent.'
-        };
-      }
-
-      // Real Firebase registration (email/password)
-      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-      const user = userCredential.user;
-      // Optionally send email verification
-      // await sendEmailVerification(user);
-      // Optionally update profile
-      await updateProfile(user, { displayName: fullName });
-      // Optionally store phone number in Firestore or Realtime DB
-      // For phone auth, you would trigger phone verification separately
-      return {
-        success: true,
-        userId: user.uid,
-        message: 'Registration successful. Please verify your email or continue with OTP.'
-      };
-    } catch (error: any) {
-      console.error('Registration error:', error);
-      throw new Error(error.message || 'Registration failed');
-    }
-  }
-
-  // User Sign In
-  async signInUser(email: string, password: string): Promise<AuthResponse> {
-    try {
-      if (!email || !password) {
-        throw new Error('Email and password are required');
-      }
-      if (this.isMockMode) {
-        // Mock sign in for development
-        const mockUser: CompleteUser = {
-          userId: `mock_${Date.now()}`,
-          email,
-          profile: {
-            firstName: 'Mock',
-            lastName: 'User',
-            email,
-            phoneNumber: '+1234567890'
-          },
-          userType: 'parent',
-          subscription: {
-            planType: 'free',
-            status: 'active'
-          },
-          preferences: {
-            notifications: {
-              mealReminders: true,
-              reportGeneration: true,
-              achievements: true
-            },
-            language: 'en',
-            units: 'imperial'
-          }
-        };
-        await this.storeAuthData('mock-token', mockUser);
-        return {
-          success: true,
-          token: 'mock-token',
-          user: mockUser,
-          message: 'Mock sign in successful'
-        };
-      }
-      // Real Firebase sign in
-      const userCredential = await signInWithEmailAndPassword(auth, email, password);
-      const user = userCredential.user;
-      // Optionally check email verification
-      // if (!user.emailVerified) throw new Error('Please verify your email.');
-      return {
-        success: true,
-        userId: user.uid,
-        message: 'Sign in successful.'
-      };
-    } catch (error: any) {
-      console.error('Sign in error:', error);
-      throw new Error(error.message || 'Sign in failed');
-    }
-  }
-
-  // For phone/OTP flows, you would use Firebase's signInWithPhoneNumber and confirmationResult.confirm(otp)
-  // Here is a basic structure for OTP send/verify (client-side only):
-  async sendPhoneOTP(phoneNumber: string, recaptchaVerifier: any): Promise<any> {
-    if (this.isMockMode) {
-      return { success: true, message: 'Mock OTP sent.' };
-    }
-    try {
-      const confirmationResult = await signInWithPhoneNumber(auth, phoneNumber, recaptchaVerifier);
-      // Store confirmationResult for later verification
-      this.confirmationResult = confirmationResult;
-      return { success: true, message: 'OTP sent.' };
-    } catch (error: any) {
-      throw new Error(error.message || 'Failed to send OTP');
-    }
-  }
-
-  async verifyOTP(otp: string): Promise<AuthResponse> {
-    if (this.isMockMode) {
-      return { success: true, message: 'Mock OTP verified.' };
-    }
-    try {
-      if (!this.confirmationResult) throw new Error('No OTP confirmation in progress.');
-      const result = await this.confirmationResult.confirm(otp);
-      const user = result.user;
-      return { success: true, userId: user.uid, message: 'OTP verified.' };
-    } catch (error: any) {
-      throw new Error(error.message || 'OTP verification failed');
-    }
-  }
-
-  // Resend OTP
-  async resendOTP(userId: string, type: string): Promise<AuthResponse> {
-    try {
-      if (!userId || !type) {
-        throw new Error('User ID and type are required');
-      }
-
-      if (this.isMockMode) {
-        // Mock resend OTP
-        return {
-          success: true,
-          message: `Mock ${type} OTP resent successfully`
-        };
-      }
-
-      // Real Firebase resend OTP
-      const resendOTPFunction = httpsCallable(functions, 'resendOTP');
-      const result = await resendOTPFunction({
-        userId,
-        type
+      console.log('AuthService: Attempting sign in for:', email, 'on platform:', Platform.OS);
+      
+      const response = await apiClient.post<AuthResponse>('/api/auth/signin', {
+        email,
+        password
       });
 
-      return {
-        success: true,
-        message: (result.data as { message: string }).message
-      };
-
+      if (response.success && response.data) {
+        const { user, token } = response.data;
+        
+        // Store user data and token
+        const storeSuccess = await Promise.all([
+          safeSetItem('userToken', token),
+          safeSetItem('userEmail', user.email),
+          safeSetItem('userName', user.name),
+          safeSetItem('userId', user.id)
+        ]);
+        
+        if (storeSuccess.every(success => success)) {
+          console.log('AuthService: Sign in successful, token stored');
+          return {
+            success: true,
+            user,
+            token,
+            message: response.data.message || 'Sign in successful'
+          };
+        } else {
+          throw new Error('Failed to store authentication data');
+        }
+      } else {
+        return {
+          success: false,
+          message: response.error || 'Sign in failed'
+        };
+      }
     } catch (error: any) {
-      console.error('Resend OTP error:', error);
-      throw new Error(error.message || 'Failed to resend OTP');
+      console.error('AuthService: Sign in error:', error);
+      return {
+        success: false,
+        message: error?.message || 'Sign in failed'
+      };
     }
   }
 
-  // Password Reset
-  async resetPassword(email: string): Promise<AuthResponse> {
+  // Sign up new user
+  async signUpUser(email: string, password: string, name: string, phone?: string): Promise<SignUpResult> {
     try {
-      if (!email) {
-        throw new Error('Email is required');
+      console.log('AuthService: Attempting sign up for:', email, 'on platform:', Platform.OS);
+      
+      const signUpData: any = {
+        email,
+        password,
+        name
+      };
+
+      if (phone) {
+        signUpData.phone = phone;
       }
 
-      if (this.isMockMode) {
-        // Mock password reset
+      const response = await apiClient.post<AuthResponse>('/api/auth/signup', signUpData);
+
+      if (response.success && response.data) {
+        const { user, token } = response.data;
+        
+        // Store user data and token
+        const storeSuccess = await Promise.all([
+          safeSetItem('userToken', token),
+          safeSetItem('userEmail', user.email),
+          safeSetItem('userName', user.name),
+          safeSetItem('userId', user.id)
+        ]);
+        
+        if (storeSuccess.every(success => success)) {
+          console.log('AuthService: Sign up successful, token stored');
+          return {
+            success: true,
+            user,
+            token,
+            message: response.data.message || 'Account created successfully'
+          };
+        } else {
+          throw new Error('Failed to store authentication data');
+        }
+      } else {
         return {
-          success: true,
-          message: 'Mock password reset email sent'
+          success: false,
+          message: response.error || 'Sign up failed'
+        };
+      }
+    } catch (error: any) {
+      console.error('AuthService: Sign up error:', error);
+      return {
+        success: false,
+        message: error?.message || 'Sign up failed'
+      };
+    }
+  }
+
+  // Get current user from storage
+  async getCurrentUser(): Promise<User | null> {
+    try {
+      const token = await safeGetItem('userToken');
+      if (!token) {
+        return null;
+      }
+
+      const [email, name, id] = await Promise.all([
+        safeGetItem('userEmail'),
+        safeGetItem('userName'),
+        safeGetItem('userId')
+      ]);
+
+      if (email && name && id) {
+        return {
+          id,
+          email,
+          name
         };
       }
 
-      // Real Firebase password reset
-      const resetPasswordFunction = httpsCallable(functions, 'resetPassword');
-      const result = await resetPasswordFunction({ email });
-
-      return {
-        success: true,
-        message: (result.data as { message: string }).message
-      };
-
-    } catch (error: any) {
-      console.error('Password reset error:', error);
-      throw new Error(error.message || 'Password reset failed');
+      return null;
+    } catch (error) {
+      console.error('AuthService: Get current user error:', error);
+      return null;
     }
-  }
-
-  // Sign Out
-  async signOut(): Promise<{ success: boolean }> {
-    try {
-      if (this.isMockMode) {
-        // Mock sign out
-        this.currentUser = null;
-        await this.clearStoredData();
-        this.notifyAuthStateListeners(false, null);
-        return { success: true };
-      }
-
-      // Real Firebase sign out
-      await signOut(auth);
-      await this.clearStoredData();
-      return { success: true };
-    } catch (error: any) {
-      console.error('Sign out error:', error);
-      throw new Error('Sign out failed');
-    }
-  }
-
-  // Get current user
-  getCurrentUser(): User | CompleteUser | null {
-    return this.currentUser;
   }
 
   // Check if user is authenticated
-  isAuthenticated(): boolean {
-    return !!this.currentUser;
+  async isAuthenticated(): Promise<boolean> {
+    try {
+      const token = await safeGetItem('userToken');
+      return !!token;
+    } catch (error) {
+      console.error('AuthService: Check authentication error:', error);
+      return false;
+    }
   }
 
-  // Load user profile from Firestore
-  async loadUserProfile(userId: string): Promise<CompleteUser | null> {
+  // Sign out user
+  async signOut(): Promise<boolean> {
     try {
-      if (this.isMockMode) {
-        // Mock user profile
-        const mockProfile: CompleteUser = {
-          userId,
-          profile: {
-            firstName: 'Mock',
-            lastName: 'User',
-            email: 'mock@example.com',
-            phoneNumber: '+1234567890'
-          },
-          userType: 'parent',
-          subscription: {
-            planType: 'free',
-            status: 'active'
-          },
-          preferences: {
-            notifications: {
-              mealReminders: true,
-              reportGeneration: true,
-              achievements: true
-            },
-            language: 'en',
-            units: 'imperial'
-          }
-        };
-        
-        await AsyncStorage.setItem(STORAGE_KEYS.USER_DATA, JSON.stringify(mockProfile));
-        return mockProfile;
-      }
-
-      // Real Firebase user profile
-      if (!db) return null;
+      console.log('AuthService: Signing out user');
       
-      const userDoc = await getDoc(doc(db, 'users', userId));
-      if (userDoc.exists()) {
-        const userData = userDoc.data() as CompleteUser;
-        await AsyncStorage.setItem(STORAGE_KEYS.USER_DATA, JSON.stringify(userData));
-        return userData;
-      }
-      return null;
-    } catch (error) {
-      console.error('Load user profile error:', error);
-      return null;
-    }
-  }
-
-  // Get stored user data
-  async getStoredUserData(): Promise<CompleteUser | null> {
-    try {
-      const userData = await AsyncStorage.getItem(STORAGE_KEYS.USER_DATA);
-      return userData ? JSON.parse(userData) : null;
-    } catch (error) {
-      console.error('Get stored user data error:', error);
-      return null;
-    }
-  }
-
-  // Store authentication data
-  private async storeAuthData(token: string, user: CompleteUser): Promise<void> {
-    try {
-      await Promise.all([
-        AsyncStorage.setItem(STORAGE_KEYS.USER_TOKEN, token),
-        AsyncStorage.setItem(STORAGE_KEYS.USER_DATA, JSON.stringify(user)),
-        AsyncStorage.setItem(STORAGE_KEYS.AUTH_STATE, 'true')
+      // Remove all auth-related data using web-compatible storage
+      const removeSuccess = await Promise.all([
+        safeRemoveItem('userToken'),
+        safeRemoveItem('userEmail'),
+        safeRemoveItem('userName'),
+        safeRemoveItem('userId')
       ]);
+
+      const success = removeSuccess.every(success => success);
+      console.log('AuthService: Sign out', success ? 'successful' : 'failed');
+      return success;
     } catch (error) {
-      console.error('Store auth data error:', error);
+      console.error('AuthService: Sign out error:', error);
+      return false;
     }
   }
 
-  // Clear stored data
-  async clearStoredData(): Promise<void> {
+  // Send OTP for verification
+  async sendOTP(email: string): Promise<{ success: boolean; message: string }> {
     try {
-      await Promise.all([
-        AsyncStorage.removeItem(STORAGE_KEYS.USER_TOKEN),
-        AsyncStorage.removeItem(STORAGE_KEYS.USER_DATA),
-        AsyncStorage.removeItem(STORAGE_KEYS.AUTH_STATE)
-      ]);
-    } catch (error) {
-      console.error('Clear stored data error:', error);
+      const response = await apiClient.post('/api/auth/send-otp', { email });
+      return {
+        success: response.success,
+        message: response.error || response.data?.message || 'OTP sent successfully'
+      };
+    } catch (error: any) {
+      console.error('AuthService: Send OTP error:', error);
+      return {
+        success: false,
+        message: error?.message || 'Failed to send OTP'
+      };
+    }
+  }
+
+  // Verify OTP
+  async verifyOTP(email: string, otp: string): Promise<{ success: boolean; message: string }> {
+    try {
+      const response = await apiClient.post('/api/auth/verify-otp', { email, otp });
+      return {
+        success: response.success,
+        message: response.error || response.data?.message || 'OTP verified successfully'
+      };
+    } catch (error: any) {
+      console.error('AuthService: Verify OTP error:', error);
+      return {
+        success: false,
+        message: error?.message || 'Failed to verify OTP'
+      };
+    }
+  }
+
+  // Reset password
+  async resetPassword(email: string, newPassword: string, otp: string): Promise<{ success: boolean; message: string }> {
+    try {
+      const response = await apiClient.post('/api/auth/reset-password', {
+        email,
+        newPassword,
+        otp
+      });
+      return {
+        success: response.success,
+        message: response.error || response.data?.message || 'Password reset successfully'
+      };
+    } catch (error: any) {
+      console.error('AuthService: Reset password error:', error);
+      return {
+        success: false,
+        message: error?.message || 'Failed to reset password'
+      };
     }
   }
 
   // Update user profile
-  async updateUserProfile(userId: string, updates: Partial<CompleteUser>): Promise<{ success: boolean }> {
+  async updateProfile(profileData: Partial<User>): Promise<{ success: boolean; message: string }> {
     try {
-      if (this.isMockMode) {
-        // Mock profile update
-        const currentUserData = await this.getStoredUserData();
-        if (currentUserData) {
-          const updatedUserData = { ...currentUserData, ...updates };
-          await AsyncStorage.setItem(STORAGE_KEYS.USER_DATA, JSON.stringify(updatedUserData));
+      const response = await apiClient.put('/api/users/profile', profileData);
+      if (response.success && response.data) {
+        // Update stored user data
+        if (response.data.name) {
+          await safeSetItem('userName', response.data.name);
         }
-        return { success: true };
+        return {
+          success: true,
+          message: response.data.message || 'Profile updated successfully'
+        };
+      } else {
+        return {
+          success: false,
+          message: response.error || 'Failed to update profile'
+        };
       }
-
-      // Real Firebase profile update
-      if (!db) return { success: false };
-      
-      await updateDoc(doc(db, 'users', userId), updates);
-      
-      // Update stored user data
-      const currentUserData = await this.getStoredUserData();
-      if (currentUserData) {
-        const updatedUserData = { ...currentUserData, ...updates };
-        await AsyncStorage.setItem(STORAGE_KEYS.USER_DATA, JSON.stringify(updatedUserData));
-      }
-      
-      return { success: true };
     } catch (error: any) {
-      console.error('Update user profile error:', error);
-      throw new Error('Failed to update profile');
+      console.error('AuthService: Update profile error:', error);
+      return {
+        success: false,
+        message: error?.message || 'Failed to update profile'
+      };
     }
   }
 
-  // Get stored token
-  async getStoredToken(): Promise<string | null> {
+  // Get user profile
+  async getUserProfile(): Promise<{ success: boolean; user?: User; message?: string }> {
     try {
-      return await AsyncStorage.getItem(STORAGE_KEYS.USER_TOKEN);
-    } catch (error) {
-      console.error('Get stored token error:', error);
-      return null;
+      const response = await apiClient.get<User>('/api/users/profile');
+      if (response.success && response.data) {
+        return {
+          success: true,
+          user: response.data
+        };
+      } else {
+        return {
+          success: false,
+          message: response.error || 'Failed to get user profile'
+        };
+      }
+    } catch (error: any) {
+      console.error('AuthService: Get user profile error:', error);
+      return {
+        success: false,
+        message: error?.message || 'Failed to get user profile'
+      };
     }
   }
 }
 
-// Create and export singleton instance
-const authService = new AuthService();
+// Export singleton instance
+const authService = AuthService.getInstance();
 export default authService; 

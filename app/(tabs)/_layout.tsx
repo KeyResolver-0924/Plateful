@@ -1,64 +1,112 @@
-import { Ionicons } from '@expo/vector-icons';
-import { Tabs } from 'expo-router';
-import React from 'react';
-import { Platform } from 'react-native';
+import { Tabs, usePathname } from 'expo-router';
+import { Image, Platform } from 'react-native';
 
 import { HapticTab } from '../../components/HapticTab';
 import TabBarBackground from '../../components/ui/TabBarBackground';
-import { useColorScheme } from '../../hooks/useColorScheme';
 import { colors } from '../../constants/colors';
+import { useColorScheme } from '../../hooks/useColorScheme';
+import { useTabBarVisibility } from '../../utils/tabBarUtils';
 
-export default function TabLayout() {
+interface TabLayoutProps {
+  hideTabBar?: boolean;
+}
+
+export default function TabLayout({ hideTabBar = false }: TabLayoutProps) {
   const colorScheme = useColorScheme();
+  const { shouldHideTabBar } = useTabBarVisibility();
+
+  // Dynamic tab bar style based on props and current route
+  const getTabBarStyle = () => {
+    const baseStyle = Platform.select({
+      ios: {
+        // Use a transparent background on iOS to show the blur effect
+        position: 'absolute' as const,
+      },
+      default: {},
+    });
+
+    // Hide tab bar if hideTabBar prop is true OR if current route requires hiding
+    const shouldHide = hideTabBar || shouldHideTabBar;
+
+    console.log('Tab bar visibility check:', { shouldHide, shouldHideTabBar, pathname: usePathname() });
+
+    if (shouldHide) {
+      return {
+        ...baseStyle,
+        display: 'none' as const,
+        height: 0,
+        opacity: 0,
+      };
+    }
+
+    return {
+      ...baseStyle,
+      height: 60,
+      paddingBottom: 5,
+      paddingTop: 5,
+    };
+  };
+
+  const pathname = usePathname();
+  const shouldHide = hideTabBar || shouldHideTabBar;
+  
+  console.log('Tab bar visibility check:', { shouldHide, shouldHideTabBar, pathname });
 
   return (
     <Tabs
       screenOptions={{
         tabBarActiveTintColor: colors.primary,
         headerShown: false,
-        tabBarButton: HapticTab,
+        tabBarButton: shouldHide ? () => null : HapticTab,
         tabBarBackground: TabBarBackground,
-        tabBarStyle: Platform.select({
-          ios: {
-            // Use a transparent background on iOS to show the blur effect
-            position: 'absolute',
-          },
-          default: {},
-        }),
+        tabBarStyle: getTabBarStyle(),
       }}>
       <Tabs.Screen
         name="index"
         options={{
           title: 'Home',
-          tabBarIcon: ({ color }) => <Ionicons name="home" size={24} color={color} />,
+          tabBarIcon: ({ color }) => (
+            <Image
+              source={require('../../assets/images/tab/home.png')}
+              style={{ width: 30, height: 30 }}
+            />
+          ),
         }}
       />
       <Tabs.Screen
-        name="food"
+        name="gamification"
         options={{
-          title: 'Food',
-          tabBarIcon: ({ color }) => <Ionicons name="restaurant" size={24} color={color} />,
-        }}
-      />
-      <Tabs.Screen
-        name="meals"
-        options={{
-          title: 'Meals',
-          tabBarIcon: ({ color }) => <Ionicons name="fast-food" size={24} color={color} />,
+          title: 'Child\'s Profile',
+          tabBarIcon: ({ color }) => (
+            <Image
+              source={require('../../assets/images/tab/profile.png')}
+              style={{ width: 30, height: 30 }}
+            />
+          ),
         }}
       />
       <Tabs.Screen
         name="learning"
         options={{
-          title: 'Learn',
-          tabBarIcon: ({ color }) => <Ionicons name="school" size={24} color={color} />,
+          title: 'Learning Modules',
+          tabBarIcon: ({ color }) => (
+            <Image
+              source={require('../../assets/images/tab/learning.png')}
+              style={{ width: 30, height: 30 }}
+            />
+          ),
         }}
       />
       <Tabs.Screen
-        name="profile"
+        name="reporting"
         options={{
-          title: 'Profile',
-          tabBarIcon: ({ color }) => <Ionicons name="person" size={24} color={color} />,
+          title: 'Reporting',
+          tabBarIcon: ({ color }) => (
+            <Image
+              source={require('../../assets/images/tab/report.png')}
+              style={{ width: 30, height: 30 }}
+            />
+          ),
         }}
       />
     </Tabs>

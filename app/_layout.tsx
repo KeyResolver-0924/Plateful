@@ -1,6 +1,7 @@
 import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
 import { useFonts } from 'expo-font';
 import { Stack } from 'expo-router';
+import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
 import { useEffect, useState } from 'react';
 import 'react-native-reanimated';
@@ -14,6 +15,11 @@ export default function RootLayout() {
     SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
   });
 
+  // Prevent the splash screen from auto-hiding
+  useEffect(() => {
+    SplashScreen.preventAutoHideAsync();
+  }, []);
+
   // Set a timeout for font loading to prevent hanging
   useEffect(() => {
     const timeout = setTimeout(() => {
@@ -23,6 +29,13 @@ export default function RootLayout() {
     return () => clearTimeout(timeout);
   }, []);
 
+  // Hide splash screen when fonts are loaded
+  useEffect(() => {
+    if (loaded || error || fontTimeout) {
+      SplashScreen.hideAsync();
+    }
+  }, [loaded, error, fontTimeout]);
+
   // Continue if fonts are loaded, there's an error, or timeout reached
   if (!loaded && !error && !fontTimeout) {
     return null;
@@ -31,13 +44,13 @@ export default function RootLayout() {
   return (
     <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
       <Stack>
-        <Stack.Screen name="splash" options={{ headerShown: false }} />
+        <Stack.Screen name="index" options={{ headerShown: false }} />
         <Stack.Screen name="auth" options={{ headerShown: false }} />
+        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
         <Stack.Screen name="food" options={{ headerShown: false }} />
         <Stack.Screen name="meals" options={{ headerShown: false }} />
         <Stack.Screen name="profile" options={{ headerShown: false }} />
         <Stack.Screen name="gamification" options={{ headerShown: false }} />
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
         <Stack.Screen name="+not-found" />
       </Stack>
       <StatusBar style="auto" />

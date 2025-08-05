@@ -1,4 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { router } from 'expo-router';
 import { useEffect, useState } from 'react';
 import {
     Alert,
@@ -25,16 +26,14 @@ const UserDataDebugScreen = () => {
       setLoading(true);
       
       // Get data from AuthService
-      const currentUser = authService.getCurrentUser();
-      const storedUserData = await authService.getStoredUserData();
-      const isAuth = authService.isAuthenticated();
+      const currentUser = await authService.getCurrentUser();
+      const isAuth = await authService.isAuthenticated();
       
       // Get all AsyncStorage data
       const allStoredData = await getAllStoredData();
       
       setUserData({
         currentUser,
-        storedUserData,
         isAuthenticated: isAuth
       });
       setStoredData(allStoredData);
@@ -66,12 +65,29 @@ const UserDataDebugScreen = () => {
   const clearAllData = async (): Promise<void> => {
     try {
       await AsyncStorage.clear();
-      await authService.clearStoredData();
-      Alert.alert('Success', 'All data cleared');
-      loadUserData();
+      await authService.signOut();
+      Alert.alert('Success', 'All data cleared! App will restart from splash screen.');
+      // Navigate back to index which will redirect to splash
+      router.replace('./');
     } catch (error) {
       Alert.alert('Error', 'Failed to clear data');
     }
+  };
+
+  const testSplashNavigation = () => {
+    router.replace('./splash');
+  };
+
+  const testOnboarding = () => {
+    router.replace('/(tabs)/../auth/onboarding' as any);
+  };
+
+  const testSignIn = () => {
+    router.replace('./(tabs)/../auth/sign-in' as any);
+  };
+
+  const testMainApp = () => {
+    router.replace('./(tabs)');
   };
 
   if (loading) {
@@ -84,10 +100,26 @@ const UserDataDebugScreen = () => {
 
   return (
     <ScrollView style={styles.container}>
-      <Text style={styles.title}>User Data Debug</Text>
+      <Text style={styles.title}>Debug & Testing Panel</Text>
       
       <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Current User (AuthService)</Text>
+        <Text style={styles.sectionTitle}>Navigation Testing</Text>
+        <TouchableOpacity style={styles.button} onPress={testSplashNavigation}>
+          <Text style={styles.buttonText}>Go to Splash</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.button} onPress={testOnboarding}>
+          <Text style={styles.buttonText}>Go to Onboarding</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.button} onPress={testSignIn}>
+          <Text style={styles.buttonText}>Go to Sign In</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.button} onPress={testMainApp}>
+          <Text style={styles.buttonText}>Go to Main App</Text>
+        </TouchableOpacity>
+      </View>
+      
+      <View style={styles.section}>
+        <Text style={styles.sectionTitle}>Current User Data</Text>
         <Text style={styles.dataText}>
           {JSON.stringify(userData, null, 2)}
         </Text>
@@ -105,7 +137,7 @@ const UserDataDebugScreen = () => {
       </TouchableOpacity>
       
       <TouchableOpacity style={[styles.button, styles.clearButton]} onPress={clearAllData}>
-        <Text style={styles.buttonText}>Clear All Data</Text>
+        <Text style={styles.buttonText}>Clear All Data & Restart</Text>
       </TouchableOpacity>
     </ScrollView>
   );
@@ -114,14 +146,15 @@ const UserDataDebugScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 20,
     backgroundColor: colors.background,
+    padding: 16,
   },
   title: {
     fontSize: 24,
     fontWeight: 'bold',
     color: colors.text.primary,
     marginBottom: 20,
+    textAlign: 'center',
   },
   section: {
     marginBottom: 20,
@@ -135,25 +168,25 @@ const styles = StyleSheet.create({
   dataText: {
     fontSize: 12,
     color: colors.text.secondary,
-    backgroundColor: colors.surface,
+    backgroundColor: colors.background,
     padding: 10,
     borderRadius: 8,
     fontFamily: 'monospace',
   },
   button: {
     backgroundColor: colors.primary,
-    padding: 15,
+    padding: 12,
     borderRadius: 8,
-    alignItems: 'center',
     marginBottom: 10,
+    alignItems: 'center',
   },
   clearButton: {
-    backgroundColor: colors.error || '#ff4444',
+    backgroundColor: colors.error,
   },
   buttonText: {
-    color: colors.text.inverse,
-    fontSize: 16,
+    color: 'white',
     fontWeight: '600',
+    fontSize: 16,
   },
   loadingText: {
     fontSize: 16,

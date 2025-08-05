@@ -1,0 +1,572 @@
+{
+    "quiz_database": {
+      "multiple_choice_questions": [
+        {
+          "id": "mc_001",
+          "question": "Which fruit is actually botanically a fruit, not a vegetable?",
+          "options": ["Carrot", "Tomato", "Broccoli", "Spinach"],
+          "correct_answer": "Tomato",
+          "explanation": "Tomatoes have seeds inside, which makes them fruits! Many people think they're vegetables because we use them in savory dishes.",
+          "difficulty": "easy",
+          "category": "fruits",
+          "learning_point": "Classification of foods"
+        },
+        {
+          "id": "mc_002",
+          "question": "How much protein does one large egg contain?",
+          "options": ["3 grams", "6 grams", "10 grams", "15 grams"],
+          "correct_answer": "6 grams",
+          "explanation": "One large egg contains 6 grams of complete protein with all essential amino acids!",
+          "difficulty": "medium",
+          "category": "proteins",
+          "learning_point": "Protein content in foods"
+        },
+        {
+          "id": "mc_003",
+          "question": "What makes carrots good for your eyes?",
+          "options": ["Vitamin C", "Beta-carotene", "Protein", "Calcium"],
+          "correct_answer": "Beta-carotene",
+          "explanation": "Beta-carotene in carrots converts to Vitamin A, which helps keep your eyes healthy!",
+          "difficulty": "medium",
+          "category": "vegetables",
+          "learning_point": "Nutrients and health benefits"
+        },
+        {
+          "id": "mc_004",
+          "question": "Which of these foods grows underground?",
+          "options": ["Broccoli", "Sweet potato", "Bell peppers", "Grapes"],
+          "correct_answer": "Sweet potato",
+          "explanation": "Sweet potatoes are root vegetables that grow underground, storing energy in their roots!",
+          "difficulty": "easy",
+          "category": "vegetables",
+          "learning_point": "How foods grow"
+        },
+        {
+          "id": "mc_005",
+          "question": "How long does it take for a pineapple to grow?",
+          "options": ["6 months", "1 year", "Almost 2 years", "3 years"],
+          "correct_answer": "Almost 2 years",
+          "explanation": "Pineapples take about 18-20 months to grow - that's why they're so special!",
+          "difficulty": "hard",
+          "category": "fruits",
+          "learning_point": "Growing time and appreciation for food"
+        },
+        {
+          "id": "mc_006",
+          "question": "Which food is called the 'king of fruits'?",
+          "options": ["Apple", "Orange", "Mango", "Banana"],
+          "correct_answer": "Mango",
+          "explanation": "Mangoes are called the 'king of fruits' in many countries because of their amazing sweet taste!",
+          "difficulty": "medium",
+          "category": "fruits",
+          "learning_point": "Cultural food knowledge"
+        },
+        {
+          "id": "mc_007",
+          "question": "What part of the broccoli plant do we eat?",
+          "options": ["The roots", "The flower buds", "The stem only", "The seeds"],
+          "correct_answer": "The flower buds",
+          "explanation": "Broccoli is actually made of tiny flower buds that we eat before they bloom into yellow flowers!",
+          "difficulty": "medium",
+          "category": "vegetables",
+          "learning_point": "Plant parts we eat"
+        },
+        {
+          "id": "mc_008",
+          "question": "Which protein food contains omega-3 fatty acids that are good for your brain?",
+          "options": ["Chicken", "Fish", "Beans", "Nuts"],
+          "correct_answer": "Fish",
+          "explanation": "Fish contains omega-3 fatty acids that help your brain grow and work well!",
+          "difficulty": "medium",
+          "category": "proteins",
+          "learning_point": "Healthy fats and brain development"
+        },
+        {
+          "id": "mc_009",
+          "question": "What makes corn kernels pop into popcorn?",
+          "options": ["Sugar inside", "Water turning to steam", "Oil heating up", "Air pressure"],
+          "correct_answer": "Water turning to steam",
+          "explanation": "Each corn kernel has a little water inside. When heated, it turns to steam and makes the kernel pop!",
+          "difficulty": "hard",
+          "category": "vegetables",
+          "learning_point": "Food science"
+        },
+        {
+          "id": "mc_010",
+          "question": "Which food is made from soybeans?",
+          "options": ["Cheese", "Tofu", "Yogurt", "Butter"],
+          "correct_answer": "Tofu",
+          "explanation": "Tofu is made by pressing soybean milk into blocks, just like how cheese is made from cow's milk!",
+          "difficulty": "easy",
+          "category": "proteins",
+          "learning_point": "Food processing and alternatives"
+        },
+        {
+          "id": "mc_011",
+          "question": "What color do bell peppers start as before they turn red, yellow, or orange?",
+          "options": ["Purple", "White", "Green", "Brown"],
+          "correct_answer": "Green",
+          "explanation": "All bell peppers start green and change colors as they ripen and get sweeter!",
+          "difficulty": "medium",
+          "category": "vegetables",
+          "learning_point": "Plant ripening process"
+        },
+        {
+          "id": "mc_012",
+          "question": "Which fruit is mostly water and perfect for hot summer days?",
+          "options": ["Apple", "Banana", "Watermelon", "Orange"],
+          "correct_answer": "Watermelon",
+          "explanation": "Watermelons are about 90% water, making them super refreshing and hydrating!",
+          "difficulty": "easy",
+          "category": "fruits",
+          "learning_point": "Hydration and seasonal eating"
+        },
+        {
+          "id": "mc_013",
+          "question": "What do lentils help put back into the soil?",
+          "options": ["Water", "Nitrogen", "Sugar", "Salt"],
+          "correct_answer": "Nitrogen",
+          "explanation": "Lentils and other legumes have special bacteria that put nitrogen back into the soil to help other plants grow!",
+          "difficulty": "hard",
+          "category": "proteins",
+          "learning_point": "Environmental benefits of foods"
+        },
+        {
+          "id": "mc_014",
+          "question": "Why do onions make you cry when you cut them?",
+          "options": ["They're sad", "They release a gas", "They're too strong", "They have acid"],
+          "correct_answer": "They release a gas",
+          "explanation": "Onions release a gas when cut that mixes with the water in your eyes to form a mild acid!",
+          "difficulty": "hard",
+          "category": "vegetables",
+          "learning_point": "Food science and plant defense"
+        },
+        {
+          "id": "mc_015",
+          "question": "Which nutrient helps build strong muscles?",
+          "options": ["Carbohydrates", "Protein", "Fat", "Water"],
+          "correct_answer": "Protein",
+          "explanation": "Protein is like building blocks for your muscles - it helps them grow and get stronger!",
+          "difficulty": "easy",
+          "category": "proteins",
+          "learning_point": "Nutrients and body functions"
+        }
+      ],
+      "fill_in_the_blank_questions": [
+        {
+          "id": "fib_001",
+          "question": "Tomatoes are actually _______ because they have seeds inside.",
+          "answer": "fruits",
+          "context": "Many people think tomatoes are vegetables, but botanically they are fruits!",
+          "hints": ["It's not a vegetable", "Think about what makes a fruit a fruit"],
+          "difficulty": "easy",
+          "category": "fruits",
+          "learning_point": "Botanical classification"
+        },
+        {
+          "id": "fib_002",
+          "question": "Broccoli looks like tiny green _______ because we eat the flower buds.",
+          "answer": "trees",
+          "context": "The part of broccoli we eat is actually the flower buds before they bloom!",
+          "hints": ["What does broccoli look like?", "Think about the shape"],
+          "difficulty": "easy",
+          "category": "vegetables",
+          "learning_point": "Visual food identification"
+        },
+        {
+          "id": "fib_003",
+          "question": "Fish contains healthy _______ fatty acids that are good for your brain.",
+          "answer": "omega-3",
+          "context": "These special fats help your brain develop and work properly!",
+          "hints": ["It's a type of healthy fat", "It starts with 'o'"],
+          "difficulty": "medium",
+          "category": "proteins",
+          "learning_point": "Healthy fats"
+        },
+        {
+          "id": "fib_004",
+          "question": "Sweet potatoes store energy in their _______ underground.",
+          "answer": "roots",
+          "context": "Root vegetables like sweet potatoes grow underground and store nutrients in their roots!",
+          "hints": ["What part of the plant is underground?", "Where do root vegetables store food?"],
+          "difficulty": "medium",
+          "category": "vegetables",
+          "learning_point": "Plant anatomy"
+        },
+        {
+          "id": "fib_005",
+          "question": "It takes almost _______ years for a pineapple to grow completely.",
+          "answer": "2",
+          "context": "Pineapples are very slow-growing fruits that require patience!",
+          "hints": ["It's more than 1 year", "It's less than 3 years"],
+          "difficulty": "hard",
+          "category": "fruits",
+          "learning_point": "Growing time appreciation"
+        },
+        {
+          "id": "fib_006",
+          "question": "Carrots are good for your _______ because they contain beta-carotene.",
+          "answer": "eyes",
+          "context": "Beta-carotene converts to Vitamin A which helps maintain good vision!",
+          "hints": ["What body part benefits from Vitamin A?", "What do you use to see?"],
+          "difficulty": "easy",
+          "category": "vegetables",
+          "learning_point": "Nutrition and health"
+        },
+        {
+          "id": "fib_007",
+          "question": "_______ is made from soybeans and can be cooked many different ways.",
+          "answer": "Tofu",
+          "context": "This protein-rich food is popular in many Asian cuisines!",
+          "hints": ["It's a soybean product", "It's white and comes in blocks"],
+          "difficulty": "medium",
+          "category": "proteins",
+          "learning_point": "Plant-based proteins"
+        },
+        {
+          "id": "fib_008",
+          "question": "Watermelons are mostly _______ which makes them refreshing on hot days.",
+          "answer": "water",
+          "context": "About 90% of a watermelon is water!",
+          "hints": ["What makes up most of a watermelon?", "What do you drink when thirsty?"],
+          "difficulty": "easy",
+          "category": "fruits",
+          "learning_point": "Hydration from foods"
+        },
+        {
+          "id": "fib_009",
+          "question": "Bell peppers start _______ and change colors as they ripen.",
+          "answer": "green",
+          "context": "All bell peppers begin green and develop their final colors as they mature!",
+          "hints": ["What color are unripe peppers?", "Think about the first stage"],
+          "difficulty": "medium",
+          "category": "vegetables",
+          "learning_point": "Ripening process"
+        },
+        {
+          "id": "fib_010",
+          "question": "_______ helps build and repair muscles in your body.",
+          "answer": "Protein",
+          "context": "This nutrient is essential for growing strong and healthy!",
+          "hints": ["What nutrient builds muscles?", "Found in meat, eggs, and beans"],
+          "difficulty": "easy",
+          "category": "proteins",
+          "learning_point": "Nutrient functions"
+        },
+        {
+          "id": "fib_011",
+          "question": "Corn kernels pop into popcorn when _______ inside turns to steam.",
+          "answer": "water",
+          "context": "The moisture inside each kernel creates pressure that makes it pop!",
+          "hints": ["What liquid is inside corn kernels?", "What creates steam when heated?"],
+          "difficulty": "hard",
+          "category": "vegetables",
+          "learning_point": "Food science"
+        },
+        {
+          "id": "fib_012",
+          "question": "Mangoes are called the '_______ of fruits' in many countries.",
+          "answer": "king",
+          "context": "This title shows how much people love this tropical fruit!",
+          "hints": ["What royal title shows something is the best?", "Rhymes with 'ring'"],
+          "difficulty": "medium",
+          "category": "fruits",
+          "learning_point": "Cultural food appreciation"
+        }
+      ],
+      "matching_pairs_questions": [
+        {
+          "id": "match_001",
+          "question": "Match each food with its main nutrient benefit:",
+          "left_column": [
+            "Fish",
+            "Spinach", 
+            "Sweet potato",
+            "Eggs"
+          ],
+          "right_column": [
+            "Iron for strong blood",
+            "Omega-3 for brain health",
+            "Complete protein with all amino acids",
+            "Beta-carotene for good vision"
+          ],
+          "correct_matches": {
+            "Fish": "Omega-3 for brain health",
+            "Spinach": "Iron for strong blood",
+            "Sweet potato": "Beta-carotene for good vision",
+            "Eggs": "Complete protein with all amino acids"
+          },
+          "difficulty": "medium",
+          "category": "nutrition",
+          "learning_point": "Nutrients and health benefits"
+        },
+        {
+          "id": "match_002",
+          "question": "Match each food with how it grows:",
+          "left_column": [
+            "Carrots",
+            "Grapes",
+            "Broccoli",
+            "Pineapple"
+          ],
+          "right_column": [
+            "On tall plants with spiky leaves",
+            "Underground as roots",
+            "In clusters on climbing vines", 
+            "As flower heads on stalks"
+          ],
+          "correct_matches": {
+            "Carrots": "Underground as roots",
+            "Grapes": "In clusters on climbing vines",
+            "Broccoli": "As flower heads on stalks",
+            "Pineapple": "On tall plants with spiky leaves"
+          },
+          "difficulty": "medium",
+          "category": "growing",
+          "learning_point": "How foods grow"
+        },
+        {
+          "id": "match_003",
+          "question": "Match each protein food with its source:",
+          "left_column": [
+            "Chicken",
+            "Lentils",
+            "Tofu",
+            "Fish"
+          ],
+          "right_column": [
+            "Ocean and rivers",
+            "Small lens-shaped seeds",
+            "Farm-raised birds",
+            "Pressed soybean milk"
+          ],
+          "correct_matches": {
+            "Chicken": "Farm-raised birds",
+            "Lentils": "Small lens-shaped seeds", 
+            "Tofu": "Pressed soybean milk",
+            "Fish": "Ocean and rivers"
+          },
+          "difficulty": "easy",
+          "category": "proteins",
+          "learning_point": "Food sources and origins"
+        },
+        {
+          "id": "match_004",
+          "question": "Match each fruit with its special characteristic:",
+          "left_column": [
+            "Watermelon",
+            "Strawberry",
+            "Banana",
+            "Orange"
+          ],
+          "right_column": [
+            "Has seeds on the outside",
+            "Mostly water inside",
+            "Packed with Vitamin C",
+            "Curved shape and gets sweeter when spotted"
+          ],
+          "correct_matches": {
+            "Watermelon": "Mostly water inside",
+            "Strawberry": "Has seeds on the outside",
+            "Banana": "Curved shape and gets sweeter when spotted",
+            "Orange": "Packed with Vitamin C"
+          },
+          "difficulty": "easy",
+          "category": "fruits",
+          "learning_point": "Unique fruit characteristics"
+        },
+        {
+          "id": "match_005",
+          "question": "Match each vegetable with what part of the plant we eat:",
+          "left_column": [
+            "Spinach",
+            "Corn",
+            "Bell pepper",
+            "Sweet potato"
+          ],
+          "right_column": [
+            "The fruit/pod",
+            "The leaves",
+            "The seeds",
+            "The root"
+          ],
+          "correct_matches": {
+            "Spinach": "The leaves",
+            "Corn": "The seeds", 
+            "Bell pepper": "The fruit/pod",
+            "Sweet potato": "The root"
+          },
+          "difficulty": "medium",
+          "category": "vegetables",
+          "learning_point": "Plant anatomy and edible parts"
+        },
+        {
+          "id": "match_006",
+          "question": "Match each food with its cooking method:",
+          "left_column": [
+            "Broccoli",
+            "Chicken",
+            "Beans",
+            "Corn"
+          ],
+          "right_column": [
+            "Can be popped when heated",
+            "Best when steamed to stay crispy",
+            "Should be cooked thoroughly for safety",
+            "Need to be soaked and cooked slowly"
+          ],
+          "correct_matches": {
+            "Broccoli": "Best when steamed to stay crispy",
+            "Chicken": "Should be cooked thoroughly for safety",
+            "Beans": "Need to be soaked and cooked slowly",
+            "Corn": "Can be popped when heated"
+          },
+          "difficulty": "medium",
+          "category": "cooking",
+          "learning_point": "Food preparation methods"
+        },
+        {
+          "id": "match_007",
+          "question": "Match each food with its color when ripe:",
+          "left_column": [
+            "Mango",
+            "Grapes",
+            "Carrots",
+            "Tomato"
+          ],
+          "right_column": [
+            "Red when fully ripe",
+            "Orange and sweet",
+            "Orange and crunchy", 
+            "Can be green, red, or purple"
+          ],
+          "correct_matches": {
+            "Mango": "Orange and sweet",
+            "Grapes": "Can be green, red, or purple",
+            "Carrots": "Orange and crunchy",
+            "Tomato": "Red when fully ripe"
+          },
+          "difficulty": "easy",
+          "category": "identification",
+          "learning_point": "Food identification by color"
+        },
+        {
+          "id": "match_008",
+          "question": "Match each food with its growing season:",
+          "left_column": [
+            "Strawberries",
+            "Watermelon",
+            "Apples",
+            "Sweet potato"
+          ],
+          "right_column": [
+            "Fall harvest",
+            "Early summer berries",
+            "Hot summer fruit",
+            "Fall root vegetable"
+          ],
+          "correct_matches": {
+            "Strawberries": "Early summer berries",
+            "Watermelon": "Hot summer fruit", 
+            "Apples": "Fall harvest",
+            "Sweet potato": "Fall root vegetable"
+          },
+          "difficulty": "medium",
+          "category": "seasons",
+          "learning_point": "Seasonal eating patterns"
+        }
+      ],
+      "bonus_questions": {
+        "true_false": [
+          {
+            "id": "tf_001",
+            "question": "All nuts grow on trees.",
+            "answer": false,
+            "explanation": "Most nuts grow on trees, but peanuts actually grow underground like potatoes!",
+            "difficulty": "medium",
+            "learning_point": "Food growing misconceptions"
+          },
+          {
+            "id": "tf_002", 
+            "question": "Eating a rainbow of colorful fruits and vegetables gives you different nutrients.",
+            "answer": true,
+            "explanation": "Different colors in fruits and vegetables come from different nutrients, so eating many colors helps you get lots of vitamins!",
+            "difficulty": "easy",
+            "learning_point": "Variety in diet"
+          },
+          {
+            "id": "tf_003",
+            "question": "Fish can only live in salt water.",
+            "answer": false,
+            "explanation": "Many fish live in fresh water like rivers and lakes, such as salmon and trout!",
+            "difficulty": "medium", 
+            "learning_point": "Fish habitats"
+          }
+        ],
+        "sequence_questions": [
+          {
+            "id": "seq_001",
+            "question": "Put these steps of growing tomatoes in the correct order:",
+            "items": [
+              "Plant the seed in soil",
+              "Green tomato grows", 
+              "Water and give sunlight",
+              "Tomato turns red when ripe",
+              "Plant grows flowers"
+            ],
+            "correct_order": [
+              "Plant the seed in soil",
+              "Water and give sunlight", 
+              "Plant grows flowers",
+              "Green tomato grows",
+              "Tomato turns red when ripe"
+            ],
+            "difficulty": "medium",
+            "learning_point": "Plant growth sequence"
+          }
+        ]
+      },
+      "game_settings": {
+        "difficulty_levels": {
+          "easy": {
+            "description": "Perfect for young children (ages 4-7)",
+            "question_types": ["multiple_choice", "fill_in_blank", "matching"],
+            "max_options": 3,
+            "visual_hints": true
+          },
+          "medium": {
+            "description": "Great for children (ages 8-12)", 
+            "question_types": ["multiple_choice", "fill_in_blank", "matching", "true_false"],
+            "max_options": 4,
+            "visual_hints": false
+          },
+          "hard": {
+            "description": "Challenge mode (ages 12+)",
+            "question_types": ["multiple_choice", "fill_in_blank", "matching", "sequence"],
+            "max_options": 4,
+            "complex_explanations": true
+          }
+        },
+        "learning_categories": [
+          "nutrition",
+          "growing", 
+          "cooking",
+          "identification",
+          "health_benefits",
+          "food_science",
+          "environmental"
+        ],
+        "reward_system": {
+          "points_per_correct": 10,
+          "bonus_for_streak": 5,
+          "badges": [
+            "Fruit Expert",
+            "Veggie Master", 
+            "Protein Pro",
+            "Nutrition Ninja",
+            "Healthy Eater"
+          ]
+        }
+      }
+    }
+  }

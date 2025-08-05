@@ -5,6 +5,7 @@ export default function ProfileLayout() {
     <Stack>
       <Stack.Screen name="setup" options={{ headerShown: false }} />
       <Stack.Screen name="food-selection" options={{ headerShown: false }} />
+      <Stack.Screen name="child-profile" options={{ headerShown: false }} />
     </Stack>
   );
 } 

@@ -2,21 +2,20 @@ import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import React, { useState } from 'react';
 import {
-    Alert,
-    Dimensions,
-    Image,
-    Modal,
-    ScrollView,
-    StyleSheet,
-    Text,
-    TouchableOpacity,
-    View
+  Alert,
+  Dimensions,
+  Image,
+  Modal,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View
 } from 'react-native';
 import Button from '../../components/common/Button';
-import StatusBar from '../../components/common/StatusBar';
-import { cameraService } from '../../utils/cameraService';
 import { colors } from '../../constants/colors';
 import { foods, type Food } from '../../constants/foods';
+import { cameraService } from '../../utils/cameraService';
 
 const { width, height } = Dimensions.get('window');
 
@@ -233,7 +232,6 @@ const MealLoggingScreen: React.FC = () => {
 
   return (
     <View style={styles.container}>
-      <StatusBar />
       <ScrollView style={styles.scrollView}>
         {/* Header */}
         <LinearGradient

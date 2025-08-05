@@ -1,95 +1,88 @@
 import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { router } from 'expo-router';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import {
-    Alert,
-    Image,
-    KeyboardAvoidingView,
-    Platform,
-    ScrollView,
-    StyleSheet,
-    Text,
-    View
+  Alert,
+  Dimensions,
+  Image,
+  KeyboardAvoidingView,
+  Platform,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View
 } from 'react-native';
 import Button from '../../components/common/Button';
 import Input from '../../components/common/Input';
 import PhoneInput from '../../components/common/PhoneInput';
 import StatusBar from '../../components/common/StatusBar';
 import { colors } from '../../constants/colors';
-import authService from '../../utils/authService';
+
+const { width } = Dimensions.get('window');
 
 interface FormData {
-  fullName: string;
   email: string;
-  phoneNumber: string;
   password: string;
   confirmPassword: string;
+  phoneNumber: string;
 }
 
 interface FormErrors {
-  fullName?: string;
-  email?: string;
-  phoneNumber?: string;
   password?: string;
   confirmPassword?: string;
+  email?: string;
+  phoneNumber?: string;
 }
 
-const SignUpScreen = () => {
+const SignUpScreen: React.FC = () => {
   const [formData, setFormData] = useState<FormData>({
-    fullName: '',
+    password: '',
+    confirmPassword: '',
     email: '',
     phoneNumber: '',
-    password: '',
-    confirmPassword: ''
   });
   const [errors, setErrors] = useState<FormErrors>({});
   const [loading, setLoading] = useState(false);
-  const [countryCode, setCountryCode] = useState('US');
-  const [country, setCountry] = useState(null);
-  const [withCountryNameButton, setWithCountryNameButton] = useState(false);
-  const [phone, setPhone] = useState('');
+
   
   const validateForm = (): boolean => {
     const newErrors: FormErrors = {};
-    
-    if (!formData.fullName.trim()) {
-      newErrors.fullName = 'Full name is required';
-    }
-    
+  
+    // Email validation
     if (!formData.email.trim()) {
       newErrors.email = 'Email is required';
     } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
       newErrors.email = 'Please enter a valid email';
     }
-    
-    if (!formData.phoneNumber || !formData.phoneNumber.trim()) {
-      newErrors.phoneNumber = 'Phone number is required';
-    } else {
-      // Remove the country code to get just the number
-      const phoneWithoutCode = formData.phoneNumber.replace(/^\+\d{1,4}/, '');
-      if (phoneWithoutCode.length < 7) {
-        newErrors.phoneNumber = 'Please enter a valid phone number';
-      }
-    }
-    
-    if (!formData.password) {
+
+    // Password validation
+    if (!formData.password.trim()) {
       newErrors.password = 'Password is required';
     } else if (formData.password.length < 6) {
       newErrors.password = 'Password must be at least 6 characters';
     }
-    
-    if (formData.password !== formData.confirmPassword) {
+
+    // Confirm password validation
+    if (!formData.confirmPassword.trim()) {
+      newErrors.confirmPassword = 'Confirm password is required';
+    } else if (formData.password !== formData.confirmPassword) {
       newErrors.confirmPassword = 'Passwords do not match';
-    } else if (formData.confirmPassword != formData.password) {
-      newErrors.confirmPassword = 'Input the same password';
+    }
+    
+    // Phone number validation
+    if (!formData.phoneNumber.trim()) {
+      newErrors.phoneNumber = 'Phone number is required';
+    } else if (formData.phoneNumber.length < 10) {
+      newErrors.phoneNumber = 'Please enter a valid phone number';
     }
     
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
   
-  const handleSignUp = async (): Promise<void> => {
+  const handleSignUp = async () => {
     if (!validateForm()) {
       return;
     }
@@ -97,35 +90,27 @@ const SignUpScreen = () => {
     setLoading(true);
     
     try {
-      // Register user with real authentication service
-      const result = await authService.registerUser({
-        email: formData.email,
-        password: formData.password,
-        fullName: formData.fullName,
-        phoneNumber: formData.phoneNumber
-      });
+      // Simulate sending OTP
+      console.log('Sending phone OTP to:', formData.phoneNumber);
+      await new Promise(resolve => setTimeout(resolve, 1500));
       
-      if (result.success) {
-        // Navigate to OTP verification with user data
-        router.push({
-          pathname: '/auth/otp',
-          params: { 
-            phoneNumber: formData.phoneNumber,
-            email: formData.email,
-            isSignUp: 'true',
-            userId: result.userId
-          }
-        });
-      }
+      // Navigate to OTP verification with consistent absolute path
+      router.replace({
+        pathname: '/auth/otp',
+        params: { 
+          phoneNumber: formData.phoneNumber,
+          isSignUp: 'true' 
+        }
+      });
     } catch (error) {
       console.error('Sign up error:', error);
-      Alert.alert('Error', (error as Error).message || 'Registration failed. Please try again.');
+      Alert.alert('Error', 'Failed to send OTP. Please try again.');
     } finally {
       setLoading(false);
     }
   };
   
-  const handleGoogleSignUp = async (): Promise<void> => {
+  const handleGoogleSignUp = async () => {
     try {
       // Implement Google OAuth
       console.log('Google Sign Up');
@@ -134,7 +119,7 @@ const SignUpScreen = () => {
     }
   };
   
-  const updateFormData = (field: keyof FormData, value: string): void => {
+  const updateFormData = (field: keyof FormData, value: string) => {
     setFormData(prev => ({ ...prev, [field]: value }));
     if (errors[field]) {
       setErrors(prev => ({ ...prev, [field]: '' }));
@@ -172,21 +157,34 @@ const SignUpScreen = () => {
           </View>
           
           <View style={styles.form}>
-            <Input
-              placeholder="Enter your full name"
-              value={formData.fullName}
-              onChangeText={(text) => updateFormData('fullName', text)}
-              error={errors.fullName}
-              icon={<Ionicons name="person-outline" />}
-            />
-            
+                       
             <Input
               value={formData.email}
               onChangeText={(text) => updateFormData('email', text)}
               placeholder="Enter your email"
               keyboardType="email-address"
-              error={errors.email}
               icon={<Ionicons name="mail-outline" />}
+              error={errors.email}
+            />
+
+            <Input
+              value={formData.password}
+              onChangeText={(text) => updateFormData('password', text)}
+              placeholder="Enter your password"
+              keyboardType="default"
+              secureTextEntry={true}
+              icon={<Ionicons name="lock-closed-outline" />}
+              error={errors.password}
+            />
+
+            <Input
+              value={formData.confirmPassword}
+              onChangeText={(text) => updateFormData('confirmPassword', text)}
+              placeholder="Confirm your password"
+              keyboardType="default"
+              secureTextEntry={true}
+              icon={<Ionicons name="lock-closed-outline" />}
+              error={errors.confirmPassword}
             />
             
             <PhoneInput
@@ -198,58 +196,41 @@ const SignUpScreen = () => {
               containerStyle={{}}
             />
             
-            <Input
-              value={formData.password}
-              onChangeText={(text) => updateFormData('password', text)}
-              placeholder="Create a password"
-              secureTextEntry
-              error={errors.password}
-              icon={<Ionicons name="lock-closed-outline" />}
-            />
-            
-            <Input
-              value={formData.confirmPassword}
-              onChangeText={(text) => updateFormData('confirmPassword', text)}
-              placeholder="Confirm your password"
-              secureTextEntry
-              error={errors.confirmPassword}
-              icon={<Ionicons name="lock-closed-outline" />}
-            />
             
             <Button
-              title="Sign Up"
+              title="Create Account"
               onPress={handleSignUp}
               loading={loading}
               style={styles.signUpButton}
             />
             
-            <Button
-              title="Back to Sign In"
-              onPress={() => router.push('/auth/sign-in')}
-              variant="outline"
-              style={styles.backToSignInButton}
-            />
-            
             <View style={styles.dividerContainer}>
               <View style={styles.divider} />
-              <Text style={styles.dividerText}>Or</Text>
+              <Text style={styles.dividerText}>Or continue with</Text>
               <View style={styles.divider} />
             </View>
             
-            <Button
-              title="Sign up with Google"
+            <TouchableOpacity
+              style={styles.googleButton}
               onPress={handleGoogleSignUp}
-              variant="google"
-              icon={
-                <Image 
-                  source={require('../../assets/images/icons/google.png')}
-                  style={styles.googleIcon}
-                />
-              }
-            />
+              activeOpacity={0.8}
+            >
+              <Image 
+                source={require('../../assets/images/icons/google.png')}
+                style={styles.googleIcon}
+              />
+              <Text style={styles.googleButtonText}>Sign up with Google</Text>
+            </TouchableOpacity>
             
             <View style={styles.footer}>
               <Text style={styles.footerText}>By creating an account, you agree to our Terms of Service and Privacy Policy</Text>
+            </View>
+            
+            <View style={styles.signInContainer}>
+              <Text style={styles.signInText}>Already have an account? </Text>
+              <TouchableOpacity onPress={() => router.replace('/auth/sign-in')}>
+                <Text style={styles.signInLink}>Sign In</Text>
+              </TouchableOpacity>
             </View>
           </View>
         </ScrollView>
@@ -264,15 +245,14 @@ const styles = StyleSheet.create({
     backgroundColor: colors.background,
   },
   header: {
-    paddingTop: 60,
-    paddingBottom: 30,
+    paddingTop: 10,
+    paddingBottom: 50,
     alignItems: 'center',
   },
   mascot: {
-    width: 180,
-    height: 180,
+    width: 120,
+    height: 120,
     resizeMode: 'contain',
-    marginBottom: 16,
   },
   welcomeText: {
     fontSize: 24,
@@ -299,7 +279,7 @@ const styles = StyleSheet.create({
   },
   formHeader: {
     alignItems: 'center',
-    marginBottom: 32,
+    marginBottom: 10,
   },
   formTitle: {
     fontSize: 28,
@@ -313,19 +293,20 @@ const styles = StyleSheet.create({
   },
   form: {
     width: '100%',
+    gap: 6,
   },
   signUpButton: {
     marginTop: 8,
-    marginBottom: 24,
+    marginBottom: 8,
   },
   backToSignInButton: {
-    marginTop: 8,
-    marginBottom: 24,
+    marginTop: 12,
+    marginBottom: 12,
   },
   dividerContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginVertical: 24,
+    marginVertical: 20,
   },
   divider: {
     flex: 1,
@@ -337,16 +318,34 @@ const styles = StyleSheet.create({
     color: colors.text.secondary,
     marginHorizontal: 16,
   },
+  googleButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: colors.surface,
+    paddingVertical: 16,
+    paddingHorizontal: 24,
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: colors.border,
+    marginBottom: 16,
+  },
   googleIcon: {
     width: 24,
     height: 24,
     resizeMode: 'contain',
+    marginRight: 12,
+  },
+  googleButtonText: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: colors.text.primary,
   },
   footer: {
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 32,
+    marginTop: 24,
   },
   footerText: {
     fontSize: 12,
@@ -359,6 +358,21 @@ const styles = StyleSheet.create({
     color: colors.primary,
     fontWeight: '600',
   },
+  signInContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 20,
+  },
+  signInText: {
+    fontSize: 14,
+    color: colors.text.secondary,
+  },
+  signInLink: {
+    fontSize: 14,
+    color: colors.primary,
+    fontWeight: '600',
+  },
 });
 
-export default SignUpScreen; 
+export default SignUpScreen;
