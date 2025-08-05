@@ -31,7 +31,7 @@ export const foods: FoodsByCategory = {
       id: 'apple',
       name: 'Apple',
       category: 'fruits',
-      icon: '🍎',
+      icon: require('../assets/images/foods/apple.png'),
       nutrients: {
         calories: 52,
         protein: 0.3,
@@ -53,7 +53,7 @@ export const foods: FoodsByCategory = {
       id: 'banana',
       name: 'Banana',
       category: 'fruits',
-      icon: '🍌',
+      icon: require('../assets/images/foods/banana.png'),
       nutrients: {
         calories: 89,
         protein: 1.1,
@@ -75,7 +75,7 @@ export const foods: FoodsByCategory = {
       id: 'orange',
       name: 'Orange',
       category: 'fruits',
-      icon: '🍊',
+      icon: require('../assets/images/foods/orange.png'),
       nutrients: {
         calories: 47,
         protein: 0.9,
@@ -97,7 +97,7 @@ export const foods: FoodsByCategory = {
       id: 'strawberry',
       name: 'Strawberry',
       category: 'fruits',
-      icon: '🍓',
+      icon: require('../assets/images/foods/strawberry.png'),
       nutrients: {
         calories: 32,
         protein: 0.7,
@@ -119,7 +119,7 @@ export const foods: FoodsByCategory = {
       id: 'grapes',
       name: 'Grapes',
       category: 'fruits',
-      icon: '🍇',
+      icon: require('../assets/images/foods/grapes.png'),
       nutrients: {
         calories: 69,
         protein: 0.7,
@@ -141,7 +141,7 @@ export const foods: FoodsByCategory = {
       id: 'watermelon',
       name: 'Watermelon',
       category: 'fruits',
-      icon: '🍉',
+      icon: require('../assets/images/foods/watermelon.png'),
       nutrients: {
         calories: 30,
         protein: 0.6,
@@ -165,7 +165,7 @@ export const foods: FoodsByCategory = {
       id: 'carrot',
       name: 'Carrot',
       category: 'vegetables',
-      icon: '🥕',
+      icon: require('../assets/images/foods/carrot.png'),
       nutrients: {
         calories: 41,
         protein: 0.9,
@@ -187,7 +187,7 @@ export const foods: FoodsByCategory = {
       id: 'broccoli',
       name: 'Broccoli',
       category: 'vegetables',
-      icon: '🥦',
+      icon: require('../assets/images/foods/broccoli.png'),
       nutrients: {
         calories: 34,
         protein: 2.8,
@@ -209,7 +209,7 @@ export const foods: FoodsByCategory = {
       id: 'sweetpotato',
       name: 'Sweet Potato',
       category: 'vegetables',
-      icon: '🍠',
+      icon: require('../assets/images/foods/sweetpotato.png'),
       nutrients: {
         calories: 86,
         protein: 1.6,
@@ -228,10 +228,10 @@ export const foods: FoodsByCategory = {
       ageRecommended: '6+ months'
     },
     {
-      id: 'peas',
-      name: 'Peas',
+      id: 'beans',
+      name: 'Beans',
       category: 'vegetables',
-      icon: '🫛',
+      icon: require('../assets/images/foods/beans.png'),
       nutrients: {
         calories: 81,
         protein: 5.4,
@@ -255,7 +255,7 @@ export const foods: FoodsByCategory = {
       id: 'chicken',
       name: 'Chicken',
       category: 'proteins',
-      icon: '🍗',
+      icon: require('../assets/images/foods/chicken.png'),
       nutrients: {
         calories: 165,
         protein: 31,
@@ -277,7 +277,7 @@ export const foods: FoodsByCategory = {
       id: 'fish',
       name: 'Fish',
       category: 'proteins',
-      icon: '🐟',
+      icon: require('../assets/images/foods/fish.png'),
       nutrients: {
         calories: 84,
         protein: 20,
@@ -299,7 +299,7 @@ export const foods: FoodsByCategory = {
       id: 'eggs',
       name: 'Eggs',
       category: 'proteins',
-      icon: '🥚',
+      icon: require('../assets/images/foods/egg.png'),
       nutrients: {
         calories: 155,
         protein: 13,
@@ -323,7 +323,7 @@ export const foods: FoodsByCategory = {
       id: 'rice',
       name: 'Rice',
       category: 'grains',
-      icon: '🍚',
+      icon: require('../assets/images/foods/rice.png'),
       nutrients: {
         calories: 130,
         protein: 2.7,
@@ -345,7 +345,7 @@ export const foods: FoodsByCategory = {
       id: 'oats',
       name: 'Oats',
       category: 'grains',
-      icon: '🌾',
+      icon: require('../assets/images/foods/maize .png'),
       nutrients: {
         calories: 68,
         protein: 2.4,
@@ -369,7 +369,7 @@ export const foods: FoodsByCategory = {
       id: 'yogurt',
       name: 'Yogurt',
       category: 'dairy',
-      icon: '🥛',
+      icon: require('../assets/images/foods/yogurt.png'),
       nutrients: {
         calories: 59,
         protein: 10,
@@ -391,7 +391,7 @@ export const foods: FoodsByCategory = {
       id: 'cheese',
       name: 'Cheese',
       category: 'dairy',
-      icon: '🧀',
+      icon: require('../assets/images/foods/cheese.png'),
       nutrients: {
         calories: 113,
         protein: 7,

@@ -1,13 +1,13 @@
 import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { router, useLocalSearchParams } from 'expo-router';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import {
-    Animated,
-    StyleSheet,
-    Text,
-    TouchableOpacity,
-    View
+  Animated,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View
 } from 'react-native';
 import Button from '../../components/common/Button';
 import StatusBar from '../../components/common/StatusBar';
@@ -20,10 +20,7 @@ const VerificationSuccessScreen = () => {
   const scaleAnim = new Animated.Value(0);
   const opacityAnim = new Animated.Value(0);
   
-  const [countryCode, setCountryCode] = useState('US');
-  const [country, setCountry] = useState(null);
-  const [withCountryNameButton, setWithCountryNameButton] = useState(false);
-  const [phone, setPhone] = useState('');
+
   
   useEffect(() => {
     Animated.parallel([
@@ -40,23 +37,31 @@ const VerificationSuccessScreen = () => {
       })
     ]).start();
     
-    // Auto navigate after 3 seconds
+    // Auto navigate after 3 seconds with consistent absolute paths
     const timer = setTimeout(() => {
-      if (isSignUp === 'true') {
-        router.push('/profile/setup');
-      } else {
-        router.push('/(tabs)');
+      try {
+        if (isSignUp === 'true') {
+          router.replace('/profile/child-profile');
+        } else {
+          router.replace('/(tabs)');
+        }
+      } catch (error) {
+        console.error('Auto navigation error:', error);
       }
     }, 3000);
     
     return () => clearTimeout(timer);
-  }, []);
+  }, [isSignUp]);
   
-  const handleContinue = (): void => {
-    if (isSignUp === 'true') {
-      router.push('/profile/setup');
-    } else {
-      router.push('/(tabs)');
+  const handleContinue = () => {
+    try {
+      if (isSignUp === 'true') {
+        router.replace('/profile/child-profile');
+      } else {
+        router.replace('/(tabs)');
+      }
+    } catch (error) {
+      console.error('Navigation error:', error);
     }
   };
   
@@ -130,7 +135,13 @@ const VerificationSuccessScreen = () => {
           
           <TouchableOpacity 
             style={styles.skipButton}
-            onPress={() => router.push('/(tabs)')}
+            onPress={() => {
+              try {
+                router.replace('/(tabs)');
+              } catch (error) {
+                console.error('Skip navigation error:', error);
+              }
+            }}
           >
             <Text style={styles.skipText}>Skip for now</Text>
           </TouchableOpacity>
@@ -212,4 +223,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default VerificationSuccessScreen; 
+export default VerificationSuccessScreen;

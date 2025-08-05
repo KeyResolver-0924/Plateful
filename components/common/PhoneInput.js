@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import {
-    StyleSheet,
-    Text,
-    TextInput,
-    View
+  StyleSheet,
+  Text,
+  TextInput,
+  View
 } from 'react-native';
 import { colors } from '../../constants/colors';
 import { getCountryByCode } from '../../constants/countries';
@@ -30,7 +30,7 @@ const PhoneInput = ({
   const handleCountrySelect = (country) => {
     setSelectedCountry(country);
     // Update the full phone number with new country code
-    const fullNumber = country.callingCode + phoneNumber;
+    const fullNumber = phoneNumber;
     onChangeText(fullNumber);
   };
 
