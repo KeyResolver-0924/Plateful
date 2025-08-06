@@ -4,20 +4,20 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { router } from 'expo-router';
 import React, { useCallback, useEffect, useState } from 'react';
 import {
-    Dimensions,
-    Image,
-    ScrollView,
-    StyleSheet,
-    Text,
-    TouchableOpacity,
-    View
+  Dimensions,
+  Image,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View
 } from 'react-native';
 import Animated, {
-    useAnimatedStyle,
-    useSharedValue,
-    withDelay,
-    withSpring,
-    withTiming
+  useAnimatedStyle,
+  useSharedValue,
+  withDelay,
+  withSpring,
+  withTiming
 } from 'react-native-reanimated';
 import { colors } from '../constants/colors';
 import { NavigationService } from '../utils/navigation';
@@ -109,7 +109,7 @@ const MainScreen: React.FC = () => {
       subtitle: 'Log meals & nutrition',
       icon: 'restaurant-outline',
       color: colors.primary,
-      gradient: colors.gradient.primary as [string, string]
+      gradient: colors.gradients.primary as [string, string]
     },
     {
       id: 'meals',
@@ -117,7 +117,7 @@ const MainScreen: React.FC = () => {
       subtitle: 'View past meals',
       icon: 'calendar-outline',
       color: colors.secondary,
-      gradient: colors.gradient.secondary as [string, string]
+      gradient: colors.gradients.secondary as [string, string]
     },
     {
       id: 'profile',
@@ -125,7 +125,7 @@ const MainScreen: React.FC = () => {
       subtitle: 'Manage account',
       icon: 'person-outline',
       color: colors.warning,
-      gradient: colors.gradient.sunset as [string, string]
+      gradient: colors.gradients.food as [string, string]
     },
     {
       id: 'gamification',
@@ -133,7 +133,7 @@ const MainScreen: React.FC = () => {
       subtitle: 'Earn badges & points',
       icon: 'trophy-outline',
       color: colors.info,
-      gradient: colors.gradient.fresh as [string, string]
+      gradient: colors.gradients.food as [string, string]
     }
   ];
   
