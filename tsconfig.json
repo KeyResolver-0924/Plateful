@@ -5,10 +5,16 @@
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "jsx": "react-jsx",
+    "target": "ES2020",
+    "lib": ["ES2020"],
     "paths": {
       "@/*": ["./*"]
     },
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "allowJs": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noEmit": true
   },
   "include": [
     "**/*.ts",

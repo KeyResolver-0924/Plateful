@@ -1,158 +1,125 @@
 // API Configuration
 export const API_CONFIG = {
-  // Development
-  development: {
-    BASE_URL: 'http://localhost:5000',
-    TIMEOUT: 10000,
+  // Base URL for API calls
+  BASE_URL: process.env.EXPO_PUBLIC_API_URL || 'http://localhost:5000/api',
+  
+  // API endpoints
+  ENDPOINTS: {
+    // Authentication
+    AUTH: {
+      LOGIN: '/auth/login',
+      REGISTER: '/auth/register',
+      ME: '/auth/me',
+      LOGOUT: '/auth/logout',
+    },
+    
+    // User management
+    USERS: {
+      PROFILE: '/users/profile',
+      AVATAR: '/users/avatar',
+    },
+    
+    // Child management
+    CHILDREN: {
+      LIST: '/children',
+      CREATE: '/children',
+      UPDATE: (id: string) => `/children/${id}`,
+      DELETE: (id: string) => `/children/${id}`,
+    },
+    
+    // Meal management
+    MEALS: {
+      LIST: '/meals',
+      CREATE: '/meals',
+      UPDATE: (id: string) => `/meals/${id}`,
+      DELETE: (id: string) => `/meals/${id}`,
+    },
+    
+    // Food management
+    FOODS: {
+      LIST: '/foods',
+      CREATE: '/foods',
+      UPDATE: (id: string) => `/foods/${id}`,
+      DELETE: (id: string) => `/foods/${id}`,
+    },
+    
+    // Gamification
+    GAMIFICATION: {
+      BADGES: '/gamification/badges',
+      PROGRESS: '/gamification/progress',
+      UNLOCK_BADGE: (id: string) => `/gamification/badges/${id}/unlock`,
+    },
+    
+    // Reporting
+    REPORTING: {
+      REPORTS: '/reporting',
+      ANALYTICS: '/reporting/analytics',
+    },
+    
+    // Learning
+    LEARNING: {
+      CONTENT: '/learning',
+      PROGRESS: (id: string) => `/learning/${id}/progress`,
+    },
+    
+    // File upload
+    UPLOAD: {
+      FILE: '/upload',
+    },
+    
+    // Health check
+    HEALTH: '/health',
+  },
+  
+  // Request configuration
+  REQUEST: {
+    TIMEOUT: 10000, // 10 seconds
     RETRY_ATTEMPTS: 3,
+    RETRY_DELAY: 1000, // 1 second
   },
-  // Production
-  production: {
-    BASE_URL: 'https://api.platefull.com',
-    TIMEOUT: 15000,
-    RETRY_ATTEMPTS: 2,
+  
+  // Headers
+  HEADERS: {
+    CONTENT_TYPE: 'application/json',
+    AUTHORIZATION: 'Bearer',
   },
-  // Staging
-  staging: {
-    BASE_URL: 'https://staging-api.platefull.com',
-    TIMEOUT: 12000,
-    RETRY_ATTEMPTS: 3,
-  }
+  
+  // Status codes
+  STATUS: {
+    SUCCESS: 200,
+    CREATED: 201,
+    BAD_REQUEST: 400,
+    UNAUTHORIZED: 401,
+    FORBIDDEN: 403,
+    NOT_FOUND: 404,
+    INTERNAL_SERVER_ERROR: 500,
+  },
 };
 
-// Get current environment
-export const getCurrentEnvironment = () => {
-  if (__DEV__) {
-    return 'development';
-  }
-  // You can add logic here to detect staging/production
-  return 'production';
-};
-
-// Get API config for current environment
-export const getApiConfig = () => {
-  const env = getCurrentEnvironment();
-  return API_CONFIG[env] || API_CONFIG.development;
-};
-
-// API Endpoints
-export const API_ENDPOINTS = {
-  // Auth endpoints
-  AUTH: {
-    SIGNIN: '/api/auth/signin',
-    SIGNUP: '/api/auth/signup',
-    SIGNOUT: '/api/auth/signout',
-    SEND_OTP: '/api/auth/send-otp',
-    VERIFY_OTP: '/api/auth/verify-otp',
-    RESET_PASSWORD: '/api/auth/reset-password',
-    REFRESH_TOKEN: '/api/auth/refresh-token',
-  },
-
-  // User endpoints
-  USER: {
-    PROFILE: '/api/users/profile',
-    UPDATE_PROFILE: '/api/users/profile',
-    DELETE_ACCOUNT: '/api/users/account',
-    UPLOAD_AVATAR: '/api/users/avatar',
-  },
-
-  // Food endpoints
-  FOODS: {
-    LIST: '/api/foods',
-    DETAIL: (id: string) => `/api/foods/${id}`,
-    SEARCH: '/api/foods/search',
-    RECOMMENDED: '/api/foods/recommended',
-    CATEGORIES: '/api/foods/categories',
-    BY_CATEGORY: '/api/foods/category',
-  },
-
-  // Meal endpoints
-  MEALS: {
-    LIST: '/api/meals',
-    CREATE: '/api/meals',
-    DETAIL: (id: string) => `/api/meals/${id}`,
-    UPDATE: (id: string) => `/api/meals/${id}`,
-    DELETE: (id: string) => `/api/meals/${id}`,
-    BY_DATE: (date: string) => `/api/meals/date/${date}`,
-    BY_TYPE: '/api/meals/type',
-    NUTRITION_SUMMARY: '/api/meals/nutrition-summary',
-    UPLOAD_IMAGE: (id: string) => `/api/meals/${id}/image`,
-  },
-
-  // Progress endpoints
-  PROGRESS: {
-    GOALS: '/api/progress/goals',
-    REPORTS: '/api/progress/reports',
-    REPORT_BY_DATE: (date: string) => `/api/progress/reports/${date}`,
-    ACHIEVEMENTS: '/api/progress/achievements',
-    SUMMARY: '/api/progress/summary',
-    STREAK: '/api/progress/streak',
-    INSIGHTS: '/api/progress/insights',
-    CHARTS: '/api/progress/charts',
-  },
-
-  // Notifications endpoints
-  NOTIFICATIONS: {
-    LIST: '/api/notifications',
-    MARK_READ: (id: string) => `/api/notifications/${id}/read`,
-    MARK_ALL_READ: '/api/notifications/read-all',
-    SETTINGS: '/api/notifications/settings',
-  },
-
-  // Health check
-  HEALTH: '/health',
-};
-
-// API Response Status Codes
-export const API_STATUS = {
-  SUCCESS: 200,
-  CREATED: 201,
-  NO_CONTENT: 204,
-  BAD_REQUEST: 400,
-  UNAUTHORIZED: 401,
-  FORBIDDEN: 403,
-  NOT_FOUND: 404,
-  CONFLICT: 409,
-  UNPROCESSABLE_ENTITY: 422,
-  INTERNAL_SERVER_ERROR: 500,
-  SERVICE_UNAVAILABLE: 503,
-};
-
-// API Error Messages
-export const API_ERROR_MESSAGES = {
+// Error messages
+export const API_ERRORS = {
   NETWORK_ERROR: 'Network error. Please check your connection.',
-  UNAUTHORIZED: 'Session expired. Please sign in again.',
-  FORBIDDEN: 'You do not have permission to access this resource.',
-  NOT_FOUND: 'The requested resource was not found.',
-  SERVER_ERROR: 'An unexpected error occurred. Please try again later.',
+  TIMEOUT_ERROR: 'Request timeout. Please try again.',
+  UNAUTHORIZED: 'Unauthorized. Please login again.',
+  FORBIDDEN: 'Access denied.',
+  NOT_FOUND: 'Resource not found.',
+  SERVER_ERROR: 'Server error. Please try again later.',
   VALIDATION_ERROR: 'Please check your input and try again.',
-  TIMEOUT_ERROR: 'Request timed out. Please try again.',
+  UNKNOWN_ERROR: 'An unknown error occurred.',
 };
 
-// API Request Headers
-export const getApiHeaders = (token?: string) => {
-  const headers: Record<string, string> = {
-    'Content-Type': 'application/json',
-    'Accept': 'application/json',
-  };
-
-  if (token) {
-    headers['Authorization'] = `Bearer ${token}`;
-  }
-
-  return headers;
-};
-
-// API Request Options
-export const getApiRequestOptions = (method: string, data?: any, token?: string) => {
-  const options: RequestInit = {
-    method,
-    headers: getApiHeaders(token),
-  };
-
-  if (data && method !== 'GET') {
-    options.body = JSON.stringify(data);
-  }
-
-  return options;
+// Success messages
+export const API_SUCCESS = {
+  LOGIN: 'Login successful!',
+  REGISTER: 'Registration successful!',
+  LOGOUT: 'Logout successful!',
+  PROFILE_UPDATE: 'Profile updated successfully!',
+  CHILD_ADDED: 'Child added successfully!',
+  CHILD_UPDATED: 'Child updated successfully!',
+  CHILD_REMOVED: 'Child removed successfully!',
+  MEAL_ADDED: 'Meal added successfully!',
+  MEAL_UPDATED: 'Meal updated successfully!',
+  MEAL_REMOVED: 'Meal removed successfully!',
+  BADGE_UNLOCKED: 'Badge unlocked!',
+  FILE_UPLOADED: 'File uploaded successfully!',
 }; 

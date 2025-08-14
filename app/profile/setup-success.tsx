@@ -3,17 +3,18 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { router } from 'expo-router';
 import { useEffect } from 'react';
 import {
-    Animated,
-    StyleSheet,
-    Text,
-    TouchableOpacity,
-    View
+  Animated,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View
 } from 'react-native';
 import Button from '../../components/common/Button';
-import StatusBar from '../../components/common/StatusBar';
 import { colors } from '../../constants/colors';
+import { useAuthStore } from '../../stores/authStore';
 
 const SetupSuccessScreen = () => {
+  const { setOnboardingComplete, setNewUser } = useAuthStore();
   const scaleAnim = new Animated.Value(0);
   const opacityAnim = new Animated.Value(0);
   
@@ -35,7 +36,9 @@ const SetupSuccessScreen = () => {
     // Auto navigate after 3 seconds
     const timer = setTimeout(() => {
       try {
-        router.replace('/(tabs)');
+        setOnboardingComplete(true);
+        setNewUser(false);
+        router.replace('/(tabs)' as any);
       } catch (error) {
         console.error('Auto navigation error:', error);
       }
@@ -46,7 +49,9 @@ const SetupSuccessScreen = () => {
   
   const handleContinue = () => {
     try {
-      router.replace('/(tabs)');
+      setOnboardingComplete(true);
+      setNewUser(false);
+      router.replace('/(tabs)' as any);
     } catch (error) {
       console.error('Navigation error:', error);
     }
@@ -54,7 +59,6 @@ const SetupSuccessScreen = () => {
   
   return (
     <View style={styles.container}>
-      <StatusBar />
       <LinearGradient
         colors={[colors.primary, colors.primaryDark]}
         style={styles.header}
@@ -97,7 +101,7 @@ const SetupSuccessScreen = () => {
             { opacity: opacityAnim }
           ]}
         >
-          <Ionicons name="person-checkmark" size={48} color={colors.primary} />
+          <Ionicons name="checkmark-circle" size={48} color={colors.primary} />
           <Text style={styles.messageTitle}>Ready to Start!</Text>
           <Text style={styles.messageText}>
             Your child&apos;s profile is now ready. You can start tracking meals, 
@@ -121,7 +125,9 @@ const SetupSuccessScreen = () => {
             style={styles.skipButton}
             onPress={() => {
               try {
-                router.replace('/(tabs)');
+                setOnboardingComplete(true);
+                setNewUser(false);
+                router.replace('/(tabs)' as any);
               } catch (error) {
                 console.error('Skip navigation error:', error);
               }

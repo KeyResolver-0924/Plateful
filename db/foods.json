@@ -1,0 +1,2483 @@
+{
+    "fruits": {
+      "apple": {
+        "description": "Apples are crunchy fruits that come in many varieties like Granny Smith, Red Delicious, and Fuji! They have seeds in the core and crispy flesh.",
+        "image": "assets/images/foods/apple.png",
+        "nutrition_per_medium": {
+          "carbohydrates": "25 grams - Natural sugars and fiber for energy",
+          "protein": "0.5 grams - Small amount for building",
+          "fat": "0.3 grams - Very low fat content"
+        },
+        "nutrient_sources": {
+          "carbohydrates": "Natural fruit sugars (fructose) and pectin fiber from the apple tree 🍎",
+          "protein": "Amino acids produced by the apple tree",
+          "fat": "Natural oils mainly in the seeds"
+        },
+        "how_grown": [
+          "Plant apple seeds or graft onto rootstock",
+          "Water regularly and provide full sunlight",
+          "Apple trees need cold winters to fruit properly",
+          "Trees bloom with beautiful white/pink flowers in spring",
+          "Apples develop over summer and ripen in fall"
+        ],
+        "how_to_eat": ["Fresh and raw", "In pies and baked goods", "As applesauce", "Dried apple chips", "In salads", "Juiced"],
+        "quiz": {
+          "questions": [
+            {
+              "question": "What part of an apple do you eat?",
+              "options": [
+                "A) The seeds",
+                "B) The crunchy flesh",
+                "C) The stem",
+                "D) The roots"
+              ],
+              "correct_answer": "B",
+              "explanation": "The crunchy flesh"
+            },
+            {
+              "question": "What season do apples ripen and get picked?",
+              "options": [
+                "A) Spring",
+                "B) Summer",
+                "C) Fall",
+                "D) Winter"
+              ],
+              "correct_answer": "C",
+              "explanation": "Fall"
+            },
+            {
+              "question": "What colors can apples be?",
+              "options": [
+                "A) Only red",
+                "B) Red, green, and yellow",
+                "C) Only green",
+                "D) Blue and purple"
+              ],
+              "correct_answer": "B",
+              "explanation": "Red, green, and yellow"
+            },
+            {
+              "question": "Where do apple seeds grow inside the fruit?",
+              "options": [
+                "A) In the skin",
+                "B) In the stem",
+                "C) In the core",
+                "D) On the outside"
+              ],
+              "correct_answer": "C",
+              "explanation": "In the core"
+            }
+          ]
+        }
+      },
+      "pear": {
+        "description": "Pears are sweet, juicy fruits with a unique texture - soft and grainy when ripe! They're shaped like a teardrop and come in green and red varieties.",
+        "image": "assets/images/foods/pear.png",
+        "nutrition_per_medium": {
+          "carbohydrates": "26 grams - Natural sugars and lots of fiber",
+          "protein": "1 gram - Small protein content",
+          "fat": "0.2 grams - Nearly fat-free"
+        },
+        "nutrient_sources": {
+          "carbohydrates": "Fruit sugars and high fiber content from the pear tree 🍐",
+          "protein": "Plant-based amino acids",
+          "fat": "Minimal natural fruit oils"
+        },
+        "how_grown": [
+          "Grow from seeds or grafted trees",
+          "Need well-drained soil and full sun",
+          "Pear trees bloom in early spring",
+          "Fruit develops through summer",
+          "Harvest when firm, ripen off the tree"
+        ],
+        "how_to_eat": ["Fresh when perfectly ripe", "Poached in wine", "In fruit salads", "Baked with cinnamon", "Dried pear snacks", "In smoothies"],
+        "quiz": {
+          "questions": [
+            {
+              "question": "What shape is a pear?",
+              "options": [
+                "A) Round like a ball",
+                "B) Square",
+                "C) Like a teardrop",
+                "D) Like a star"
+              ],
+              "correct_answer": "C",
+              "explanation": "Like a teardrop"
+            },
+            {
+              "question": "What texture does a ripe pear have?",
+              "options": [
+                "A) Hard and crunchy",
+                "B) Soft and grainy",
+                "C) Smooth like glass",
+                "D) Bumpy and rough"
+              ],
+              "correct_answer": "B",
+              "explanation": "Soft and grainy"
+            },
+            {
+              "question": "When should you eat a pear?",
+              "options": [
+                "A) When it's hard as a rock",
+                "B) When it's perfectly ripe",
+                "C) When it's frozen",
+                "D) When it's still green"
+              ],
+              "correct_answer": "B",
+              "explanation": "When it's perfectly ripe"
+            },
+            {
+              "question": "What colors can pears be?",
+              "options": [
+                "A) Only yellow",
+                "B) Green and red",
+                "C) Only brown",
+                "D) Purple and blue"
+              ],
+              "correct_answer": "B",
+              "explanation": "Green and red"
+            }
+          ]
+        }
+      },
+      "banana": {
+        "description": "Bananas are curved yellow fruits that grow in bunches! They're perfect portable snacks and get sweeter as they ripen with brown spots.",
+        "image": "assets/images/foods/banana.png",
+        "nutrition_per_medium": {
+          "carbohydrates": "27 grams - Quick energy from natural sugars",
+          "protein": "1.3 grams - More protein than most fruits",
+          "fat": "0.4 grams - Very low fat"
+        },
+        "nutrient_sources": {
+          "carbohydrates": "Natural fruit sugars and starch from the banana plant 🍌",
+          "protein": "Plant proteins and amino acids",
+          "fat": "Natural fruit oils in small amounts"
+        },
+        "how_grown": [
+          "Grow from banana plant shoots (not seeds!)",
+          "Need tropical, warm, humid climate",
+          "Plants grow tall with large leaves",
+          "Banana bunch forms and grows upward",
+          "Harvest green, ripen during shipping"
+        ],
+        "how_to_eat": ["Fresh and peeled", "In smoothies and shakes", "Banana bread", "Frozen banana ice cream", "Sliced on cereal", "Dried banana chips"],
+        "quiz": {
+          "questions": [
+            {
+              "question": "What shape is a banana?",
+              "options": [
+                "A) Straight like a stick",
+                "B) Round like a ball",
+                "C) Curved",
+                "D) Square"
+              ],
+              "correct_answer": "C",
+              "explanation": "Curved"
+            },
+            {
+              "question": "How do bananas grow?",
+              "options": [
+                "A) One at a time",
+                "B) In bunches",
+                "C) Underground",
+                "D) On the ground"
+              ],
+              "correct_answer": "B",
+              "explanation": "In bunches"
+            },
+            {
+              "question": "What happens to bananas as they get riper?",
+              "options": [
+                "A) They get more sour",
+                "B) They get sweeter",
+                "C) They turn blue",
+                "D) They get harder"
+              ],
+              "correct_answer": "B",
+              "explanation": "They get sweeter"
+            },
+            {
+              "question": "What do you need to do before eating a banana?",
+              "options": [
+                "A) Cook it",
+                "B) Cut it with a knife",
+                "C) Peel it",
+                "D) Wash it with soap"
+              ],
+              "correct_answer": "C",
+              "explanation": "Peel it"
+            }
+          ]
+        }
+      },
+      "orange": {
+        "description": "Oranges are citrus fruits packed with vitamin C! They have a bright orange peel and juicy segments inside that burst with tangy-sweet flavor.",
+        "image": "assets/images/foods/orange.png",
+        "nutrition_per_medium": {
+          "carbohydrates": "15 grams - Natural citrus sugars",
+          "protein": "1.2 grams - Small amount of plant protein",
+          "fat": "0.2 grams - Nearly fat-free"
+        },
+        "nutrient_sources": {
+          "carbohydrates": "Citrus sugars and fiber from orange tree 🍊",
+          "protein": "Plant-based amino acids",
+          "fat": "Essential oils in the peel and minimal fruit oils"
+        },
+        "how_grown": [
+          "Grow from seeds or grafted citrus trees",
+          "Need warm, sunny climate with mild winters",
+          "Trees bloom with fragrant white flowers",
+          "Fruit develops and stays green initially",
+          "Oranges turn orange when ripe and ready"
+        ],
+        "how_to_eat": ["Fresh peeled segments", "Freshly squeezed juice", "Orange zest in baking", "In fruit salads", "Dried orange slices", "Marmalade"],
+        "quiz": {
+          "questions": [
+            {
+              "question": "What vitamin are oranges famous for having lots of?",
+              "options": [
+                "A) Vitamin A",
+                "B) Vitamin B",
+                "C) Vitamin C",
+                "D) Vitamin D"
+              ],
+              "correct_answer": "C",
+              "explanation": "Vitamin C"
+            },
+            {
+              "question": "How are oranges organized inside?",
+              "options": [
+                "A) In segments",
+                "B) One big piece",
+                "C) In layers",
+                "D) In cubes"
+              ],
+              "correct_answer": "A",
+              "explanation": "In segments"
+            },
+            {
+              "question": "What family of fruits do oranges belong to?",
+              "options": [
+                "A) Berry family",
+                "B) Stone fruit family",
+                "C) Citrus family",
+                "D) Tropical family"
+              ],
+              "correct_answer": "C",
+              "explanation": "Citrus family"
+            },
+            {
+              "question": "What color is an orange when it's ripe?",
+              "options": [
+                "A) Green",
+                "B) Yellow",
+                "C) Red",
+                "D) Orange"
+              ],
+              "correct_answer": "D",
+              "explanation": "Orange"
+            }
+          ]
+        }
+      },
+      "pineapple": {
+        "description": "Pineapples are tropical fruits with a spiky exterior and sweet, juicy golden flesh inside! They take almost 2 years to grow and are symbols of hospitality.",
+        "image": "assets/images/foods/pineapple.png",
+        "nutrition_per_cup": {
+          "carbohydrates": "22 grams - Tropical fruit sugars",
+          "protein": "0.9 grams - Small plant protein amount",
+          "fat": "0.2 grams - Very low fat content"
+        },
+        "nutrient_sources": {
+          "carbohydrates": "Natural fruit sugars from the pineapple plant 🍍",
+          "protein": "Plant enzymes and amino acids",
+          "fat": "Minimal natural fruit oils"
+        },
+        "how_grown": [
+          "Grow from pineapple crown or slips",
+          "Need tropical climate with lots of sun",
+          "Plant grows low to ground with spiky leaves",
+          "Single pineapple forms in center after 18 months",
+          "Harvest when golden and fragrant"
+        ],
+        "how_to_eat": ["Fresh cut chunks", "Grilled pineapple", "In tropical smoothies", "On pizza (controversial!)", "Dried pineapple rings", "Fresh pineapple juice"],
+        "quiz": {
+          "questions": [
+            {
+              "question": "What does the outside of a pineapple look like?",
+              "options": [
+                "A) Smooth and round",
+                "B) Spiky and rough",
+                "C) Soft and fuzzy",
+                "D) Flat and square"
+              ],
+              "correct_answer": "B",
+              "explanation": "Spiky and rough"
+            },
+            {
+              "question": "How long does it take for a pineapple to grow?",
+              "options": [
+                "A) 1 month",
+                "B) 6 months",
+                "C) Almost 2 years",
+                "D) 5 years"
+              ],
+              "correct_answer": "C",
+              "explanation": "Almost 2 years"
+            },
+            {
+              "question": "What color is the flesh inside a pineapple?",
+              "options": [
+                "A) Red",
+                "B) White",
+                "C) Green",
+                "D) Golden yellow"
+              ],
+              "correct_answer": "D",
+              "explanation": "Golden yellow"
+            },
+            {
+              "question": "What kind of climate do pineapples need to grow?",
+              "options": [
+                "A) Cold and snowy",
+                "B) Tropical and warm",
+                "C) Desert and dry",
+                "D) Rainy and cool"
+              ],
+              "correct_answer": "B",
+              "explanation": "Tropical and warm"
+            }
+          ]
+        }
+      },
+      "strawberry": {
+        "description": "Strawberries are heart-shaped red berries covered in tiny seeds on the outside! They're actually not true berries botanically, but they're deliciously sweet.",
+        "image": "assets/images/foods/strawberry.png",
+        "nutrition_per_cup": {
+          "carbohydrates": "11 grams - Natural berry sugars and fiber",
+          "protein": "1 gram - Small amount of plant protein",
+          "fat": "0.5 grams - Very low fat"
+        },
+        "nutrient_sources": {
+          "carbohydrates": "Natural fruit sugars from strawberry plants 🍓",
+          "protein": "Plant-based amino acids",
+          "fat": "Natural oils in the tiny seeds"
+        },
+        "how_grown": [
+          "Grow from strawberry runners or plants",
+          "Need well-drained soil and full sun",
+          "Plants spread along the ground",
+          "White flowers bloom in spring",
+          "Berries ripen red and sweet in early summer"
+        ],
+        "how_to_eat": ["Fresh and whole", "In smoothies and shakes", "Strawberry shortcake", "Dipped in chocolate", "Strawberry jam", "Frozen strawberry treats"],
+        "quiz": {
+          "questions": [
+            {
+              "question": "What shape is a strawberry?",
+              "options": [
+                "A) Round",
+                "B) Square",
+                "C) Heart-shaped",
+                "D) Triangle"
+              ],
+              "correct_answer": "C",
+              "explanation": "Heart-shaped"
+            },
+            {
+              "question": "Where are the seeds on a strawberry?",
+              "options": [
+                "A) Inside the fruit",
+                "B) On the outside",
+                "C) In the stem",
+                "D) Underground"
+              ],
+              "correct_answer": "B",
+              "explanation": "On the outside"
+            },
+            {
+              "question": "When do strawberries usually ripen?",
+              "options": [
+                "A) Winter",
+                "B) Fall",
+                "C) Early summer",
+                "D) Late summer"
+              ],
+              "correct_answer": "C",
+              "explanation": "Early summer"
+            },
+            {
+              "question": "Are strawberries actually berries?",
+              "options": [
+                "A) Yes, they are true berries",
+                "B) No, they are not true berries",
+                "C) Sometimes",
+                "D) Only the red ones"
+              ],
+              "correct_answer": "B",
+              "explanation": "No, they are not true berries"
+            }
+          ]
+        }
+      },
+      "grapes": {
+        "description": "Grapes are small, round fruits that grow in clusters on vines! They come in green, red, and purple colors and can be sweet or tart.",
+        "image": "assets/images/foods/grapes.png",
+        "nutrition_per_cup": {
+          "carbohydrates": "16 grams - Natural grape sugars",
+          "protein": "0.6 grams - Small plant protein content",
+          "fat": "0.2 grams - Very low fat"
+        },
+        "nutrient_sources": {
+          "carbohydrates": "Natural fruit sugars from grapevines 🍇",
+          "protein": "Plant amino acids",
+          "fat": "Minimal oils in grape seeds"
+        },
+        "how_grown": [
+          "Grow from grapevine cuttings",
+          "Need warm climate and well-drained soil",
+          "Vines climb and spread on trellises",
+          "Small flowers develop into grape clusters",
+          "Harvest in late summer when sweet and ripe"
+        ],
+        "how_to_eat": ["Fresh from the bunch", "Dried as raisins", "Grape juice", "Made into wine (adults only!)", "In fruit salads", "Frozen grape popsicles"],
+        "quiz": {
+          "questions": [
+            {
+              "question": "What fruit are we learning about today?",
+              "options": [
+                "A) Grapes",
+                "B) Kiwi",
+                "C) Apple",
+                "D) Blueberries"
+              ],
+              "correct_answer": "A",
+              "explanation": "Grapes"
+            },
+            {
+              "question": "Where do grapes grow?",
+              "options": [
+                "A) On vines",
+                "B) On the moon",
+                "C) Under ground",
+                "D) In the sea"
+              ],
+              "correct_answer": "A",
+              "explanation": "On vines"
+            },
+            {
+              "question": "What colors can grapes be when they're ripe?",
+              "options": [
+                "A) Pink, Blue, and Orange",
+                "B) Yellow, Black, and White",
+                "C) Green, Red, and Purple",
+                "D) Brown, Gray, and Silver"
+              ],
+              "correct_answer": "C",
+              "explanation": "Green, Red, and Purple"
+            },
+            {
+              "question": "What is one good thing grapes do for your body?",
+              "options": [
+                "A) Make you glow in the dark",
+                "B) Help your heart stay healthy",
+                "C) Turn you into a balloon",
+                "D) Make your hair change color"
+              ],
+              "correct_answer": "B",
+              "explanation": "Help your heart stay healthy"
+            }
+          ]
+        }
+      },
+      "watermelon": {
+        "description": "Watermelons are huge, round fruits with green rinds and juicy red flesh inside! They're mostly water and perfect for hot summer days.",
+        "image": "assets/images/foods/watermelon.png",
+        "nutrition_per_cup": {
+          "carbohydrates": "12 grams - Natural fruit sugars and water",
+          "protein": "0.9 grams - Small amount of plant protein",
+          "fat": "0.2 grams - Nearly fat-free"
+        },
+        "nutrient_sources": {
+          "carbohydrates": "Natural sugars from watermelon vines 🍉",
+          "protein": "Plant-based amino acids",
+          "fat": "Natural oils in the black seeds"
+        },
+        "how_grown": [
+          "Grow from watermelon seeds",
+          "Need hot climate and lots of space",
+          "Vines spread across large areas",
+          "Yellow flowers bloom and become melons",
+          "Harvest when the bottom spot turns creamy yellow"
+        ],
+        "how_to_eat": ["Fresh cut slices", "Watermelon juice", "In fruit salads", "Grilled watermelon", "Watermelon popsicles", "Seeds can be roasted as snacks"],
+        "quiz": {
+          "questions": [
+            {
+              "question": "What is watermelon mostly made of?",
+              "options": [
+                "A) Sugar",
+                "B) Water",
+                "C) Protein",
+                "D) Fat"
+              ],
+              "correct_answer": "B",
+              "explanation": "Water"
+            },
+            {
+              "question": "What color is the flesh inside most watermelons?",
+              "options": [
+                "A) Green",
+                "B) Yellow",
+                "C) Red",
+                "D) Purple"
+              ],
+              "correct_answer": "C",
+              "explanation": "Red"
+            },
+            {
+              "question": "When is watermelon most refreshing to eat?",
+              "options": [
+                "A) Cold winter days",
+                "B) Hot summer days",
+                "C) Rainy days",
+                "D) Snowy days"
+              ],
+              "correct_answer": "B",
+              "explanation": "Hot summer days"
+            },
+            {
+              "question": "How big do watermelons grow?",
+              "options": [
+                "A) Small like grapes",
+                "B) Medium like apples",
+                "C) Large and heavy",
+                "D) Tiny like berries"
+              ],
+              "correct_answer": "C",
+              "explanation": "Large and heavy"
+            }
+          ]
+        }
+      },
+      "mango": {
+        "description": "Mangoes are tropical fruits with smooth skin and incredibly sweet, creamy orange flesh! They're called the 'king of fruits' in many countries.",
+        "image": "assets/images/foods/mango.png",
+        "nutrition_per_cup": {
+          "carbohydrates": "25 grams - Rich tropical fruit sugars",
+          "protein": "1.4 grams - Good plant protein for a fruit",
+          "fat": "0.6 grams - Low fat content"
+        },
+        "nutrient_sources": {
+          "carbohydrates": "Natural tropical sugars from mango trees 🥭",
+          "protein": "Plant amino acids and enzymes",
+          "fat": "Natural fruit oils mainly in the seed"
+        },
+        "how_grown": [
+          "Grow from mango seeds or grafted trees",
+          "Need tropical, warm climate year-round",
+          "Trees grow very tall with dense leaves",
+          "Small flowers develop into hanging fruits",
+          "Harvest when slightly soft and fragrant"
+        ],
+        "how_to_eat": ["Fresh cut cubes", "Mango smoothies", "Dried mango strips", "In tropical fruit salads", "Mango lassi drinks", "Grilled mango"],
+        "quiz": {
+          "questions": [
+            {
+              "question": "What fruit are we learning about today?",
+              "options": [
+                "A) Grapes",
+                "B) Kiwi",
+                "C) Apple",
+                "D) Mangoes"
+              ],
+              "correct_answer": "D",
+              "explanation": "Mangoes"
+            },
+            {
+              "question": "Where do mangos grow?",
+              "options": [
+                "A) On tall trees",
+                "B) Under the ground",
+                "C) In the ocean",
+                "D) On buildings"
+              ],
+              "correct_answer": "A",
+              "explanation": "On tall trees"
+            },
+            {
+              "question": "What color is the inside of a mango?",
+              "options": [
+                "A) Blue",
+                "B) Orange",
+                "C) Purple",
+                "D) Pink"
+              ],
+              "correct_answer": "B",
+              "explanation": "Orange"
+            },
+            {
+              "question": "What healthy things are in mangos?",
+              "options": [
+                "A) Candy",
+                "B) Soda",
+                "C) Vitamin C, Vitamin A, and fiber",
+                "D) Ice cream"
+              ],
+              "correct_answer": "C",
+              "explanation": "Vitamin C, Vitamin A, and fiber"
+            }
+          ]
+        }
+      },
+      "peach": {
+        "description": "Peaches are fuzzy, soft fruits with sweet, juicy flesh and a hard pit in the center! Their skin feels like velvet and they smell amazing when ripe.",
+        "image": "assets/images/foods/peach.png",
+        "nutrition_per_medium": {
+          "carbohydrates": "13 grams - Natural fruit sugars and fiber",
+          "protein": "1.4 grams - Good plant protein content",
+          "fat": "0.4 grams - Very low fat"
+        },
+        "nutrient_sources": {
+          "carbohydrates": "Natural sugars from peach trees 🍑",
+          "protein": "Plant-based amino acids",
+          "fat": "Natural oils in the pit and minimal fruit oils"
+        },
+        "how_grown": [
+          "Grow from peach pits or grafted trees",
+          "Need warm summers and cold winter chill",
+          "Trees bloom with beautiful pink flowers",
+          "Fruit develops and grows fuzzy skin",
+          "Harvest when slightly soft and fragrant"
+        ],
+        "how_to_eat": ["Fresh and whole", "Peach cobbler", "Grilled peaches", "In smoothies", "Dried peach snacks", "Peach jam"],
+        "quiz": {
+          "questions": [
+            {
+              "question": "What color is a ripe peach?",
+              "options": [
+                "A) Green",
+                "B) Purple",
+                "C) Brown",
+                "D) Red and Orange"
+              ],
+              "correct_answer": "D",
+              "explanation": "Red and Orange"
+            },
+            {
+              "question": "Where do peaches grow?",
+              "options": [
+                "A) On the ground",
+                "B) In the ocean",
+                "C) On trees",
+                "D) Under the snow"
+              ],
+              "correct_answer": "C",
+              "explanation": "On trees"
+            },
+            {
+              "question": "What happens to the flowers on a peach tree?",
+              "options": [
+                "A) They turn into peaches",
+                "B) They fly away",
+                "C) They grow into apples",
+                "D) They melt"
+              ],
+              "correct_answer": "A",
+              "explanation": "They turn into peaches"
+            },
+            {
+              "question": "What part of a peach makes your tummy feel good?",
+              "options": [
+                "A) The pit",
+                "B) Sugar",
+                "C) The skin",
+                "D) Fiber"
+              ],
+              "correct_answer": "D",
+              "explanation": "Fiber"
+            }
+          ]
+        }
+      },
+      "apricot": {
+        "description": "Apricots are small, orange fruits with smooth skin and sweet-tart flavor! They're like tiny peaches but with their own unique taste and no fuzz.",
+        "image": "assets/images/foods/peach.png",
+        "nutrition_per_medium": {
+          "carbohydrates": "4 grams - Natural fruit sugars",
+          "protein": "0.5 grams - Small plant protein amount",
+          "fat": "0.1 grams - Very low fat"
+        },
+        "nutrient_sources": {
+          "carbohydrates": "Natural fruit sugars from apricot trees 🧡",
+          "protein": "Plant amino acids",
+          "fat": "Natural oils in the pit"
+        },
+        "how_grown": [
+          "Grow from apricot pits or grafted trees",
+          "Need warm, dry climate with cold winters",
+          "Trees bloom early with white flowers",
+          "Small fruits develop quickly",
+          "Harvest when orange and slightly soft"
+        ],
+        "how_to_eat": ["Fresh and whole", "Dried apricots", "Apricot jam", "In fruit tarts", "Apricot nectar", "Grilled with meat"],
+        "quiz": {
+          "questions": [
+            {
+              "question": "What do apricots look like compared to peaches?",
+              "options": [
+                "A) Bigger and fuzzier",
+                "B) Smaller with no fuzz",
+                "C) Same size and texture",
+                "D) Much larger and round"
+              ],
+              "correct_answer": "B",
+              "explanation": "Smaller with no fuzz"
+            },
+            {
+              "question": "What color are ripe apricots?",
+              "options": [
+                "A) Red",
+                "B) Green",
+                "C) Orange",
+                "D) Purple"
+              ],
+              "correct_answer": "C",
+              "explanation": "Orange"
+            },
+            {
+              "question": "What kind of climate do apricots need?",
+              "options": [
+                "A) Always warm",
+                "B) Always cold",
+                "C) Warm and dry with cold winters",
+                "D) Rainy all year"
+              ],
+              "correct_answer": "C",
+              "explanation": "Warm and dry with cold winters"
+            },
+            {
+              "question": "When do apricot trees bloom?",
+              "options": [
+                "A) Late in the season",
+                "B) Early with white flowers",
+                "C) Never",
+                "D) Only at night"
+              ],
+              "correct_answer": "B",
+              "explanation": "Early with white flowers"
+            }
+          ]
+        }
+      },
+      "lemon": {
+        "description": "Lemons are bright yellow citrus fruits with tart, acidic flavor! They're packed with vitamin C and are essential for cooking and beverages.",
+        "image": "assets/images/foods/orange.png",
+        "nutrition_per_medium": {
+          "carbohydrates": "5 grams - Natural citrus sugars and fiber",
+          "protein": "0.6 grams - Small amount of plant protein",
+          "fat": "0.2 grams - Nearly fat-free"
+        },
+        "nutrient_sources": {
+          "carbohydrates": "Citrus sugars and pectin from lemon trees 🍋",
+          "protein": "Plant-based amino acids",
+          "fat": "Essential oils in the peel and minimal fruit oils"
+        },
+        "how_grown": [
+          "Grow from seeds or grafted citrus trees",
+          "Need warm, Mediterranean-like climate",
+          "Trees bloom with fragrant white flowers",
+          "Fruit develops green, turns yellow when ripe",
+          "Can be harvested multiple times per year"
+        ],
+        "how_to_eat": ["Squeezed for lemon juice", "Lemon zest in cooking", "In lemonade", "Lemon water", "In marinades", "Preserved lemons"],
+        "quiz": {
+          "questions": [
+            {
+              "question": "What can people make with lemon juice?",
+              "options": [
+                "A) Peanut Butter",
+                "B) Lemonade",
+                "C) Ice Cream",
+                "D) Cheese"
+              ],
+              "correct_answer": "B",
+              "explanation": "Lemonade"
+            },
+            {
+              "question": "What color is a lemon when it's ready to be picked?",
+              "options": [
+                "A) Red",
+                "B) Orange",
+                "C) Green",
+                "D) Yellow"
+              ],
+              "correct_answer": "D",
+              "explanation": "Yellow"
+            },
+            {
+              "question": "Where do lemons grow?",
+              "options": [
+                "A) Inside caves",
+                "B) In the ocean",
+                "C) On trees",
+                "D) Underwater"
+              ],
+              "correct_answer": "C",
+              "explanation": "On trees"
+            },
+            {
+              "question": "What vitamin do lemons have that helps keep you healthy?",
+              "options": [
+                "A) Vitamin C",
+                "B) Vitamin Z",
+                "C) Vitamin L",
+                "D) Vitamin W"
+              ],
+              "correct_answer": "A",
+              "explanation": "Vitamin C"
+            }
+          ]
+        }
+      },
+      "kiwi": {
+        "description": "Kiwi fruits are small, brown, fuzzy fruits with bright green flesh inside dotted with tiny black seeds! They have a sweet-tart flavor and are packed with vitamin C.",
+        "image": "assets/images/foods/fruits.png",
+        "nutrition_per_medium": {
+          "carbohydrates": "11 grams - Natural fruit sugars and high fiber",
+          "protein": "0.9 grams - Small amount of plant protein",
+          "fat": "0.4 grams - Very low fat"
+        },
+        "nutrient_sources": {
+          "carbohydrates": "Natural fruit sugars and fiber from kiwi vines 🥝",
+          "protein": "Plant-based amino acids",
+          "fat": "Natural oils in the tiny seeds"
+        },
+        "how_grown": [
+          "Grow on woody vines like grapes",
+          "Need both male and female plants for fruit",
+          "Require warm summers and mild winters",
+          "Vines climb on trellises or supports",
+          "Harvest when fruits are slightly soft"
+        ],
+        "how_to_eat": ["Fresh scooped from skin", "Peeled and sliced", "In fruit salads", "Kiwi smoothies", "Dried kiwi chips", "In yogurt parfaits"],
+        "quiz": {
+          "questions": [
+            {
+              "question": "What fruit are we talking about in the story?",
+              "options": [
+                "A) Banana",
+                "B) Kiwi",
+                "C) Apple",
+                "D) Carrot"
+              ],
+              "correct_answer": "B",
+              "explanation": "Kiwi"
+            },
+            {
+              "question": "What color is the inside of a kiwi?",
+              "options": [
+                "A) Red",
+                "B) Purple",
+                "C) Green",
+                "D) Blue"
+              ],
+              "correct_answer": "C",
+              "explanation": "Green"
+            },
+            {
+              "question": "Where do kiwis grow?",
+              "options": [
+                "A) On trees",
+                "B) Under the ground",
+                "C) On vines like grapes",
+                "D) In the ocean"
+              ],
+              "correct_answer": "C",
+              "explanation": "On vines like grapes"
+            },
+            {
+              "question": "What is one thing kiwis help with?",
+              "options": [
+                "A) Making shoes",
+                "B) Helping your tummy",
+                "C) Fixing cars",
+                "D) Building houses"
+              ],
+              "correct_answer": "B",
+              "explanation": "Helping your tummy"
+            }
+          ]
+        }
+      },
+      "cherry": {
+        "description": "Cherries are small, round fruits that can be sweet or tart! They have a hard pit in the center and come in red, dark red, or yellow varieties.",
+        "image": "assets/images/foods/strawberry.png",
+        "nutrition_per_cup": {
+          "carbohydrates": "19 grams - Natural fruit sugars",
+          "protein": "1.6 grams - Small amount of plant protein",
+          "fat": "0.3 grams - Very low fat"
+        },
+        "nutrient_sources": {
+          "carbohydrates": "Natural fruit sugars from cherry trees 🍒",
+          "protein": "Plant-based amino acids",
+          "fat": "Natural oils mainly in the pit"
+        },
+        "how_grown": [
+          "Grow from cherry pits or grafted trees",
+          "Need cold winter temperatures for proper fruiting",
+          "Trees bloom with beautiful white or pink flowers",
+          "Fruits develop from pollinated flowers",
+          "Harvest in early summer when fully colored"
+        ],
+        "how_to_eat": ["Fresh from the stem", "In pies and cobblers", "Cherry juice", "Dried cherries", "Cherry jam", "In ice cream"],
+        "quiz": {
+          "questions": [
+            {
+              "question": "What do cherries grow from before they become fruit?",
+              "options": [
+                "A) Flowers",
+                "B) Leaves",
+                "C) Seeds",
+                "D) Clouds"
+              ],
+              "correct_answer": "A",
+              "explanation": "Flowers"
+            },
+            {
+              "question": "How do farmers pick cherries?",
+              "options": [
+                "A) By hand, one at a time",
+                "B) With a big net",
+                "C) By shaking the trees hard",
+                "D) Using a fishing rod"
+              ],
+              "correct_answer": "A",
+              "explanation": "By hand, one at a time"
+            },
+            {
+              "question": "What is inside a cherry that you can't eat?",
+              "options": [
+                "A) A seed called a pit",
+                "B) A candy surprise",
+                "C) A small toy",
+                "D) A bubble"
+              ],
+              "correct_answer": "A",
+              "explanation": "A seed called a pit"
+            },
+            {
+              "question": "How do cherries help your body?",
+              "options": [
+                "A) They help you jump super high",
+                "B) They give you a magic cape",
+                "C) They help keep your heart and muscles strong",
+                "D) They make you invisible"
+              ],
+              "correct_answer": "C",
+              "explanation": "They help keep your heart and muscles strong"
+            }
+          ]
+        }
+      },
+      "blueberry": {
+        "description": "Blueberries are small, round blue fruits that grow on bushes! They're considered a superfood because they're packed with antioxidants and have a sweet-tart flavor.",
+        "image": "assets/images/foods/strawberry.png",
+        "nutrition_per_cup": {
+          "carbohydrates": "21 grams - Natural fruit sugars and fiber",
+          "protein": "1.1 grams - Small amount of plant protein",
+          "fat": "0.5 grams - Very low fat"
+        },
+        "nutrient_sources": {
+          "carbohydrates": "Natural fruit sugars from blueberry bushes 🫐",
+          "protein": "Plant-based amino acids",
+          "fat": "Natural oils in the tiny seeds"
+        },
+        "how_grown": [
+          "Grow on low bushes in acidic soil",
+          "Need cross-pollination from bees",
+          "White bell-shaped flowers bloom in spring",
+          "Berries start green, turn blue when ripe",
+          "Harvest in summer when fully blue"
+        ],
+        "how_to_eat": ["Fresh as snacks", "In muffins and pancakes", "Blueberry smoothies", "Dried blueberries", "In yogurt", "Blueberry pie"],
+        "quiz": {
+          "questions": [
+            {
+              "id": 1,
+              "question": "What fruit are we learning about today?",
+              "options": [
+                "A) Cucumber",
+                "B) Kiwi",
+                "C) Apple",
+                "D) Blueberries"
+              ],
+              "correct_answer": "D",
+              "explanation": "Blueberries"
+            },
+            {
+              "id": 2,
+              "question": "Where do blueberries grow?",
+              "options": [
+                "A) Under the sea",
+                "B) On big trees",
+                "C) On bushes",
+                "D) In caves"
+              ],
+              "correct_answer": "C",
+              "explanation": "On bushes"
+            },
+            {
+              "id": 3,
+              "question": "What color are blueberries when they're ready to eat?",
+              "options": [
+                "A) Green",
+                "B) Purple",
+                "C) Red",
+                "D) Blue"
+              ],
+              "correct_answer": "D",
+              "explanation": "Blue"
+            },
+            {
+              "id": 4,
+              "question": "What is one good thing blueberries do for your body?",
+              "options": [
+                "A) Make you sleepy",
+                "B) Help your brain stay sharp",
+                "C) Help you jump higher",
+                "D) Turn you into a robot"
+              ],
+              "correct_answer": "B",
+              "explanation": "Help your brain stay sharp"
+            }
+          ]
+        }
+      }
+    },
+    "vegetables": {
+      "carrots": {
+        "description": "Carrots are orange root vegetables that grow underground! They're crunchy, sweet, and great for your eyes because of beta-carotene.",
+        "image": "assets/images/foods/carrot.png",
+        "nutrition_per_medium": {
+          "carbohydrates": "6 grams - Natural sugars and fiber",
+          "protein": "0.5 grams - Small plant protein amount",
+          "fat": "0.1 grams - Nearly fat-free"
+        },
+        "nutrient_sources": {
+          "carbohydrates": "Natural sugars stored in the root 🥕",
+          "protein": "Plant amino acids from soil nutrients",
+          "fat": "Minimal natural plant oils"
+        },
+        "how_grown": [
+          "Plant carrot seeds directly in soil",
+          "Need loose, deep soil for roots to grow",
+          "Water regularly but don't overwater",
+          "Green tops grow above ground",
+          "Harvest when orange roots are full-sized"
+        ],
+        "how_to_eat": ["Raw with dip", "Roasted carrots", "In soups and stews", "Carrot cake", "Steamed side dish", "Fresh carrot juice"],
+        "quiz": {
+          "questions": [
+            {
+              "question": "What color are most carrots?",
+              "options": [
+                "A) Red",
+                "B) Orange",
+                "C) Purple",
+                "D) Blue"
+              ],
+              "correct_answer": "B",
+              "explanation": "Orange"
+            },
+            {
+              "question": "Where do carrots grow?",
+              "options": [
+                "A) On trees",
+                "B) Above ground",
+                "C) Underground",
+                "D) In water"
+              ],
+              "correct_answer": "C",
+              "explanation": "Underground"
+            },
+            {
+              "question": "What part of your body do carrots help?",
+              "options": [
+                "A) Your ears",
+                "B) Your eyes",
+                "C) Your nose",
+                "D) Your hair"
+              ],
+              "correct_answer": "B",
+              "explanation": "Your eyes"
+            },
+            {
+              "question": "What grows above ground when carrots are growing?",
+              "options": [
+                "A) Nothing",
+                "B) Orange tops",
+                "C) Green leafy tops",
+                "D) Flowers"
+              ],
+              "correct_answer": "C",
+              "explanation": "Green leafy tops"
+            }
+          ]
+        }
+      },
+      "broccoli": {
+        "description": "Broccoli looks like tiny green trees! It's actually a flower that we eat before it blooms, and it's packed with vitamins and minerals.",
+        "image": "assets/images/foods/broccoli.png",
+        "nutrition_per_cup": {
+          "carbohydrates": "6 grams - Complex carbs and fiber",
+          "protein": "3 grams - Good plant protein for a vegetable",
+          "fat": "0.3 grams - Very low fat"
+        },
+        "nutrient_sources": {
+          "carbohydrates": "Complex carbs from photosynthesis 🥦",
+          "protein": "Plant proteins concentrated in flower buds",
+          "fat": "Minimal natural plant oils"
+        },
+        "how_grown": [
+          "Start from broccoli seeds or transplants",
+          "Need cool weather and rich soil",
+          "Plant grows large leaves first",
+          "Green flower head forms in center",
+          "Harvest before yellow flowers open"
+        ],
+        "how_to_eat": ["Steamed with butter", "Raw with ranch dip", "Roasted broccoli", "In stir-fries", "Broccoli soup", "Added to pasta"],
+        "quiz": {
+          "questions": [
+            {
+              "question": "What does broccoli look like?",
+              "options": [
+                "A) Tiny green trees",
+                "B) Long orange sticks",
+                "C) Round red balls",
+                "D) Flat green leaves"
+              ],
+              "correct_answer": "A",
+              "explanation": "Tiny green trees"
+            },
+            {
+              "question": "What part of the broccoli plant do we eat?",
+              "options": [
+                "A) The roots",
+                "B) The flowers before they bloom",
+                "C) The seeds",
+                "D) The bark"
+              ],
+              "correct_answer": "B",
+              "explanation": "The flowers before they bloom"
+            },
+            {
+              "question": "What kind of weather does broccoli like to grow in?",
+              "options": [
+                "A) Very hot weather",
+                "B) Cool weather",
+                "C) Freezing cold",
+                "D) Desert conditions"
+              ],
+              "correct_answer": "B",
+              "explanation": "Cool weather"
+            },
+            {
+              "question": "What happens if you don't harvest broccoli in time?",
+              "options": [
+                "A) It turns red",
+                "B) It disappears",
+                "C) Yellow flowers open",
+                "D) It becomes poisonous"
+              ],
+              "correct_answer": "C",
+              "explanation": "Yellow flowers open"
+            }
+          ]
+        }
+      },
+      "sweet_potato": {
+        "description": "Sweet potatoes are orange root vegetables that are naturally sweet! They're different from regular potatoes and packed with vitamins.",
+        "image": "assets/images/foods/sweetpotato.png",
+        "nutrition_per_medium": {
+          "carbohydrates": "27 grams - Natural sugars and starch",
+          "protein": "2 grams - Good plant protein content",
+          "fat": "0.1 grams - Nearly fat-free"
+        },
+        "nutrient_sources": {
+          "carbohydrates": "Stored starches and sugars in the root 🍠",
+          "protein": "Plant proteins from soil nutrients",
+          "fat": "Minimal natural plant oils"
+        },
+        "how_grown": [
+          "Grow from sweet potato slips (shoots)",
+          "Need warm climate and loose soil",
+          "Vines spread along the ground",
+          "Roots develop underground while vines grow",
+          "Harvest before first frost in fall"
+        ],
+        "how_to_eat": ["Baked sweet potato", "Sweet potato fries", "Mashed sweet potatoes", "Sweet potato pie", "Roasted chunks", "Sweet potato chips"],
+        "quiz": {
+          "questions": [
+            {
+              "question": "Where do sweet potatoes grow?",
+              "options": [
+                "A) In trees",
+                "B) On top of the grass", 
+                "C) Underground",
+                "D) In a box"
+              ],
+              "correct_answer": "C",
+              "explanation": "Underground"
+            },
+            {
+              "question": "What color are most sweet potatoes on the inside?",
+              "options": [
+                "A) Green",
+                "B) Orange",
+                "C) Blue", 
+                "D) Black"
+              ],
+              "correct_answer": "B",
+              "explanation": "Orange"
+            },
+            {
+              "question": "What vitamin in sweet potatoes helps you see in the dark?",
+              "options": [
+                "A) Vitamin C",
+                "B) Vitamin Z",
+                "C) Vitamin K",
+                "D) Vitamin A"
+              ],
+              "correct_answer": "D",
+              "explanation": "Vitamin A"
+            },
+            {
+              "question": "How long does it take sweet potatoes to grow before they're ready to be picked?",
+              "options": [
+                "A) 3 Days",
+                "B) 2 Weeks",
+                "C) 4 - 5 Months",
+                "D) 10 Years"
+              ],
+              "correct_answer": "C",
+              "explanation": "4 - 5 Months"
+            }
+          ]
+        }
+      },
+      "peas": {
+        "description": "Peas are small, round green vegetables that grow in pods! They're sweet and pop in your mouth, and the pods are edible too in some varieties.",
+        "image": "assets/images/foods/peas.png",
+        "nutrition_per_cup": {
+          "carbohydrates": "14 grams - Natural sugars and starch",
+          "protein": "5 grams - High plant protein content",
+          "fat": "0.2 grams - Very low fat"
+        },
+        "nutrient_sources": {
+          "carbohydrates": "Stored energy in pea seeds 🟢",
+          "protein": "High-quality plant proteins and amino acids",
+          "fat": "Minimal natural seed oils"
+        },
+        "how_grown": [
+          "Plant pea seeds in cool weather",
+          "Provide support for climbing vines",
+          "White or purple flowers bloom first",
+          "Pods develop and fill with round peas",
+          "Harvest when pods are plump but still tender"
+        ],
+        "how_to_eat": ["Fresh from the pod", "Steamed peas", "In soups and stews", "Pea soup", "Sugar snap peas raw", "Frozen peas in dishes"],
+        "quiz": {
+          "questions": [
+            {
+              "question": "What shape are peas?",
+              "options": [
+                "A) Square",
+                "B) Triangle", 
+                "C) Round",
+                "D) Star-shaped"
+              ],
+              "correct_answer": "C",
+              "explanation": "Round"
+            },
+            {
+              "question": "Where do peas grow?",
+              "options": [
+                "A) In pods",
+                "B) On the ground",
+                "C) Under the soil",
+                "D) In trees"
+              ],
+              "correct_answer": "A",
+              "explanation": "In pods"
+            },
+            {
+              "question": "What do pea plants need to climb?",
+              "options": [
+                "A) Nothing, they grow on the ground",
+                "B) Support like poles or trellises",
+                "C) Other plants",
+                "D) Rocks"
+              ],
+              "correct_answer": "B",
+              "explanation": "Support like poles or trellises"
+            },
+            {
+              "question": "What do peas taste like?",
+              "options": [
+                "A) Bitter and sour",
+                "B) Sweet and pop in your mouth",
+                "C) Spicy and hot",
+                "D) Tasteless"
+              ],
+              "correct_answer": "B",
+              "explanation": "Sweet and pop in your mouth"
+            }
+          ]
+        }
+      },
+      "corn": {
+        "description": "Corn grows on tall stalks with kernels arranged on cobs! Each kernel is actually a seed, and corn comes in yellow, white, and colorful varieties.",
+        "image": "assets/images/foods/corn.png",
+        "nutrition_per_cup": {
+          "carbohydrates": "31 grams - Starch and natural sugars",
+          "protein": "5 grams - Good plant protein content",
+          "fat": "1.5 grams - Some natural oils in kernels"
+        },
+        "nutrient_sources": {
+          "carbohydrates": "Stored starch in corn kernels 🌽",
+          "protein": "Plant proteins concentrated in seeds",
+          "fat": "Natural oils in corn germ"
+        },
+        "how_grown": [
+          "Plant corn seeds in warm soil",
+          "Stalks grow very tall with large leaves",
+          "Tassels at top release pollen",
+          "Ears with silk develop on stalks",
+          "Harvest when kernels are plump and milky"
+        ],
+        "how_to_eat": ["Fresh corn on the cob", "Popcorn!", "Cornbread", "In salads and salsas", "Creamed corn", "Grilled corn"],
+        "quiz": {
+          "questions": [
+            {
+              "question": "What does corn grow on?",
+              "options": [
+                "A) Trees",
+                "B) Tall green plants",
+                "C) Under the ground",
+                "D) In water"
+              ],
+              "correct_answer": "B",
+              "explanation": "Tall green plants"
+            },
+            {
+              "question": "What covers the ear of corn?",
+              "options": [
+                "A) Flowers",
+                "B) Husks (green leaves)",
+                "C) Bark",
+                "D) Feathers"
+              ],
+              "correct_answer": "B",
+              "explanation": "Husks (green leaves)"
+            },
+            {
+              "question": "How do farmers get the corn?",
+              "options": [
+                "A) They pick it by hand or use machines",
+                "B) They catch it from the sky",
+                "C) They dig it out of the sand",
+                "D) They pull it from bushes"
+              ],
+              "correct_answer": "A",
+              "explanation": "They pick it by hand or use machines"
+            },
+            {
+              "question": "What healthy things does corn have?",
+              "options": [
+                "A) Fiber and vitamins that give you energy",
+                "B) Candy and sugar",
+                "C) Chocolate and ice cream",
+                "D) Soda and chips"
+              ],
+              "correct_answer": "A",
+              "explanation": "Fiber and vitamins that give you energy"
+            }
+          ]
+        }
+      },
+      "cucumber": {
+        "description": "Cucumbers are cool, refreshing vegetables that are mostly water! They have a mild flavor and crunchy texture, perfect for hot days.",
+        "image": "assets/images/foods/cucumber.png",
+        "nutrition_per_cup": {
+          "carbohydrates": "4 grams - Mostly water with some natural sugars",
+          "protein": "0.7 grams - Small amount of plant protein",
+          "fat": "0.1 grams - Nearly fat-free"
+        },
+        "nutrient_sources": {
+          "carbohydrates": "Natural sugars and minimal starch 🥒",
+          "protein": "Plant amino acids from soil",
+          "fat": "Minimal oils in cucumber seeds"
+        },
+        "how_grown": [
+          "Plant cucumber seeds in warm soil",
+          "Provide trellises for vines to climb",
+          "Yellow flowers bloom and attract bees",
+          "Small cucumbers develop from pollinated flowers",
+          "Harvest when firm and dark green"
+        ],
+        "how_to_eat": ["Fresh in salads", "Cucumber water", "Pickles!", "With hummus dip", "In sandwiches", "Cucumber soup"],
+        "quiz": {
+          "questions": [
+            {
+              "question": "What green veggie are we talking about in the story?",
+              "options": [
+                "A) Cucumber",
+                "B) Kiwi",
+                "C) Apple",
+                "D) Carrot"
+              ],
+              "correct_answer": "A",
+              "explanation": "Cucumber"
+            },
+            {
+              "question": "Where do cucumbers grow?",
+              "options": [
+                "A) In the sky",
+                "B) On vines in gardens",
+                "C) In caves",
+                "D) On clouds"
+              ],
+              "correct_answer": "B",
+              "explanation": "On vines in gardens"
+            },
+            {
+              "question": "What are cucumbers mostly made of?",
+              "options": [
+                "A) Chocolate",
+                "B) Air",
+                "C) Water",
+                "D) Cheese"
+              ],
+              "correct_answer": "C",
+              "explanation": "Water"
+            },
+            {
+              "question": "What is one way people eat cucumbers?",
+              "options": [
+                "A) In salads",
+                "B) In pancakes",
+                "C) In cereal",
+                "D) In ice cream"
+              ],
+              "correct_answer": "A",
+              "explanation": "In salads"
+            }
+          ]
+        }
+      },
+      "bell_peppers": {
+        "description": "Bell peppers are colorful, sweet peppers that come in red, yellow, orange, and green! They're crunchy and mild, not spicy at all.",
+        "image": "assets/images/foods/bellpepper.png",
+        "nutrition_per_cup": {
+          "carbohydrates": "7 grams - Natural sugars and fiber",
+          "protein": "1 gram - Small plant protein amount",
+          "fat": "0.3 grams - Very low fat"
+        },
+        "nutrient_sources": {
+          "carbohydrates": "Natural sugars from photosynthesis 🫑",
+          "protein": "Plant amino acids",
+          "fat": "Natural oils in pepper seeds"
+        },
+        "how_grown": [
+          "Start from pepper seeds indoors",
+          "Transplant to warm, sunny garden",
+          "White flowers bloom on bushy plants",
+          "Peppers start green and change colors as they ripen",
+          "Harvest when full-sized and colorful"
+        ],
+        "how_to_eat": ["Raw with dip", "Stuffed peppers", "In stir-fries", "Roasted peppers", "On pizza", "In fajitas"],
+        "quiz": {
+          "questions": [
+            {
+              "question": "What shape is a bell pepper?",
+              "options": [
+                "A) Like a ball",
+                "B) Like a bell",
+                "C) Like a star",
+                "D) Like a square"
+              ],
+              "correct_answer": "B",
+              "explanation": "Like a bell"
+            },
+            {
+              "question": "What color are bell peppers when they first start growing?",
+              "options": [
+                "A) Red",
+                "B) Orange",
+                "C) Green",
+                "D) Yellow"
+              ],
+              "correct_answer": "C",
+              "explanation": "Green"
+            },
+            {
+              "question": "Where do bell peppers grow?",
+              "options": [
+                "A) Above the ground",
+                "B) In the ocean",
+                "C) Under the ground",
+                "D) Underwater"
+              ],
+              "correct_answer": "A",
+              "explanation": "Above the ground"
+            },
+            {
+              "question": "What does vitamin C in bell peppers help with?",
+              "options": [
+                "A) Help turn your teeth blue",
+                "B) Makes your hair shorter",
+                "C) Helps you to run faster",
+                "D) Help you to stay healthy and not get sick"
+              ],
+              "correct_answer": "D",
+              "explanation": "Help you to stay healthy and not get sick"
+            }
+          ]
+        }
+      },
+      "spinach": {
+        "description": "Spinach has dark green leaves that are packed with iron and vitamins! Baby spinach is tender while mature spinach has bigger, stronger-flavored leaves.",
+        "image": "assets/images/foods/spinach.png",
+        "nutrition_per_cup": {
+          "carbohydrates": "1 gram - Very low carb vegetable",
+          "protein": "1 gram - Good plant protein for leafy green",
+          "fat": "0.1 grams - Nearly fat-free"
+        },
+        "nutrient_sources": {
+          "carbohydrates": "Minimal sugars from photosynthesis 🥬",
+          "protein": "Concentrated plant proteins in leaves",
+          "fat": "Trace amounts of natural plant oils"
+        },
+        "how_grown": [
+          "Plant spinach seeds in cool weather",
+          "Grows quickly in rich, moist soil",
+          "Harvest baby leaves early for tenderness",
+          "Or let grow to full-size leaves",
+          "Pick regularly to encourage new growth"
+        ],
+        "how_to_eat": ["Fresh in salads", "Sautéed spinach", "In smoothies", "Spinach and cheese dishes", "Cooked in soups", "Wilted on pizza"],
+        "quiz": {
+          "questions": [
+            {
+              "question": "What color is spinach?",
+              "options": [
+                "A) Light green",
+                "B) Dark green",
+                "C) Yellow",
+                "D) Red"
+              ],
+              "correct_answer": "B",
+              "explanation": "Dark green"
+            },
+            {
+              "question": "What mineral is spinach famous for having?",
+              "options": [
+                "A) Gold",
+                "B) Silver",
+                "C) Iron",
+                "D) Copper"
+              ],
+              "correct_answer": "C",
+              "explanation": "Iron"
+            },
+            {
+              "question": "When is the best time to harvest baby spinach?",
+              "options": [
+                "A) When it's fully grown",
+                "B) Early for tenderness",
+                "C) Never",
+                "D) Only in winter"
+              ],
+              "correct_answer": "B",
+              "explanation": "Early for tenderness"
+            },
+            {
+              "question": "How fast does spinach grow?",
+              "options": [
+                "A) Very slowly",
+                "B) Quickly",
+                "C) Only in summer",
+                "D) Never grows"
+              ],
+              "correct_answer": "B",
+              "explanation": "Quickly"
+            }
+          ]
+        }
+      },
+      "tomato": {
+        "description": "Tomatoes are actually fruits, not vegetables! They have seeds inside, which makes them a fruit. Tomatoes come in many colors like red, yellow, orange, and even purple!",
+        "image": "assets/images/foods/tomato.png",
+        "nutrition_per_medium": {
+          "carbohydrates": "5 grams - Natural fruit sugars and fiber",
+          "protein": "1 gram - Small amount of plant protein",
+          "fat": "0.2 grams - Very low fat, making them light and healthy"
+        },
+        "nutrient_sources": {
+          "carbohydrates": "From sugar and fiber inside the tomato; plants make sugar via photosynthesis 🍅",
+          "protein": "From amino acids made by the tomato plant",
+          "fat": "From natural oils in the seeds"
+        },
+        "how_grown": [
+          "Plant the seed in soil",
+          "Water it daily",
+          "Provide lots of sunlight",
+          "Plant sprouts, grows leaves, then flowers",
+          "Green tomato grows and slowly turns red when ripe"
+        ],
+        "how_to_eat": ["In salads", "On sandwiches", "As ketchup", "In soups", "Fresh like an apple"],
+        "quiz": {
+          "questions": [
+            {
+              "question": "Are tomatoes fruits or vegetables?",
+              "options": [
+                "A) Vegetables",
+                "B) Fruits because they have seeds",
+                "C) Neither",
+                "D) Both"
+              ],
+              "correct_answer": "B",
+              "explanation": "Fruits because they have seeds"
+            },
+            {
+              "question": "What color do tomatoes turn when they're ripe?",
+              "options": [
+                "A) Green",
+                "B) Blue",
+                "C) Red",
+                "D) Purple"
+              ],
+              "correct_answer": "C",
+              "explanation": "Red"
+            },
+            {
+              "question": "What do tomato plants need lots of?",
+              "options": [
+                "A) Darkness",
+                "B) Cold weather",
+                "C) Sunlight",
+                "D) Snow"
+              ],
+              "correct_answer": "C",
+              "explanation": "Sunlight"
+            },
+            {
+              "question": "What color are tomatoes before they ripen?",
+              "options": [
+                "A) Red",
+                "B) Yellow",
+                "C) Green",
+                "D) Orange"
+              ],
+              "correct_answer": "C",
+              "explanation": "Green"
+            }
+          ]
+        }
+      },
+      "cabbage": {
+        "description": "Cabbage forms tight, round heads of layered leaves! It comes in green, purple, and white varieties and can be eaten raw or cooked.",
+        "image": "assets/images/foods/broccoli.png",
+        "nutrition_per_cup": {
+          "carbohydrates": "6 grams - Natural sugars and lots of fiber",
+          "protein": "1.3 grams - Good plant protein for a vegetable",
+          "fat": "0.1 grams - Nearly fat-free"
+        },
+        "nutrient_sources": {
+          "carbohydrates": "Natural sugars and fiber from photosynthesis 🥬",
+          "protein": "Plant proteins concentrated in leaves",
+          "fat": "Minimal natural plant oils"
+        },
+        "how_grown": [
+          "Start from cabbage seeds or transplants",
+          "Need cool weather and rich soil",
+          "Outer leaves grow first",
+          "Inner leaves form tight head",
+          "Harvest when head feels firm and solid"
+        ],
+        "how_to_eat": ["Raw in coleslaw", "Sauerkraut", "Stuffed cabbage", "In soups", "Stir-fried cabbage", "Cabbage rolls"],
+        "quiz": {
+          "questions": [
+            {
+              "question": "What shape does cabbage grow in?",
+              "options": [
+                "A) Long and thin",
+                "B) Flat and wide",
+                "C) Round tight heads",
+                "D) Triangle shaped"
+              ],
+              "correct_answer": "C",
+              "explanation": "Round tight heads"
+            },
+            {
+              "question": "What colors can cabbage be?",
+              "options": [
+                "A) Only green",
+                "B) Green, purple, and white",
+                "C) Only red",
+                "D) Yellow and blue"
+              ],
+              "correct_answer": "B",
+              "explanation": "Green, purple, and white"
+            },
+            {
+              "question": "How are cabbage leaves arranged?",
+              "options": [
+                "A) Randomly scattered",
+                "B) In tight layers",
+                "C) Hanging down",
+                "D) Standing straight up"
+              ],
+              "correct_answer": "B",
+              "explanation": "In tight layers"
+            },
+            {
+              "question": "When should you harvest cabbage?",
+              "options": [
+                "A) When it feels soft",
+                "B) When it feels firm and solid",
+                "C) When it turns brown",
+                "D) Never"
+              ],
+              "correct_answer": "B",
+              "explanation": "When it feels firm and solid"
+            }
+          ]
+        }
+      },
+      "asparagus": {
+        "description": "Asparagus are green spears that emerge from the ground in spring! They're actually young shoots of the asparagus plant and have a unique, slightly nutty flavor.",
+        "image": "assets/images/foods/peas.png",
+        "nutrition_per_cup": {
+          "carbohydrates": "5 grams - Natural sugars and fiber",
+          "protein": "3 grams - Good plant protein content",
+          "fat": "0.2 grams - Nearly fat-free"
+        },
+        "nutrient_sources": {
+          "carbohydrates": "Natural sugars and fiber from asparagus plants 🌿",
+          "protein": "Plant-based amino acids concentrated in shoots",
+          "fat": "Minimal natural plant oils"
+        },
+        "how_grown": [
+          "Grow from asparagus crowns planted in trenches",
+          "Plants take 2-3 years before first harvest",
+          "Spears emerge from underground crowns",
+          "Cut spears when 6-8 inches tall",
+          "Allow some spears to grow into ferns for plant health"
+        ],
+        "how_to_eat": ["Roasted with olive oil", "Steamed asparagus", "Grilled asparagus", "In omelets", "Asparagus soup", "Sautéed with garlic"],
+        "quiz": {
+          "questions": [
+            {
+              "id": 1,
+              "question": "What does asparagus look like?",
+              "options": [
+                "A) A round orange fruit",
+                "B) Pointy and green",
+                "C) A purple flower",
+                "D) Yellow and leafy"
+              ],
+              "correct_answer": "B",
+              "explanation": "Pointy and green"
+            },
+            {
+              "id": 2,
+              "question": "How long can it take before asparagus is ready to be picked for the first time?",
+              "options": [
+                "A) 1 week",
+                "B) 1 - 3 days",
+                "C) 2 - 3 years",
+                "D) 10 years"
+              ],
+              "correct_answer": "C",
+              "explanation": "2 - 3 years"
+            },
+            {
+              "id": 3,
+              "question": "What are two other colors asparagus can be besides green?",
+              "options": [
+                "A) Red and blue",
+                "B) Black and brown",
+                "C) Pink and orange",
+                "D) Purple and white"
+              ],
+              "correct_answer": "D",
+              "explanation": "Purple and white"
+            },
+            {
+              "id": 4,
+              "question": "Which part of your body does vitamin K in asparagus help?",
+              "options": [
+                "A) Your bones",
+                "B) Your ears",
+                "C) Your lungs",
+                "D) Your hair"
+              ],
+              "correct_answer": "A",
+              "explanation": "Your bones"
+            }
+          ]
+        }
+      }
+    },
+    "proteins": {
+      "chicken": {
+        "description": "Chicken is lean white meat that's versatile and popular worldwide! It's a complete protein source with all essential amino acids.",
+        "image": "assets/images/foods/chicken.png",
+        "nutrition_per_3oz": {
+          "carbohydrates": "0 grams - No carbs in plain chicken",
+          "protein": "26 grams - High-quality complete protein",
+          "fat": "3 grams - Low fat, mostly in skin"
+        },
+        "nutrient_sources": {
+          "carbohydrates": "None in plain chicken meat 🐔",
+          "protein": "Complete amino acid profile from muscle tissue",
+          "fat": "Natural animal fats, concentrated in skin"
+        },
+        "how_produced": [
+          "Chickens are raised on farms",
+          "Fed grain-based diets with protein supplements",
+          "Raised in coops or free-range environments",
+          "Processed at appropriate age for tender meat",
+          "Available as whole birds or individual cuts"
+        ],
+        "how_to_eat": ["Grilled chicken breast", "Roasted whole chicken", "Chicken soup", "Stir-fried chicken", "Chicken salad", "Baked chicken thighs"],
+        "quiz": {
+          "questions": [
+            {
+              "question": "What type of meat is chicken?",
+              "options": [
+                "A) Red meat",
+                "B) White meat",
+                "C) Pink meat",
+                "D) Brown meat"
+              ],
+              "correct_answer": "B",
+              "explanation": "White meat"
+            },
+            {
+              "question": "What do chickens provide besides meat?",
+              "options": [
+                "A) Milk",
+                "B) Wool",
+                "C) Eggs",
+                "D) Honey"
+              ],
+              "correct_answer": "C",
+              "explanation": "Eggs"
+            },
+            {
+              "question": "What do chickens eat on farms?",
+              "options": [
+                "A) Only grass",
+                "B) Grain-based diets",
+                "C) Only meat",
+                "D) Nothing"
+              ],
+              "correct_answer": "B",
+              "explanation": "Grain-based diets"
+            },
+            {
+              "question": "What makes chicken a good protein?",
+              "options": [
+                "A) It has no protein",
+                "B) It's incomplete protein",
+                "C) It has all essential amino acids",
+                "D) It only has vitamins"
+              ],
+              "correct_answer": "C",
+              "explanation": "It has all essential amino acids"
+            }
+          ]
+        }
+      },
+      "fish": {
+        "description": "Fish provides excellent lean protein and healthy omega-3 fatty acids! Different types offer varying flavors from mild to rich.",
+        "image": "assets/images/foods/fish.png",
+        "nutrition_per_3oz": {
+          "carbohydrates": "0 grams - No carbs in plain fish",
+          "protein": "22 grams - High-quality complete protein",
+          "fat": "5 grams - Healthy omega-3 fatty acids"
+        },
+        "nutrient_sources": {
+          "carbohydrates": "None in plain fish 🐟",
+          "protein": "Complete amino acids from muscle tissue",
+          "fat": "Healthy omega-3 and omega-6 fatty acids"
+        },
+        "how_produced": [
+          "Wild-caught from oceans, lakes, and rivers",
+          "Farm-raised in controlled aquatic environments",
+          "Fed natural diet or specialized fish feed",
+          "Harvested at optimal size and age",
+          "Processed fresh or frozen for markets"
+        ],
+        "how_to_eat": ["Grilled fish fillets", "Baked whole fish", "Fish tacos", "Sushi and sashimi", "Fish and chips", "In soups and stews"],
+        "quiz": {
+          "questions": [
+            {
+              "question": "Where do fish live?",
+              "options": [
+                "A) On land",
+                "B) In trees",
+                "C) In water",
+                "D) In caves"
+              ],
+              "correct_answer": "C",
+              "explanation": "In water"
+            },
+            {
+              "question": "What healthy fats do fish provide?",
+              "options": [
+                "A) Omega-3 fatty acids",
+                "B) Sugar",
+                "C) Starch",
+                "D) Fiber"
+              ],
+              "correct_answer": "A",
+              "explanation": "Omega-3 fatty acids"
+            },
+            {
+              "question": "How can fish be caught?",
+              "options": [
+                "A) Only from farms",
+                "B) Wild-caught or farm-raised",
+                "C) Only from the wild",
+                "D) They catch themselves"
+              ],
+              "correct_answer": "B",
+              "explanation": "Wild-caught or farm-raised"
+            },
+            {
+              "question": "What makes fish a lean protein?",
+              "options": [
+                "A) It has lots of fat",
+                "B) It has little protein",
+                "C) It has high-quality protein with good fats",
+                "D) It has no nutrients"
+              ],
+              "correct_answer": "C",
+              "explanation": "It has high-quality protein with good fats"
+            }
+          ]
+        }
+      },
+      "egg": {
+        "description": "Eggs are complete protein packages from chickens! The white provides protein while the yolk contains healthy fats and vitamins.",
+        "image": "assets/images/foods/egg.png",
+        "nutrition_per_large_egg": {
+          "carbohydrates": "0.6 grams - Minimal carbs",
+          "protein": "6 grams - Complete protein with all amino acids",
+          "fat": "5 grams - Healthy fats concentrated in yolk"
+        },
+        "nutrient_sources": {
+          "carbohydrates": "Trace amounts naturally present 🥚",
+          "protein": "Complete amino acid profile from egg whites and yolk",
+          "fat": "Natural fats and cholesterol from yolk"
+        },
+        "how_produced": [
+          "Laid by hens on farms",
+          "Hens eat grain-based diets",
+          "Eggs collected daily from nests",
+          "Cleaned and inspected for quality",
+          "Packaged and refrigerated for freshness"
+        ],
+        "how_to_eat": ["Scrambled eggs", "Hard-boiled eggs", "Fried eggs", "In baking recipes", "Egg salad", "Omelets with vegetables"],
+        "quiz": {
+          "questions": [
+            {
+              "question": "What animal lays the eggs we eat?",
+              "options": [
+                "A) Cows",
+                "B) Chickens",
+                "C) Fish",
+                "D) Pigs"
+              ],
+              "correct_answer": "B",
+              "explanation": "Chickens"
+            },
+            {
+              "question": "What are the two main parts of an egg?",
+              "options": [
+                "A) Shell and inside",
+                "B) Top and bottom",
+                "C) White and yolk",
+                "D) Big and small"
+              ],
+              "correct_answer": "C",
+              "explanation": "White and yolk"
+            },
+            {
+              "question": "Which part of the egg has more fat?",
+              "options": [
+                "A) The white",
+                "B) The yolk",
+                "C) The shell",
+                "D) Both parts have the same"
+              ],
+              "correct_answer": "B",
+              "explanation": "The yolk"
+            },
+            {
+              "question": "Why are eggs called complete proteins?",
+              "options": [
+                "A) They're round",
+                "B) They have all amino acids",
+                "C) They're white",
+                "D) They come in dozens"
+              ],
+              "correct_answer": "B",
+              "explanation": "They have all amino acids"
+            }
+          ]
+        }
+      },
+      "beans": {
+        "description": "Beans are protein-rich legumes that come in many varieties like black, kidney, navy, and pinto! They're also high in fiber and complex carbs.",
+        "image": "assets/images/foods/beans.png",
+        "nutrition_per_cup": {
+          "carbohydrates": "45 grams - Complex carbs and fiber",
+          "protein": "15 grams - Good plant-based protein",
+          "fat": "1 gram - Very low fat content"
+        },
+        "nutrient_sources": {
+          "carbohydrates": "Complex starches and fiber stored in seeds 🫘",
+          "protein": "Plant proteins and amino acids",
+          "fat": "Minimal natural seed oils"
+        },
+        "how_grown": [
+          "Plant bean seeds in warm soil",
+          "Some varieties climb while others bush",
+          "Nitrogen-fixing bacteria help plants grow",
+          "Pods develop containing multiple beans",
+          "Harvest when pods are dry and beans rattle inside"
+        ],
+        "how_to_eat": ["In chili and stews", "Bean salads", "Refried beans", "Hummus (from chickpeas)", "Bean soups", "Rice and beans"],
+        "quiz": {
+          "questions": [
+            {
+              "question": "What family do beans belong to?",
+              "options": [
+                "A) Fruit family",
+                "B) Vegetable family", 
+                "C) Legume family",
+                "D) Grain family"
+              ],
+              "correct_answer": "C",
+              "explanation": "Legume family"
+            },
+            {
+              "question": "Where do beans grow?",
+              "options": [
+                "A) In pods",
+                "B) On trees",
+                "C) Underground",
+                "D) In water"
+              ],
+              "correct_answer": "A",
+              "explanation": "In pods"
+            },
+            {
+              "question": "What nutrients are beans high in?",
+              "options": [
+                "A) Only protein",
+                "B) Protein and fiber",
+                "C) Only sugar",
+                "D) Only fat"
+              ],
+              "correct_answer": "B",
+              "explanation": "Protein and fiber"
+            },
+            {
+              "question": "What colors can beans be?",
+              "options": [
+                "A) Only brown",
+                "B) Only black",
+                "C) Many colors like black, red, white",
+                "D) Only green"
+              ],
+              "correct_answer": "C",
+              "explanation": "Many colors like black, red, white"
+            }
+          ]
+        }
+      },
+      "lentils": {
+        "description": "Lentils are small, lens-shaped legumes that cook quickly! They come in red, green, brown, and black varieties, each with unique flavors.",
+        "image": "assets/images/foods/lentils.png",
+        "nutrition_per_cup": {
+          "carbohydrates": "40 grams - Complex carbs and high fiber",
+          "protein": "18 grams - Excellent plant protein source",
+          "fat": "0.8 grams - Very low fat"
+        },
+        "nutrient_sources": {
+          "carbohydrates": "Complex starches and fiber in lentil seeds 🟤",
+          "protein": "High-quality plant proteins and amino acids",
+          "fat": "Minimal natural seed oils"
+        },
+        "how_grown": [
+          "Plant lentil seeds in cool weather",
+          "Small plants with delicate leaves",
+          "Tiny flowers develop into small pods",
+          "Each pod contains 1-2 lentil seeds",
+          "Harvest when plants dry and pods rattle"
+        ],
+        "how_to_eat": ["Lentil soup", "Dal (Indian lentil curry)", "Lentil salads", "Veggie burgers", "In stews", "Red lentil pasta sauce"],
+        "quiz": {
+          "questions": [
+            {
+              "question": "What shape are lentils?",
+              "options": [
+                "A) Round like marbles",
+                "B) Long like sticks",
+                "C) Small and lens-shaped",
+                "D) Square"
+              ],
+              "correct_answer": "C",
+              "explanation": "Small and lens-shaped"
+            },
+            {
+              "question": "How fast do lentils cook compared to other legumes?",
+              "options": [
+                "A) Very slowly",
+                "B) They don't cook",
+                "C) Quickly",
+                "D) Only in winter"
+              ],
+              "correct_answer": "C",
+              "explanation": "Quickly"
+            },
+            {
+              "question": "What colors do lentils come in?",
+              "options": [
+                "A) Only brown",
+                "B) Red, green, brown, and black",
+                "C) Only red",
+                "D) Only green"
+              ],
+              "correct_answer": "B",
+              "explanation": "Red, green, brown, and black"
+            },
+            {
+              "question": "What makes lentils a good plant protein?",
+              "options": [
+                "A) They have no protein",
+                "B) They have high-quality protein",
+                "C) They only have carbs",
+                "D) They're only good for decoration"
+              ],
+              "correct_answer": "B",
+              "explanation": "They have high-quality protein"
+            }
+          ]
+        }
+      },
+      "tofu": {
+        "description": "Tofu is made from soybeans and has a mild flavor that absorbs other tastes! It comes in different textures from soft to extra-firm.",
+        "image": "assets/images/foods/tofu.png",
+        "nutrition_per_3oz": {
+          "carbohydrates": "2 grams - Minimal carbs",
+          "protein": "9 grams - Complete plant protein",
+          "fat": "5 grams - Healthy plant-based fats"
+        },
+        "nutrient_sources": {
+          "carbohydrates": "Minimal carbs from soybean processing 🟫",
+          "protein": "Complete amino acid profile from soybeans",
+          "fat": "Natural soybean oils"
+        },
+        "how_produced": [
+          "Soybeans are soaked and ground into milk",
+          "Soy milk is heated and coagulant is added",
+          "Curds form and are pressed into blocks",
+          "Different pressing times create different textures",
+          "Packaged in water to maintain freshness"
+        ],
+        "how_to_eat": ["Stir-fried tofu", "Grilled tofu steaks", "In miso soup", "Scrambled tofu", "Marinated and baked", "Blended in smoothies"],
+        "quiz": {
+          "questions": [
+            {
+              "question": "What is tofu made from?",
+              "options": [
+                "A) Milk",
+                "B) Soybeans",
+                "C) Rice",
+                "D) Wheat"
+              ],
+              "correct_answer": "B",
+              "explanation": "Soybeans"
+            },
+            {
+              "question": "What does tofu taste like on its own?",
+              "options": [
+                "A) Very spicy",
+                "B) Very sweet",
+                "C) Mild and absorbs other flavors",
+                "D) Very salty"
+              ],
+              "correct_answer": "C",
+              "explanation": "Mild and absorbs other flavors"
+            },
+            {
+              "question": "What textures can tofu come in?",
+              "options": [
+                "A) Only hard",
+                "B) Soft to extra-firm",
+                "C) Only soft",
+                "D) Only liquid"
+              ],
+              "correct_answer": "B",
+              "explanation": "Soft to extra-firm"
+            },
+            {
+              "question": "What type of protein is tofu?",
+              "options": [
+                "A) Incomplete protein",
+                "B) Complete plant protein",
+                "C) No protein",
+                "D) Only animal protein"
+              ],
+              "correct_answer": "B",
+              "explanation": "Complete plant protein"
+            }
+          ]
+        }
+      },
+      "lean_beef": {
+        "description": "Lean beef comes from cattle and provides complete protein with essential nutrients like iron and B vitamins! Choose cuts with less visible fat.",
+        "image": "assets/images/foods/beef.png",
+        "nutrition_per_3oz": {
+          "carbohydrates": "0 grams - No carbs in plain beef",
+          "protein": "25 grams - High-quality complete protein",
+          "fat": "8 grams - Varies by cut, lean cuts have less"
+        },
+        "nutrient_sources": {
+          "carbohydrates": "None in plain beef 🥩",
+          "protein": "Complete amino acid profile from muscle tissue",
+          "fat": "Natural animal fats, varies by cut"
+        },
+        "how_produced": [
+          "Cattle are raised on pastures or farms",
+          "Fed grass, hay, and sometimes grain",
+          "Raised for 18-24 months typically",
+          "Processed at meat facilities",
+          "Different cuts offer varying fat content"
+        ],
+        "how_to_eat": ["Grilled lean steaks", "Lean ground beef", "Beef stir-fry", "Slow-cooked beef stew", "Lean beef tacos", "Roasted beef tenderloin"],
+        "quiz": {
+          "questions": [
+            {
+              "question": "What animal does beef come from?",
+              "options": [
+                "A) Chickens",
+                "B) Pigs", 
+                "C) Cattle",
+                "D) Sheep"
+              ],
+              "correct_answer": "C",
+              "explanation": "Cattle"
+            },
+            {
+              "question": "What makes beef 'lean'?",
+              "options": [
+                "A) It has lots of fat",
+                "B) It has less visible fat",
+                "C) It's very small",
+                "D) It's raw"
+              ],
+              "correct_answer": "B",
+              "explanation": "It has less visible fat"
+            },
+            {
+              "question": "What important mineral does beef provide?",
+              "options": [
+                "A) Gold",
+                "B) Iron",
+                "C) Silver", 
+                "D) Plastic"
+              ],
+              "correct_answer": "B",
+              "explanation": "Iron"
+            },
+            {
+              "question": "How long are cattle usually raised before processing?",
+              "options": [
+                "A) 1 month",
+                "B) 1 week",
+                "C) 18-24 months",
+                "D) 10 years"
+              ],
+              "correct_answer": "C",
+              "explanation": "18-24 months"
+            }
+          ]
+        }
+      },
+      "turkey": {
+        "description": "Turkey is lean poultry similar to chicken but with a slightly different flavor! It's especially popular during holidays but great year-round.",
+        "image": "assets/images/foods/turkey.png",
+        "nutrition_per_3oz": {
+          "carbohydrates": "0 grams - No carbs in plain turkey",
+          "protein": "25 grams - High-quality complete protein",
+          "fat": "3 grams - Very lean, especially breast meat"
+        },
+        "nutrient_sources": {
+          "carbohydrates": "None in plain turkey meat 🦃",
+          "protein": "Complete amino acids from muscle tissue",
+          "fat": "Natural animal fats, minimal in breast meat"
+        },
+        "how_produced": [
+          "Turkeys are raised on farms",
+          "Fed grain-based diets with protein",
+          "Raised in controlled farm environments",
+          "Processed at appropriate age for tender meat",
+          "Available as whole birds or individual cuts"
+        ],
+        "how_to_eat": ["Roasted turkey breast", "Turkey sandwiches", "Ground turkey", "Turkey meatballs", "Turkey chili", "Grilled turkey burgers"],
+        "quiz": {
+          "questions": [
+            {
+              "question": "What type of meat is turkey?",
+              "options": [
+                "A) Red meat",
+                "B) Poultry like chicken",
+                "C) Fish",
+                "D) Vegetable"
+              ],
+              "correct_answer": "B",
+              "explanation": "Poultry like chicken"
+            },
+            {
+              "question": "When is turkey especially popular?",
+              "options": [
+                "A) Summer",
+                "B) Spring",
+                "C) Holidays like Thanksgiving",
+                "D) Never"
+              ],
+              "correct_answer": "C",
+              "explanation": "Holidays like Thanksgiving"
+            },
+            {
+              "question": "Which part of turkey is leanest?",
+              "options": [
+                "A) The skin",
+                "B) The breast meat",
+                "C) The bones",
+                "D) The feathers"
+              ],
+              "correct_answer": "B",
+              "explanation": "The breast meat"
+            },
+            {
+              "question": "How is turkey similar to chicken?",
+              "options": [
+                "A) Both are fish",
+                "B) Both are lean poultry with complete protein",
+                "C) Both are vegetables",
+                "D) They're not similar at all"
+              ],
+              "correct_answer": "B",
+              "explanation": "Both are lean poultry with complete protein"
+            }
+          ]
+        }
+      },
+      "nuts": {
+        "description": "Nuts are protein-rich seeds with healthy fats! Different varieties like almonds, walnuts, and cashews offer unique flavors and nutrients.",
+        "image": "assets/images/foods/nuts.png",
+        "nutrition_per_ounce": {
+          "carbohydrates": "6 grams - Some natural sugars and fiber",
+          "protein": "6 grams - Good plant protein source",
+          "fat": "14 grams - Healthy unsaturated fats"
+        },
+        "nutrient_sources": {
+          "carbohydrates": "Natural sugars and fiber from nut meat 🥜",
+          "protein": "Plant proteins and amino acids",
+          "fat": "Healthy monounsaturated and polyunsaturated fats"
+        },
+        "how_grown": [
+          "Nuts grow on trees (most varieties)",
+          "Trees bloom with flowers in spring",
+          "Nuts develop in shells or hulls",
+          "Harvest in fall when nuts are mature",
+          "Dried and processed to remove shells"
+        ],
+        "how_to_eat": ["Raw as snacks", "Roasted and salted", "In trail mix", "Nut butters", "Chopped in salads", "Baked in desserts"]
+      }
+    },
+    "metadata": {
+      "total_food_items": 33,
+      "total_fruits": 13,
+      "total_vegetables": 11,
+      "total_proteins": 9,
+      "items_with_quizzes": 33,
+      "quiz_topics": [
+        "Sweet Potatoes",
+        "Peaches", 
+        "Mangoes",
+        "Lemons",
+        "Kiwi",
+        "Grapes",
+        "Cucumber",
+        "Corn", 
+        "Cherries",
+        "Bell Peppers",
+        "Blueberries",
+        "Asparagus",
+        "Apples",
+        "Pears",
+        "Bananas",
+        "Oranges",
+        "Pineapples",
+        "Strawberries",
+        "Watermelons",
+        "Apricots",
+        "Carrots",
+        "Broccoli",
+        "Peas",
+        "Spinach",
+        "Tomatoes",
+        "Cabbage",
+        "Chicken",
+        "Fish",
+        "Eggs",
+        "Beans",
+        "Lentils",
+        "Tofu",
+        "Lean Beef",
+        "Turkey",
+        "Nuts"
+      ],
+      "educational_focus": [
+        "Plant growth and cultivation",
+        "Nutritional benefits",
+        "Colors and shapes", 
+        "Harvesting methods",
+        "Health benefits",
+        "Growing conditions",
+        "Preparation methods",
+        "Animal sources",
+        "Processing methods",
+        "Protein types",
+        "Complete vs incomplete proteins",
+        "Healthy fats"
+      ],
+      "format_standards": {
+        "nutrition_format": "Standardized per serving size with explanations",
+        "growing_info": "Step-by-step cultivation process",
+        "consumption_methods": "Various preparation and eating styles",
+        "quiz_structure": "4 questions per item, multiple choice with explanations",
+        "description_style": "Child-friendly with enthusiasm and facts"
+      }
+    }
+  }

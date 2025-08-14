@@ -125,7 +125,7 @@ const MainScreen: React.FC = () => {
       subtitle: 'Manage account',
       icon: 'person-outline',
       color: colors.warning,
-      gradient: colors.gradients.food as [string, string]
+      gradient: colors.gradients.success as [string, string]
     },
     {
       id: 'gamification',
