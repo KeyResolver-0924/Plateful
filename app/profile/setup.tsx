@@ -1,8 +1,9 @@
 import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { router } from 'expo-router';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
+  Alert,
   Dimensions,
   Image,
   ScrollView,
@@ -23,6 +24,7 @@ import Input from '../../components/common/Input';
 import StatusBar from '../../components/common/StatusBar';
 import { colors } from '../../constants/colors';
 import { config } from '../../constants/config';
+import { useUserStore } from '../../stores/userStore';
 import { shadowPresets } from '../../utils/shadowUtils';
 
 const { width } = Dimensions.get('window');
@@ -43,6 +45,23 @@ interface ProfileData {
   vegetables: string[];
   proteins: string[];
 }
+
+// Convert age string to number for backend
+// const convertAgeToNumber = (ageString: string): number => {
+//   const ageMatch = ageString.match(/(\d+)/);
+//   return ageMatch ? parseInt(ageMatch[1], 10) : 0;
+// };
+
+const convertGenderToBackendFormat = (gender: string): 'male' | 'female' | 'other' => {
+  switch (gender.toLowerCase()) {
+    case 'boy':
+      return 'male';
+    case 'girl':
+      return 'female';
+    default:
+      return 'other';
+  }
+};
 
 interface StepProps {
   profileData: ProfileData;
@@ -233,6 +252,19 @@ const ProfileSetupScreen = () => {
   
   const progress = useSharedValue(0);
   
+  // Get userStore functions
+   const { addChild, 
+    // isLoading, error, clearError 
+   } = useUserStore();
+  
+  // Handle errors from the store
+  useEffect(() => {
+    // if (error) {
+    //   Alert.alert('Error', error);
+    //   clearError();
+    // }
+  }, []);
+  
   const steps = [
     'childName',
     'age',
@@ -243,17 +275,65 @@ const ProfileSetupScreen = () => {
     'proteins'
   ];
   
-  const handleNext = () => {
+  const handleNext = async () => {
     if (currentStep < steps.length - 1) {
       setCurrentStep(currentStep + 1);
       progress.value = withSpring((currentStep + 1) / steps.length);
     } else {
-      // Complete setup and navigate to success page
-      if (router && router.replace) {
-        router.replace('/profile/setup-success');
-      } else {
-        console.error('Router is not available');
+      await handleCreateChildProfile();
+    }
+  };
+  
+  const handleCreateChildProfile = async () => {
+    try {
+      if (!profileData.childName.trim()) {
+        Alert.alert('Error', 'Please enter your child\'s name');
+        return;
       }
+      
+      if (!profileData.age) {
+        Alert.alert('Error', 'Please select your child\'s age');
+        return;
+      }
+      
+      if (!profileData.gender) {
+        Alert.alert('Error', 'Please select your child\'s gender');
+        return;
+      }
+      
+      console.log('Child data1:', profileData);
+      // Prepare child data for backend
+      const childData = {
+        name: profileData.childName.trim(),
+        ageRange: profileData.age.trim(),
+        gender: convertGenderToBackendFormat(profileData.gender),
+        allergies: profileData.restrictions,
+        vegetables: profileData.vegetables,
+        fruits: profileData.fruits,
+        proteins: profileData.proteins,
+      };
+
+      console.log('Child data2:', childData);
+      
+      // Create child profile using userStore
+      const result = await addChild(childData);
+      
+      // Check if there was an error from the store
+      // if (error) {
+      //   Alert.alert('Error', error);
+      //   return;
+      // }
+      
+      // Navigate to success page
+      // router.replace('/profile/setup-success');
+      router.push('/(tabs)' as any);
+      
+    } catch (error) {
+      console.error('Error creating child profile:', error);
+      Alert.alert(  
+        'Error', 
+        'Failed to create child profile. Please try again.'
+      );
     }
   };
   
@@ -343,8 +423,9 @@ const ProfileSetupScreen = () => {
             <View style={styles.buttonRow}>
               <Animated.View style={styles.buttonContainer}>
                 <TouchableOpacity
-                  style={styles.backButton}
+                  style={[styles.backButton]}
                   onPress={handlePrevious}
+                  // disabled={isLoading}
                 >
                   <Text style={styles.backButtonText}>
                     <Ionicons name="arrow-back" size={25} color="white" />
@@ -353,11 +434,15 @@ const ProfileSetupScreen = () => {
               </Animated.View>
               <Animated.View style={styles.buttonContainer}>
                 <TouchableOpacity
-                  style={styles.nextButton}
+                  style={[styles.nextButton]}
                   onPress={handleNext}
+                  // disabled={isLoading}
                 >
                   <Text style={styles.nextButtonText}>
-                    {currentStep === steps.length - 1 ? "Well!" : <Ionicons name="arrow-forward" size={25} color="white" />}
+                    {currentStep === steps.length - 1 
+                      ? ("Well!") 
+                      : <Ionicons name="arrow-forward" size={25} color="white" />
+                    }
                   </Text>
                 </TouchableOpacity>
               </Animated.View>
@@ -366,11 +451,12 @@ const ProfileSetupScreen = () => {
             // Show only Next button on first screen
             <Animated.View>
               <TouchableOpacity
-                style={styles.singleNextButton}
+                style={[styles.singleNextButton]}
                 onPress={handleNext}
+                // disabled={isLoading}
               >
                 <Text style={styles.nextButtonText}>
-                  Next
+                  {"Next"}
                 </Text>
               </TouchableOpacity>
             </Animated.View>
@@ -790,6 +876,9 @@ const styles = StyleSheet.create({
     color: 'rgba(255, 255, 255, 0.8)',
     fontSize: 18,
     fontWeight: '600',
+  },
+  disabledButton: {
+    opacity: 0.6,
   },
 });
 

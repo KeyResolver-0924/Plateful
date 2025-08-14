@@ -43,7 +43,7 @@ const VerificationSuccessScreen = () => {
         if (isSignUp === 'true') {
           router.replace('/profile/child-profile');
         } else {
-          router.replace('/(tabs)');
+          router.replace('/(tabs)' as any);
         }
       } catch (error) {
         console.error('Auto navigation error:', error);
@@ -58,7 +58,7 @@ const VerificationSuccessScreen = () => {
       if (isSignUp === 'true') {
         router.replace('/profile/child-profile');
       } else {
-        router.replace('/(tabs)');
+        router.replace('/(tabs)' as any);
       }
     } catch (error) {
       console.error('Navigation error:', error);
@@ -137,7 +137,7 @@ const VerificationSuccessScreen = () => {
             style={styles.skipButton}
             onPress={() => {
               try {
-                router.replace('/(tabs)');
+                router.replace('/(tabs)' as any);
               } catch (error) {
                 console.error('Skip navigation error:', error);
               }

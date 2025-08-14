@@ -1,10 +1,12 @@
-import { Tabs, usePathname } from 'expo-router';
+import { router, Tabs, usePathname } from 'expo-router';
+import { useEffect } from 'react';
 import { Image, Platform } from 'react-native';
 
 import { HapticTab } from '../../components/HapticTab';
 import TabBarBackground from '../../components/ui/TabBarBackground';
 import { colors } from '../../constants/colors';
 import { useColorScheme } from '../../hooks/useColorScheme';
+import { useAuthStore } from '../../stores/authStore';
 import { useTabBarVisibility } from '../../utils/tabBarUtils';
 
 interface TabLayoutProps {
@@ -14,6 +16,36 @@ interface TabLayoutProps {
 export default function TabLayout({ hideTabBar = false }: TabLayoutProps) {
   const colorScheme = useColorScheme();
   const { shouldHideTabBar } = useTabBarVisibility();
+  const { isAuthenticated, isNewUser, isLoading, initializeAuth } = useAuthStore();
+
+  useEffect(() => {
+    initializeAuth();
+  }, [initializeAuth]);
+
+  // Removed duplicate redirect logic - now handled in the combined useEffect below
+
+  // Handle redirects without early returns to avoid hook violations
+  useEffect(() => {
+    if (!isLoading && !isAuthenticated) {
+      router.replace('/auth/sign-in');
+    } else if (!isLoading && isAuthenticated && isNewUser) {
+      router.replace('/profile/child-profile');
+    }
+  }, [isLoading, isAuthenticated, isNewUser]);
+
+  // Show loading or redirect state
+  if (isLoading || !isAuthenticated || isNewUser) {
+    return (
+      <Tabs
+        screenOptions={{
+          tabBarActiveTintColor: colors.primary,
+          headerShown: false,
+          tabBarStyle: { display: 'none' },
+        }}>
+        <Tabs.Screen name="index" options={{ title: 'Loading' }} />
+      </Tabs>
+    );
+  }
 
   // Dynamic tab bar style based on props and current route
   const getTabBarStyle = () => {
@@ -46,11 +78,7 @@ export default function TabLayout({ hideTabBar = false }: TabLayoutProps) {
       paddingTop: 5,
     };
   };
-
-  const pathname = usePathname();
   const shouldHide = hideTabBar || shouldHideTabBar;
-  
-  console.log('Tab bar visibility check:', { shouldHide, shouldHideTabBar, pathname });
 
   return (
     <Tabs

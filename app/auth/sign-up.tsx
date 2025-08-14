@@ -19,10 +19,12 @@ import Input from '../../components/common/Input';
 import PhoneInput from '../../components/common/PhoneInput';
 import StatusBar from '../../components/common/StatusBar';
 import { colors } from '../../constants/colors';
+import { useAuthStore } from '../../stores/authStore';
 
 const { width } = Dimensions.get('window');
 
 interface FormData {
+  name: string;
   email: string;
   password: string;
   confirmPassword: string;
@@ -30,6 +32,7 @@ interface FormData {
 }
 
 interface FormErrors {
+  name?: string;
   password?: string;
   confirmPassword?: string;
   email?: string;
@@ -38,6 +41,7 @@ interface FormErrors {
 
 const SignUpScreen: React.FC = () => {
   const [formData, setFormData] = useState<FormData>({
+    name: '',
     password: '',
     confirmPassword: '',
     email: '',
@@ -45,11 +49,36 @@ const SignUpScreen: React.FC = () => {
   });
   const [errors, setErrors] = useState<FormErrors>({});
   const [loading, setLoading] = useState(false);
+  const { register } = useAuthStore();
+  // Simple registration function without Zustand
+  const handleRegistration = async (userData: FormData) => {
+    try {
+      // Simulate API call
+      await new Promise(resolve => setTimeout(resolve, 1000));
 
+      const result = await register({
+        name: userData.name,
+        email: userData.email,
+        password: userData.password,
+        phone: userData.phoneNumber,
+      });
+      if(result!=null){
+        return { success: true };
+      }
+    } catch (error) {
+      console.error('Registration error:', error);
+      throw new Error('Registration failed');
+    }
+  };
   
   const validateForm = (): boolean => {
     const newErrors: FormErrors = {};
   
+    // Name validation
+    if (!formData.name.trim()) {
+      newErrors.name = 'Name is required';
+    }
+
     // Email validation
     if (!formData.email.trim()) {
       newErrors.email = 'Email is required';
@@ -88,23 +117,21 @@ const SignUpScreen: React.FC = () => {
     }
     
     setLoading(true);
-    
     try {
-      // Simulate sending OTP
-      console.log('Sending phone OTP to:', formData.phoneNumber);
-      await new Promise(resolve => setTimeout(resolve, 1500));
-      
-      // Navigate to OTP verification with consistent absolute path
-      router.replace({
-        pathname: '/auth/otp',
-        params: { 
-          phoneNumber: formData.phoneNumber,
-          isSignUp: 'true' 
-        }
-      });
+      const result = await handleRegistration(formData);
+
+      if(result?.success){
+        // Registration successful, redirect to child profile setup
+        router.replace('/profile/child-profile');
+      } else {
+        throw new Error('Registration failed - no success response');
+      }
     } catch (error) {
-      console.error('Sign up error:', error);
-      Alert.alert('Error', 'Failed to send OTP. Please try again.');
+      console.error('❌ Sign up error:', error);
+      Alert.alert(
+        'Registration Failed', 
+        `Failed to register: ${error instanceof Error ? error.message : 'Unknown error'}`
+      );
     } finally {
       setLoading(false);
     }
@@ -158,6 +185,15 @@ const SignUpScreen: React.FC = () => {
           
           <View style={styles.form}>
                        
+            <Input
+              value={formData.name}
+              onChangeText={(text) => updateFormData('name', text)}
+              placeholder="Enter your name"
+              keyboardType="default"
+              icon={<Ionicons name="person-outline" />}
+              error={errors.name}
+            />
+
             <Input
               value={formData.email}
               onChangeText={(text) => updateFormData('email', text)}
@@ -246,13 +282,15 @@ const styles = StyleSheet.create({
   },
   header: {
     paddingTop: 10,
-    paddingBottom: 50,
+    paddingBottom: 30,
     alignItems: 'center',
   },
   mascot: {
+    position: 'absolute',
     width: 120,
     height: 120,
     resizeMode: 'contain',
+    marginBottom: -20,
   },
   welcomeText: {
     fontSize: 24,

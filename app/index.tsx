@@ -1,26 +1,31 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { LinearGradient } from 'expo-linear-gradient';
 import { router } from 'expo-router';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
-    Dimensions,
-    Image,
-    StyleSheet,
-    Text,
-    View
+  Dimensions,
+  Image,
+  StyleSheet,
+  Text,
+  View
 } from 'react-native';
 import Animated, {
-    runOnJS,
-    useAnimatedStyle,
-    useSharedValue,
-    withDelay,
-    withSpring,
-    withTiming
+  runOnJS,
+  useAnimatedStyle,
+  useSharedValue,
+  withDelay,
+  withSpring,
+  withTiming
 } from 'react-native-reanimated';
 import { colors } from '../constants/colors';
+import { useAuthStore } from '../stores/authStore';
 
 const { width } = Dimensions.get('window');
 
 const SplashScreen: React.FC = () => {
+  const { isAuthenticated, isNewUser, initializeAuth } = useAuthStore();
+  const [onboardingComplete, setOnboardingComplete] = useState<string | null>(null);
+  
   // Animation values
   const logoScale = useSharedValue(0);
   const logoOpacity = useSharedValue(0);
@@ -28,9 +33,33 @@ const SplashScreen: React.FC = () => {
   const loadingOpacity = useSharedValue(1);
   
   const navigateToApp = async () => {
-    router.replace('/auth/onboarding');
+    // Add a small delay to ensure layout is mounted
+    setTimeout(async () => {
+      // Check authentication status and route accordingly
+      if (isAuthenticated) {
+        if (isNewUser) {
+          // New user: go to child profile setup
+          router.replace('/profile/child-profile');
+        } else {
+          // Existing user: go to main app
+          router.replace('/(tabs)' as any);
+        }
+      } else {
+        const onboardingStatus = await AsyncStorage.getItem('onboardingComplete');
+        if (onboardingStatus === 'true') {
+          router.replace('/auth/sign-in');
+        } else {
+          router.replace('/auth/onboarding');
+        }
+      }
+    }, 200);
   };
   
+  useEffect(() => {
+    // Initialize authentication
+    initializeAuth();
+  }, [initializeAuth]);
+
   useEffect(() => {
     // Logo entrance animation
     logoScale.value = withSpring(1, {
@@ -48,7 +77,7 @@ const SplashScreen: React.FC = () => {
     loadingOpacity.value = withDelay(2000, withTiming(0, { duration: 500 }, () => {
       runOnJS(navigateToApp)();
     }));
-  }, [logoOpacity, logoScale, textOpacity, loadingOpacity, navigateToApp]);
+  }, [logoOpacity, logoScale, textOpacity, loadingOpacity, navigateToApp, initializeAuth]);
   
   const logoAnimatedStyle = useAnimatedStyle(() => ({
     transform: [{ scale: logoScale.value }],

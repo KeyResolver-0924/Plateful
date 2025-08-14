@@ -86,7 +86,7 @@ const HomeScreen: React.FC = () => {
 
           <TouchableOpacity 
             style={styles.menuItem2}
-            onPress={() => router.push('./food-learning')}
+            onPress={() => router.push('./foodLearn')}
             activeOpacity={0.7}
           >
             <View style={styles.menuIconContainer}>

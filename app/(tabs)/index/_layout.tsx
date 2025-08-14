@@ -7,8 +7,7 @@ export default function IndexLayout() {
       <Stack.Screen name="leaderboard" options={{ headerShown: false }} />
       <Stack.Screen name="tracking" options={{ headerShown: false }} />
       <Stack.Screen name="history" options={{ headerShown: false }} />
-      <Stack.Screen name="food-learning" options={{ headerShown: false }} />
-      <Stack.Screen name="food-learning-format" options={{ headerShown: false }} />
+      <Stack.Screen name="foodLearn" options={{ headerShown: false }} />
     </Stack>
   );
 } 

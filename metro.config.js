@@ -6,9 +6,7 @@ config.transformer.babelTransformerPath = require.resolve('react-native-svg-tran
 config.resolver.assetExts = config.resolver.assetExts.filter(ext => ext !== 'svg');
 config.resolver.sourceExts.push('svg');
 
-module.exports = config;
-
-// Enable Fast Refresh and improve development experience
+// Fix for import.meta issues
 config.resolver.platforms = ['ios', 'android', 'native', 'web'];
 
 // Improve hot reload behavior
@@ -18,7 +16,6 @@ config.server = {
     if (!url.endsWith('.bundle')) {
       return url;
     }
-    // You can customize URL rewriting here if needed
     return url;
   },
 };
@@ -32,11 +29,17 @@ config.transformer = {
       keep_fnames: true,
     },
   },
+  // Add support for ES modules
+  experimentalImportSupport: false,
+  inlineRequires: true,
 };
 
 // Ensure proper asset resolution
 config.resolver.assetExts.push(
   'db', 'mp3', 'ttf', 'obj', 'png', 'jpg', 'jpeg', 'gif', 'webp', 'svg'
 );
+
+// Add module resolution for better ES module support
+config.resolver.resolverMainFields = ['react-native', 'browser', 'main'];
 
 module.exports = config; 

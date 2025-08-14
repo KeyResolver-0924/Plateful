@@ -17,6 +17,7 @@ import Button from '../../components/common/Button';
 import Input from '../../components/common/Input';
 import StatusBar from '../../components/common/StatusBar';
 import { colors } from '../../constants/colors';
+import { useAuthStore } from '../../stores/authStore';
 
 interface FormData {
   email: string;
@@ -35,18 +36,16 @@ const SignInScreen = () => {
   });
   const [errors, setErrors] = useState<FormErrors>({});
   const [loading, setLoading] = useState(false);
-  
+  const { login } = useAuthStore();
   const validateForm = (): boolean => {
     const newErrors: FormErrors = {};
   
-    // Email validation
     if (!formData.email.trim()) {
       newErrors.email = 'Email is required';
     } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
       newErrors.email = 'Please enter a valid email';
     }
 
-    // Password validation
     if (!formData.password.trim()) {
       newErrors.password = 'Password is required';
     } else if (formData.password.length < 6) {
@@ -65,18 +64,22 @@ const SignInScreen = () => {
     setLoading(true);
     
     try {
-      // Simulate API call
       await new Promise(resolve => setTimeout(resolve, 1500));
+      const result = await login(formData.email, formData.password);
       
-      // Save user token and data
-      await AsyncStorage.setItem('userToken', 'dummy-token');
-      await AsyncStorage.setItem('userData', JSON.stringify({
-        name: 'User',
-        email: formData.email
-      }));
-      
-      // Navigate to main app after successful sign in
-      router.replace('/(tabs)' as any);
+      // Only navigate if login was successful (result is not null/undefined)
+      if (result && result.user && result.token) {
+        await AsyncStorage.setItem('userToken', 'dummy-token');
+        await AsyncStorage.setItem('userData', JSON.stringify({
+          name: 'User',
+          email: formData.email
+        }));
+        router.replace('/(tabs)' as any);
+        return { success: true };
+      } else {
+        // Login failed - stay on sign-in page and show error
+        setErrors({ email: 'Invalid email or password. Please try again.' });
+      }
     } catch (error) {
       console.error('Sign in error:', error);
       setErrors({ email: 'Invalid email or password. Please try again.' });
@@ -87,7 +90,6 @@ const SignInScreen = () => {
   
   const handleGoogleSignIn = async () => {
     try {
-      // Implement Google OAuth
       console.log('Google Sign In');
     } catch (error) {
       console.error('Google sign in error:', error);
