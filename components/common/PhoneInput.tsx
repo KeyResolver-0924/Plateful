@@ -86,7 +86,7 @@ const PhoneInput: React.FC<PhoneInputProps> = ({
         <View style={styles.phoneInputContainer}>
           {/* <Text style={styles.callingCode}>
             {selectedCountry?.callingCode || '+1'}
-          </Text> */}
+          </Text>  */}
           <TextInput
             style={styles.phoneInput}
             value={getDisplayValue()}
@@ -117,11 +117,15 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     paddingHorizontal: 16,
     minHeight: 56,
-    borderWidth: 1,
     borderColor: colors.border,
+    borderStyle: 'solid',
+    outline: 'none',
+    borderWidth: 0,
   },
   inputError: {
     borderColor: colors.error,
+    outline: 'none',
+    borderWidth: 0,
   },
   countryPicker: {
     marginRight: 8,
@@ -129,6 +133,8 @@ const styles = StyleSheet.create({
   phoneInputContainer: {
     flex: 1,
     flexDirection: 'row',
+    outline: 'none',
+    borderWidth: 0,
     alignItems: 'center',
   },
   callingCode: {
@@ -136,12 +142,16 @@ const styles = StyleSheet.create({
     color: colors.text.primary,
     fontWeight: '500',
     marginRight: 8,
+    outline: 'none',
+    borderWidth: 0,
   },
   phoneInput: {
     flex: 1,
     fontSize: 16,
     color: colors.text.primary,
     paddingVertical: 12,
+    outline: 'none',
+    borderWidth: 0,
   },
   errorText: {
     color: colors.error,

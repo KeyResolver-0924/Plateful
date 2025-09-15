@@ -20,6 +20,7 @@ import Button from '../../components/common/Button';
 import StatusBar from '../../components/common/StatusBar';
 import { colors } from '../../constants/colors';
 import { formatPhoneNumber } from '../../utils/phoneFormatter';
+const Base_URL = process.env.EXPO_PUBLIC_BASE_URL;
 
 const { width } = Dimensions.get('window');
 
@@ -152,7 +153,7 @@ const OtpScreen: React.FC = () => {
         </TouchableOpacity> */}
         
         <Image 
-          source={require('../../assets/images/logo/platefull-mascot.png')}
+          source={require(`${Base_URL}/assets/images/logo/platefull-mascot.png`)}
           style={styles.mascot}
         />
         <Text style={styles.welcomeText}>Verify Your Account</Text>

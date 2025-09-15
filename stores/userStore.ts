@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 import { apiService } from '../utils/apiService';
+import MessageHandler from '../utils/messageHandler';
 
 export interface ChildProfile {
   id: string;
@@ -7,6 +8,9 @@ export interface ChildProfile {
   ageRange: string;
   gender: string;
   avatar?: string;
+  height?: string;
+  weight?: string;
+  gamification?: any;
   allergies?: string[];
   vegetables?: string[];
   fruits?: string[];
@@ -30,6 +34,7 @@ export interface UserProfile {
 export interface UserState {
   profile: UserProfile | null;
   selectedChildId: string | null;
+  childProfile: ChildProfile | null;
   isLoading: boolean;
   error: string | null;
 }
@@ -45,7 +50,7 @@ export interface UserActions {
   removeChild: (childId: string) => Promise<void>;
   selectChild: (childId: string) => void;
   getSelectedChild: () => ChildProfile | null;
-  
+  getChildById: (childId: string) => Promise<ChildProfile>;
   // Preferences
   updatePreferences: (preferences: Partial<UserProfile['preferences']>) => Promise<void>;
   
@@ -64,6 +69,7 @@ export type UserStore = UserState & UserActions;
 export const useUserStore = create<UserStore>((set, get) => ({
   // Initial state
   profile: null,
+  childProfile: null,
   selectedChildId: null,
   isLoading: false,
   error: null,
@@ -122,15 +128,35 @@ export const useUserStore = create<UserStore>((set, get) => ({
             isLoading: false 
           });
         }
+        
+        // Show success message
+        MessageHandler.showSuccess('Child profile created successfully!');
       } else {
+        // Handle error response
+        MessageHandler.handleApiResponse(response, {
+          title: 'Add Child',
+          errorMessage: 'Failed to create child profile. Please try again.'
+        });
         throw new Error(response.error || 'Failed to add child');
       }
     } catch (error) {
+      // Handle caught errors
+      MessageHandler.handleApiError(error, {
+        title: 'Add Child Error',
+        errorMessage: 'Failed to create child profile. Please check your connection and try again.'
+      });
+      
       set({
         error: error instanceof Error ? error.message : 'Failed to add child',
         isLoading: false,
       });
     }
+  },
+
+  getChildById: async (childId: string) => {
+    const response = await apiService.getChildById(childId);
+    set({childProfile: response.data});
+    return response.data;
   },
 
   updateChild: async (childId, childData) => {

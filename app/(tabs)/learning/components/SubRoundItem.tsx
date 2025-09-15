@@ -3,6 +3,7 @@ import React, { memo } from 'react';
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import Animated, { FadeInDown, FadeInUp, ZoomIn, useAnimatedStyle } from 'react-native-reanimated';
 import { SubRound } from '../types/navigation';
+const Base_URL = process.env.EXPO_PUBLIC_BASE_URL;
 
 interface SubRoundItemProps {
   subRound: SubRound;
@@ -78,10 +79,10 @@ const SubRoundItem: React.FC<SubRoundItemProps> = memo(({
         <Image
           source={
             isCompleted 
-              ? require('../../../../assets/images/characters/complet_sub_round.png')
+              ? require(`${Base_URL}/assets/images/characters/complet_sub_round.png`)
               : isCurrent
-              ? require('../../../../assets/images/characters/complet_sub_round.png')
-              : require('../../../../assets/images/characters/sub_round.png')
+              ? require(`${Base_URL}/assets/images/characters/complet_sub_round.png`)
+              : require(`${Base_URL}/assets/images/characters/sub_round.png`)
           }
           style={[
             styles.subRoundImage,
@@ -135,7 +136,7 @@ const styles = StyleSheet.create({
   connectionLine: {
     position: 'absolute',
     top: -35,
-    width: 8,
+    // width: 8,
     height: 35,
     backgroundColor: '#e5e7eb',
     borderRadius: 4,

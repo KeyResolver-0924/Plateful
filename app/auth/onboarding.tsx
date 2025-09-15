@@ -20,6 +20,7 @@ import Animated, {
 import { colors } from '../../constants/colors';
 import { shadowPresets } from '../../utils/shadowUtils';
 import { safeSetItem } from '../../utils/storage';
+const Base_URL = process.env.EXPO_PUBLIC_BASE_URL;
 
 const { width, height } = Dimensions.get('window');
 
@@ -34,21 +35,21 @@ interface OnboardingItem {
 const onboardingData: OnboardingItem[] = [
   {
     id: 1,
-    character: require('../../assets/images/characters/carrot.png'),
+    character: require(`${Base_URL}/assets/images/characters/carrot.png`),
     title: 'Empowering You to Take Control of Your Kids Health',
     description: 'Lorem ipsum dolor sit amet consectetur.\nPorttitor egestas venenatis at nibh urna.',
     characterStyle: { width: 420, height: 420 }
   },
   {
     id: 2,
-    character: require('../../assets/images/characters/strawberry.png'),
+    character: require(`${Base_URL}/assets/images/characters/strawberry.png`),
     title: 'Track Your Child\'s Nutrition Journey',
     description: 'Monitor meals, discover healthy foods, and make nutrition fun for your little ones.',
     characterStyle: { width: 420, height: 420 }
   },
   {
     id: 3,
-    character: require('../../assets/images/characters/garlic.png'),
+    character: require(`${Base_URL}/assets/images/characters/garlic.png`),
     title: 'Learn & Grow Together',
     description: 'Educational content and gamified experiences to make healthy eating exciting.',
     characterStyle: { width: 410, height: 410 }

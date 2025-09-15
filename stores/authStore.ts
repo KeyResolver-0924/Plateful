@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 import { apiService, AuthResponse } from '../utils/apiService';
+import MessageHandler from '../utils/messageHandler';
 
 export interface User {
   id: string;
@@ -13,6 +14,7 @@ export interface User {
   preferences?: any;
   children?: any[];
   hasCompletedOnboarding?: boolean;
+  user?: User;
 }
 
 export interface AuthState {
@@ -67,11 +69,25 @@ export const useAuthStore = create<AuthStore>((set, get) => ({
           isNewUser: false, // Existing user signing in
           isLoading: false,
         });
+        
+        // Show success message
+        MessageHandler.showSuccess('Login successful! Welcome back!');
         return response.data;
       } else {
+        // Handle error response
+        MessageHandler.handleApiResponse(response, {
+          title: 'Login',
+          errorMessage: 'Login failed. Please check your credentials and try again.'
+        });
         throw new Error(response.error || 'Login failed');
       }
     } catch (error) {
+      // Handle caught errors
+      MessageHandler.handleApiError(error, {
+        title: 'Login Error',
+        errorMessage: 'Login failed. Please check your connection and try again.'
+      });
+      
       set({
         error: error instanceof Error ? error.message : 'Login failed',
         isLoading: false,
@@ -115,11 +131,25 @@ export const useAuthStore = create<AuthStore>((set, get) => ({
           isLoading: false,
           error: null,
         });
+        
+        // Show success message
+        MessageHandler.showSuccess('Registration successful! Welcome to Plateful!');
         return response.data;
       } else {
+        // Handle error response
+        MessageHandler.handleApiResponse(response, {
+          title: 'Registration',
+          errorMessage: 'Registration failed. Please check your information and try again.'
+        });
         throw new Error(response.error || 'Registration failed');
       }
     } catch (error) {
+      // Handle caught errors
+      MessageHandler.handleApiError(error, {
+        title: 'Registration Error',
+        errorMessage: 'Registration failed. Please check your connection and try again.'
+      });
+      
       set({
         error: error instanceof Error ? error.message : 'Registration failed',
         isLoading: false,

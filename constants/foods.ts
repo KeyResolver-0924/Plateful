@@ -1,3 +1,4 @@
+const Base_URL = process.env.EXPO_PUBLIC_BASE_URL;
 export interface Food {
   id: string;
   name: string;
@@ -15,14 +16,29 @@ export interface Food {
   benefits: string[];
   allergens: string[];
   ageRecommended: string;
+  // Learning content from foods.json
+  learning?: {
+    summary: string;
+    key_facts: string[];
+  };
+  quiz?: Array<{
+    id: number;
+    question: string;
+    options: string[];
+    correct_answer: string;
+    explanation: string;
+    hint: string;
+  }>;
+  level?: string;
 }
 
 export interface FoodsByCategory {
-  fruits: Food[];
-  vegetables: Food[];
   proteins: Food[];
-  grains: Food[];
+  carbohydrates: Food[];
+  vegetables: Food[];
+  fruits: Food[];
   dairy: Food[];
+  fats: Food[];
 }
 
 export const foods: FoodsByCategory = {
@@ -31,7 +47,7 @@ export const foods: FoodsByCategory = {
       id: 'apple',
       name: 'Apple',
       category: 'fruits',
-      icon: require('../assets/images/foods/apple.png'),
+      icon: require(`${Base_URL}/assets/images/foods/apple.png`),
       nutrients: {
         calories: 52,
         protein: 0.3,
@@ -47,13 +63,42 @@ export const foods: FoodsByCategory = {
         'Supports heart health'
       ],
       allergens: [],
-      ageRecommended: '6+ months'
+      ageRecommended: '6+ months',
+      learning: {
+        summary: 'Apples are crunchy fruits that grow on trees in orchards! They bloom with flowers in spring and ripen in fall. Apples come in many varieties and are packed with fiber and vitamin C.',
+        key_facts: [
+          'Grow on trees in orchards',
+          'Bloom in spring, ripen in fall',
+          'Many varieties and colors',
+          'High in fiber and vitamin C',
+          'Can be eaten fresh or cooked'
+        ]
+      },
+      quiz: [
+        {
+          id: 1,
+          question: 'When do apple trees bloom?',
+          options: ['Fall', 'Winter', 'Spring', 'Summer'],
+          correct_answer: 'C',
+          explanation: 'Spring',
+          hint: 'Apple flowers appear when many flowers bloom after winter!'
+        },
+        {
+          id: 2,
+          question: 'When are apples ready to pick?',
+          options: ['Spring', 'Summer', 'Fall', 'Winter'],
+          correct_answer: 'C',
+          explanation: 'Fall',
+          hint: 'Apples are harvested during Halloween season!'
+        }
+      ],
+      level: 'beginner'
     },
     {
       id: 'pear',
       name: 'Pear',
       category: 'fruits',
-      icon: require('../assets/images/foods/pear.png'),
+      icon: require(`${Base_URL}/assets/images/foods/pear.png`),
       nutrients: {
         calories: 57,
         protein: 0.4,
@@ -75,7 +120,7 @@ export const foods: FoodsByCategory = {
       id: 'banana',
       name: 'Banana',
       category: 'fruits',
-      icon: require('../assets/images/foods/banana.png'),
+      icon: require(`${Base_URL}/assets/images/foods/banana.png`),
       nutrients: {
         calories: 89,
         protein: 1.1,
@@ -97,7 +142,7 @@ export const foods: FoodsByCategory = {
       id: 'orange',
       name: 'Orange',
       category: 'fruits',
-      icon: require('../assets/images/foods/orange.png'),
+      icon: require(`${Base_URL}/assets/images/foods/orange.png`),
       nutrients: {
         calories: 47,
         protein: 0.9,
@@ -119,7 +164,7 @@ export const foods: FoodsByCategory = {
       id: 'pineapple',
       name: 'Pineapple',
       category: 'fruits',
-      icon: require('../assets/images/foods/pineapple.png'),
+      icon: require(`${Base_URL}/assets/images/foods/pineapple.png`),
       nutrients: {
         calories: 50,
         protein: 0.5,
@@ -141,7 +186,7 @@ export const foods: FoodsByCategory = {
       id: 'strawberry',
       name: 'Strawberry',
       category: 'fruits',
-      icon: require('../assets/images/foods/strawberry.png'),
+      icon: require(`${Base_URL}/assets/images/foods/strawberry.png`),
       nutrients: {
         calories: 32,
         protein: 0.7,
@@ -163,7 +208,7 @@ export const foods: FoodsByCategory = {
       id: 'grapes',
       name: 'Grapes',
       category: 'fruits',
-      icon: require('../assets/images/foods/grapes.png'),
+      icon: require(`${Base_URL}/assets/images/foods/grapes.png`),
       nutrients: {
         calories: 69,
         protein: 0.7,
@@ -802,68 +847,48 @@ export const foods: FoodsByCategory = {
       ageRecommended: '12+ months'
     }
   ],
-  grains: [
-    {
-      id: 'rice',
-      name: 'Rice',
-      category: 'grains',
-      icon: require('../assets/images/foods/rice.png'),
-      nutrients: {
-        calories: 130,
-        protein: 2.7,
-        carbs: 28,
-        fiber: 0.4,
-        sugar: 0.1,
-        vitamins: ['B1', 'B6'],
-        minerals: ['Iron', 'Magnesium']
-      },
-      benefits: [
-        'Easy to digest',
-        'Good energy source',
-        'Gentle on stomach'
-      ],
-      allergens: [],
-      ageRecommended: '6+ months'
-    },
+  carbohydrates: [
     {
       id: 'oats',
       name: 'Oats',
-      category: 'grains',
-      icon: require('../assets/images/foods/maize .png'),
+      category: 'carbohydrates',
+      icon: require('../assets/images/foods/oats.png'),
       nutrients: {
-        calories: 68,
-        protein: 2.4,
-        carbs: 12,
-        fiber: 1.7,
-        sugar: 0.3,
-        vitamins: ['B1', 'B6'],
-        minerals: ['Iron', 'Zinc']
+        calories: 389,
+        protein: 16,
+        carbs: 65,
+        fiber: 10,
+        sugar: 1.8,
+        vitamins: ['B1', 'B3', 'B6', 'E'],
+        minerals: ['Iron', 'Magnesium', 'Phosphorus']
       },
       benefits: [
-        'High in fiber',
         'Heart healthy',
-        'Sustained energy'
+        'Blood sugar control',
+        'Digestive health'
       ],
-      allergens: [],
+      allergens: ['gluten'],
       ageRecommended: '8+ months'
-    },
+    }
+  ],
+  fats: [
     {
-      id: 'maize',
-      name: 'Maize',
-      category: 'grains',
-      icon: require('../assets/images/foods/maize .png'),
+      id: 'avocado',
+      name: 'Avocado',
+      category: 'fats',
+      icon: require('../assets/images/foods/avocado.png'),
       nutrients: {
-        calories: 86,
-        protein: 3.2,
-        carbs: 19,
-        fiber: 2.7,
-        sugar: 3.2,
-        vitamins: ['B1', 'B5', 'C'],
-        minerals: ['Magnesium', 'Phosphorus']
+        calories: 160,
+        protein: 2,
+        carbs: 14,
+        fiber: 10,
+        sugar: 0.8,
+        vitamins: ['C', 'E', 'K'],
+        minerals: ['Potassium', 'Magnesium']
       },
       benefits: [
-        'Good energy source',
-        'Supports eye health',
+        'Heart healthy',
+        'Blood sugar control',
         'Digestive health'
       ],
       allergens: [],
@@ -875,7 +900,7 @@ export const foods: FoodsByCategory = {
       id: 'yogurt',
       name: 'Yogurt',
       category: 'dairy',
-      icon: require('../assets/images/foods/yogurt.png'),
+      icon: require(`${Base_URL}/assets/images/foods/yogurt.png`),
       nutrients: {
         calories: 59,
         protein: 10,
@@ -897,7 +922,7 @@ export const foods: FoodsByCategory = {
       id: 'cheese',
       name: 'Cheese',
       category: 'dairy',
-      icon: require('../assets/images/foods/cheese.png'),
+      icon: require(`${Base_URL}/assets/images/foods/cheese.png`),
       nutrients: {
         calories: 113,
         protein: 7,
@@ -949,6 +974,34 @@ export const searchFoods = (query: string): Food[] => {
     food.category.toLowerCase().includes(lowercaseQuery) ||
     food.benefits.some(benefit => 
       benefit.toLowerCase().includes(lowercaseQuery)
-    )
+    ) ||
+    (food.learning?.summary && food.learning.summary.toLowerCase().includes(lowercaseQuery)) ||
+    (food.learning?.key_facts && food.learning.key_facts.some(fact => 
+      fact.toLowerCase().includes(lowercaseQuery)
+    ))
   );
+};
+
+// Get foods with learning content
+export const getFoodsWithLearning = (): Food[] => {
+  const allFoods: Food[] = Object.values(foods).flat();
+  return allFoods.filter(food => food.learning && food.learning.summary);
+};
+
+// Get foods with quiz content
+export const getFoodsWithQuiz = (): Food[] => {
+  const allFoods: Food[] = Object.values(foods).flat();
+  return allFoods.filter(food => food.quiz && food.quiz.length > 0);
+};
+
+// Get foods by difficulty level
+export const getFoodsByLevel = (level: string): Food[] => {
+  const allFoods: Food[] = Object.values(foods).flat();
+  return allFoods.filter(food => food.level === level);
+};
+
+// Get nutrition summary for a food
+export const getNutritionSummary = (food: Food): string => {
+  const { nutrients } = food;
+  return `${nutrients.calories} cal, ${nutrients.protein}g protein, ${nutrients.carbs}g carbs, ${nutrients.fiber}g fiber`;
 }; 

@@ -18,6 +18,8 @@ import Input from '../../components/common/Input';
 import StatusBar from '../../components/common/StatusBar';
 import { colors } from '../../constants/colors';
 import { useAuthStore } from '../../stores/authStore';
+import MessageHandler from '../../utils/messageHandler';
+const Base_URL = process.env.EXPO_PUBLIC_BASE_URL;
 
 interface FormData {
   email: string;
@@ -74,7 +76,11 @@ const SignInScreen = () => {
           name: 'User',
           email: formData.email
         }));
-        router.replace('/(tabs)' as any);
+        
+        // Show success message and navigate
+        MessageHandler.showSuccess('Welcome back!', 'Login Successful', () => {
+          router.replace('/(tabs)' as any);
+        });
         return { success: true };
       } else {
         // Login failed - stay on sign-in page and show error
@@ -111,10 +117,10 @@ const SignInScreen = () => {
         style={styles.header}
       >
         <Image 
-          source={require('../../assets/images/logo/platefull-mascot.png')}
+          source={require(`${Base_URL}/assets/images/logo/platefull-mascot.png`)}
           style={styles.mascot}
         />
-        <Text style={styles.welcomeText}>Welcome to PLATEFULL</Text>
+        <Text style={styles.welcomeText}>Welcome to PLATEFUL</Text>
         <Text style={styles.subtitleText}>Let&apos;s get started.</Text>
       </LinearGradient>
       
@@ -179,7 +185,7 @@ const SignInScreen = () => {
               activeOpacity={0.8}
             >
               <Image 
-                source={require('../../assets/images/icons/google.png')}
+                source={require(`${Base_URL}/assets/images/icons/google.png`)}
                 style={styles.googleIcon}
               />
               <Text style={styles.googleButtonText}>Log in with Google</Text>

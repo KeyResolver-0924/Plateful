@@ -1,11 +1,9 @@
-// src/screens/GameScreen.tsx
 import { Ionicons } from '@expo/vector-icons';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import * as Speech from 'expo-speech';
 import { useCallback, useEffect, useState } from 'react';
 import {
   Animated,
-  Dimensions,
   Image,
   Platform,
   SafeAreaView,
@@ -18,29 +16,15 @@ import {
 } from 'react-native';
 import QUIZ_DATA from '../data/quizData';
 import { RootStackParamList } from '../types/navigation';
+import { getFoodImageSource } from '../../../../utils/imageUtils';
 
 type GameScreenProps = NativeStackScreenProps<RootStackParamList, 'Game'>;
 
-const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
-
-// Category image mapping
-const CATEGORY_IMAGES = {
-  'Fruits': require('../../../../assets/images/foods/fruits.png'),
-  'Vegetables': require('../../../../assets/images/foods/broccoli.png'),
-  'Proteins': require('../../../../assets/images/foods/chicken.png'),
-  'Grains': require('../../../../assets/images/foods/rice.png'),
-  'Dairy': require('../../../../assets/images/foods/milk.png'),
-  'Nuts': require('../../../../assets/images/foods/nuts.png'),
-  'General Knowledge': require('../../../../assets/images/foods/meal.png'),
-  'default': require('../../../../assets/images/foods/meal.png'),
-};
 
 const GameScreen = ({ navigation, route }: GameScreenProps) => {
   const { difficulty, questions: subRoundQuestions } = route.params;
   const [currentQuestion, setCurrentQuestion] = useState(0);
-  const [score, setScore] = useState(0); // Legacy state, keeping for compatibility
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
-  const [showAnswer, setShowAnswer] = useState(false);
   const [questions, setQuestions] = useState<any[]>([]);
   const [hearts, setHearts] = useState(5);
   const [stars, setStars] = useState(100);
@@ -55,28 +39,19 @@ const GameScreen = ({ navigation, route }: GameScreenProps) => {
   const [ttsEnabled, setTtsEnabled] = useState(true);
 
   // TTS Configuration for children
-  const ttsOptions = {
-    language: 'en-US',
-    pitch: 1.2, // Higher pitch for children
-    rate: 0.7, // Slower rate for better comprehension
-    voice: 'com.apple.ttsbundle.Samantha-compact', // Child-friendly voice on iOS
-  };
-
-  // Fallback TTS options for different platforms
   const getTTSOptions = () => {
-    // Try to use platform-specific voices
+    const baseOptions = {
+      language: 'en-US',
+      pitch: 1.2, // Higher pitch for children
+      rate: 0.7, // Slower rate for better comprehension
+    };
+
     if (Platform.OS === 'ios') {
-      return {
-        ...ttsOptions,
-        voice: 'com.apple.ttsbundle.Samantha-compact',
-      };
+      return { ...baseOptions, voice: 'com.apple.ttsbundle.Samantha-compact' };
     } else if (Platform.OS === 'android') {
-      return {
-        ...ttsOptions,
-        voice: 'en-us-x-sfg#female_1-local', // Android female voice
-      };
+      return { ...baseOptions, voice: 'en-us-x-sfg#female_1-local' };
     }
-    return ttsOptions;
+    return baseOptions;
   };
 
   // Process questions based on difficulty
@@ -103,13 +78,11 @@ const GameScreen = ({ navigation, route }: GameScreenProps) => {
     const loadedQuestions = processQuestions();
     setQuestions(loadedQuestions);
     setCurrentQuestion(0);
-    setScore(0);
     setCorrectAnswers(0);
     setHintsUsedCount(0);
     setHearts(5);
     setStars(100);
     setSelectedAnswer(null);
-    setShowAnswer(false);
     setHintUsed(false);
     setHintText('');
   }, [difficulty, processQuestions]);
@@ -184,16 +157,11 @@ const GameScreen = ({ navigation, route }: GameScreenProps) => {
     };
   }, []);
 
-  // Get category image
-  const getCategoryImage = (category: string) => {
-    const normalizedCategory = category?.toLowerCase();
-    if (normalizedCategory?.includes('fruit')) return CATEGORY_IMAGES['Fruits'];
-    if (normalizedCategory?.includes('vegetable') || normalizedCategory?.includes('veggie')) return CATEGORY_IMAGES['Vegetables'];
-    if (normalizedCategory?.includes('protein') || normalizedCategory?.includes('meat')) return CATEGORY_IMAGES['Proteins'];
-    if (normalizedCategory?.includes('grain') || normalizedCategory?.includes('bread') || normalizedCategory?.includes('rice')) return CATEGORY_IMAGES['Grains'];
-    if (normalizedCategory?.includes('dairy') || normalizedCategory?.includes('milk') || normalizedCategory?.includes('cheese')) return CATEGORY_IMAGES['Dairy'];
-    if (normalizedCategory?.includes('nut')) return CATEGORY_IMAGES['Nuts'];
-    return CATEGORY_IMAGES['default'];
+  // Get food image from question ID
+  const getFoodImage = (questionId: string) => {
+    // Extract food name from question ID (format: "foodName_questionNumber")
+    const foodName = questionId.split('_')[0];
+    return getFoodImageSource(foodName);
   };
 
   // Animation for correct/incorrect answers
@@ -273,7 +241,6 @@ const GameScreen = ({ navigation, route }: GameScreenProps) => {
         // Move to next question
         setCurrentQuestion(prev => prev + 1);
         setSelectedAnswer(null);
-        setShowAnswer(false);
         setHintUsed(false);
         setHintText('');
       } else {
@@ -373,7 +340,6 @@ const GameScreen = ({ navigation, route }: GameScreenProps) => {
     // Show the correct answer
     const currentQ = questions[currentQuestion];
     setSelectedAnswer(currentQ.correct_index);
-    setShowAnswer(true);
     
     // Speak the correct answer
     if (ttsEnabled) {
@@ -385,7 +351,6 @@ const GameScreen = ({ navigation, route }: GameScreenProps) => {
       if (currentQuestion < questions.length - 1) {
         setCurrentQuestion(prev => prev + 1);
         setSelectedAnswer(null);
-        setShowAnswer(false);
         setHintUsed(false);
         setHintText('');
       } else {
@@ -421,7 +386,7 @@ const GameScreen = ({ navigation, route }: GameScreenProps) => {
     const currentQ = questions[currentQuestion];
     const isAnswered = selectedAnswer !== null;
     const isCorrect = isAnswered && selectedAnswer === currentQ.correct_index;
-    const categoryImage = getCategoryImage(currentQ.category);
+    const foodImage = getFoodImage(currentQ.id);
 
     return (
       <Animated.View 
@@ -485,7 +450,7 @@ const GameScreen = ({ navigation, route }: GameScreenProps) => {
         <View style={styles.questionContent}>
           <View style={styles.categoryImageContainer}>
             <Image 
-              source={categoryImage} 
+              source={foodImage} 
               style={styles.categoryImage}
               resizeMode="contain"
             />
@@ -581,9 +546,6 @@ const GameScreen = ({ navigation, route }: GameScreenProps) => {
                   )}
                 </View>
                 <Text style={optionTextStyle}>{option}</Text>
-                <View style={styles.optionAudioIndicator}>
-                  <Ionicons name="volume-low" size={16} color="#999" />
-                </View>
                 
                 <TouchableOpacity
                   style={styles.readAnswerButton}
@@ -775,19 +737,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#F5F5F5',
     padding: 16,
   },
-  instructionContainer: {
-    backgroundColor: '#E0F2F7',
-    padding: 12,
-    borderRadius: 10,
-    marginBottom: 16,
-    alignItems: 'center',
-  },
-  instructionText: {
-    fontSize: 16,
-    color: '#333333',
-    fontWeight: 'bold',
-    textAlign: 'center',
-  },
   questionTouchable: {
     alignItems: 'center',
     position: 'relative',
@@ -852,19 +801,6 @@ const styles = StyleSheet.create({
     borderRadius: 25,
     opacity: 0.5,
   },
-  readButtonsInstruction: {
-    backgroundColor: '#E0F2F7',
-    padding: 12,
-    borderRadius: 10,
-    marginTop: 16,
-    alignItems: 'center',
-  },
-  readButtonsInstructionText: {
-    fontSize: 16,
-    color: '#333333',
-    fontWeight: 'bold',
-    textAlign: 'center',
-  },
   hintContainer: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -882,25 +818,6 @@ const styles = StyleSheet.create({
   },
   optionsContainer: {
     marginBottom: 24,
-  },
-  optionsInstruction: {
-    backgroundColor: '#E0F2F7',
-    padding: 12,
-    borderRadius: 10,
-    marginBottom: 16,
-    alignItems: 'center',
-  },
-  optionsInstructionText: {
-    fontSize: 16,
-    color: '#333333',
-    fontWeight: 'bold',
-    textAlign: 'center',
-  },
-  optionsSubInstructionText: {
-    fontSize: 14,
-    color: '#666666',
-    marginTop: 4,
-    textAlign: 'center',
   },
   option: {
     backgroundColor: '#FFFFFF',
@@ -954,10 +871,6 @@ const styles = StyleSheet.create({
   wrongOptionText: {
     color: '#C62828',
     textDecorationLine: 'line-through',
-  },
-  optionAudioIndicator: {
-    marginLeft: 8,
-    opacity: 0.6,
   },
   readAnswerButton: {
     marginLeft: 12,

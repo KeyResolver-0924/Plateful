@@ -1,22 +1,22 @@
 import foodsData from '../../../../db/foods.json';
 import { Question } from '../types/navigation';
 
-// Transform foods.json data into quiz questions
-const generateQuestionsFromFoods = (): Question[] => {
+/**
+ * Extracts all quiz questions from foods.json data
+ * Converts the quiz format from foods.json to the Question interface format
+ */
+const extractQuestionsFromFoods = (): Question[] => {
   const questions: Question[] = [];
   
-  // Helper function to create questions from food data
-  const createQuestionsForFood = (foodKey: string, foodData: any, category: string) => {
-    const foodName = foodKey.charAt(0).toUpperCase() + foodKey.slice(1).replace('_', ' ');
-    
-    // Add quiz questions if they exist in the food data
-    if (foodData.quiz && foodData.quiz.questions) {
-      foodData.quiz.questions.forEach((q: any, index: number) => {
+  // Helper function to extract questions from individual food items
+  const extractQuestionsForFood = (foodKey: string, foodData: any, category: string) => {
+    if (foodData.quiz && Array.isArray(foodData.quiz)) {
+      foodData.quiz.forEach((q: any, index: number) => {
         questions.push({
-          id: `${foodKey}_${index}`,
+          id: `${foodKey}_${q.id || index}`,
           question: q.question,
           options: q.options,
-          correct_answer: q.explanation || q.options[q.correct_answer.charCodeAt(0) - 65] || '',
+          correct_answer: q.options[q.correct_answer.charCodeAt(0) - 65] || '',
           correct_index: q.correct_answer.charCodeAt(0) - 65,
           category: category,
           difficulty: 'EASY',
@@ -26,86 +26,36 @@ const generateQuestionsFromFoods = (): Question[] => {
     }
   };
 
-  // Process fruits
-  if (foodsData.fruits) {
-    Object.entries(foodsData.fruits).forEach(([key, data]) => {
-      createQuestionsForFood(key, data, 'Fruits');
-    });
-  }
-
-  // Process vegetables
-  if (foodsData.vegetables) {
-    Object.entries(foodsData.vegetables).forEach(([key, data]) => {
-      createQuestionsForFood(key, data, 'Vegetables');
-    });
-  }
-
-  // Process proteins
-  if (foodsData.proteins) {
-    Object.entries(foodsData.proteins).forEach(([key, data]) => {
-      createQuestionsForFood(key, data, 'Proteins');
-    });
-  }
+  // Process all food categories from foods.json
+  const categories = ['fruits', 'vegetables', 'proteins', 'carbohydrates', 'dairy', 'fats'] as const;
+  
+  categories.forEach(category => {
+    const categoryData = foodsData.categories[category as keyof typeof foodsData.categories];
+    if (categoryData?.foods) {
+      Object.entries(categoryData.foods).forEach(([key, data]) => {
+        extractQuestionsForFood(key, data, category.charAt(0).toUpperCase() + category.slice(1));
+      });
+    }
+  });
 
   return questions;
 };
 
-// Generate base questions from foods data
-const baseQuestions = generateQuestionsFromFoods();
+// Extract all questions from foods.json
+const allQuestions = extractQuestionsFromFoods();
 
-// Additional custom questions for variety
-const customQuestions: Question[] = [
-  {
-    id: 'nutrition_1',
-    question: 'Which nutrient gives you energy?',
-    options: ['Protein', 'Carbohydrates', 'Vitamins', 'Water'],
-    correct_answer: 'Carbohydrates',
-    correct_index: 1,
-    category: 'Nutrition',
-    difficulty: 'EASY',
-    explanation: 'Carbohydrates are the body\'s main source of energy'
-  },
-  {
-    id: 'nutrition_2',
-    question: 'What helps build strong muscles?',
-    options: ['Sugar', 'Protein', 'Fat', 'Salt'],
-    correct_answer: 'Protein',
-    correct_index: 1,
-    category: 'Nutrition',
-    difficulty: 'EASY',
-    explanation: 'Protein helps build and repair muscles'
-  },
-  {
-    id: 'health_1',
-    question: 'How many servings of fruits and vegetables should you eat daily?',
-    options: ['1-2', '3-4', '5 or more', '10 or more'],
-    correct_answer: '5 or more',
-    correct_index: 2,
-    category: 'Health',
-    difficulty: 'NORMAL',
-    explanation: 'Experts recommend at least 5 servings of fruits and vegetables daily'
-  },
-  {
-    id: 'cooking_1',
-    question: 'What cooking method helps preserve most nutrients?',
-    options: ['Deep frying', 'Steaming', 'Boiling for long time', 'Burning'],
-    correct_answer: 'Steaming',
-    correct_index: 1,
-    category: 'Cooking',
-    difficulty: 'HARD',
-    explanation: 'Steaming helps preserve vitamins and minerals in food'
-  }
-];
-
-// Combine all questions
+/**
+ * Quiz data organized by category
+ * All data comes directly from foods.json - no custom questions
+ */
 const QUIZ_DATA = {
-  fruits: baseQuestions.filter(q => q.category === 'Fruits'),
-  vegetables: baseQuestions.filter(q => q.category === 'Vegetables'), 
-  proteins: baseQuestions.filter(q => q.category === 'Proteins'),
-  nutrition: customQuestions.filter(q => q.category === 'Nutrition'),
-  health: customQuestions.filter(q => q.category === 'Health'),
-  cooking: customQuestions.filter(q => q.category === 'Cooking'),
-  all: [...baseQuestions, ...customQuestions]
+  fruits: allQuestions.filter(q => q.category === 'Fruits'),
+  vegetables: allQuestions.filter(q => q.category === 'Vegetables'), 
+  proteins: allQuestions.filter(q => q.category === 'Proteins'),
+  carbohydrates: allQuestions.filter(q => q.category === 'Carbohydrates'),
+  dairy: allQuestions.filter(q => q.category === 'Dairy'),
+  fats: allQuestions.filter(q => q.category === 'Fats'),
+  all: allQuestions
 };
 
 export default QUIZ_DATA;

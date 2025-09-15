@@ -152,10 +152,10 @@ export function useGameFlow({ difficulty, subRoundQuestions }: GameFlowProps) {
     
     const currentQ = questions[currentQuestion];
     const hintOptions = [
-      `The answer starts with "${currentQ.correct_answer[0]}"`,
-      `The answer is ${currentQ.correct_answer.length} letters long`,
-      `The answer is about ${currentQ.correct_answer.split(' ')[0]}`,
-      `Think about ${currentQ.correct_answer}`
+      `The answer starts with "${currentQ.correct_answer?.[0] || 'A'}"`,
+      `The answer is ${currentQ.correct_answer?.length || 0} letters long`,
+      `The answer is about ${currentQ.correct_answer?.split(' ')[0] || 'food'}`,
+      `Think about ${currentQ.correct_answer || 'healthy eating'}`
     ];
     
     const randomHint = hintOptions[Math.floor(Math.random() * hintOptions.length)];

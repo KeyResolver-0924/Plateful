@@ -18,6 +18,8 @@ import Animated, {
 import { colors } from '../../../constants/colors';
 import { getFoodImageSource } from '../../../utils/imageUtils';
 
+const Base_URL = process.env.EXPO_PUBLIC_BASE_URL;
+
 interface MealItemType {
   foodName: string;
   plan: number;
@@ -96,7 +98,7 @@ const LeaderboardScreen = () => {
       <View style={styles.chartContainer}>
         <View style={styles.pieChart}>
           <View style={styles.chartCenter}>
-            <Image source={require('../../../assets/images/characters/marketing.png')} style={{width: 150, height: 150}}/>
+            <Image source={require(`${Base_URL}/assets/images/characters/marketing.png`)} style={{width: 150, height: 150}}/>
           </View>
         </View>
         <View style={styles.chartLegend}>
@@ -232,7 +234,7 @@ const LeaderboardScreen = () => {
         >
           <Ionicons name="arrow-back" size={24} color={colors.primary} />
         </TouchableOpacity>
-        <Text style={styles.headerTitle}>Our Chat</Text>
+        <Text style={styles.headerTitle}>Our Chart</Text>
       </View>
       <ScrollView 
         style={styles.content}
@@ -263,7 +265,7 @@ const LeaderboardScreen = () => {
           style={styles.progressCard}
         >
           <View style={styles.progressHeader}>
-            <Image source={require('../../../assets/images/icons/Bookmark.png')} style={{width: 30, height: 30}}/>
+            <Image source={require(`${Base_URL}/assets/images/icons/Bookmark.png`)} style={{width: 30, height: 30}}/>
             <Text style={styles.progressTitle}>Total Nutrient</Text>
             <Text style={styles.progressPercentage}>{todayProgress.completed}%</Text>
           </View>          
@@ -280,7 +282,7 @@ const LeaderboardScreen = () => {
           entering={FadeIn.delay(300).springify()}
           style={styles.achievementCard}
         >
-          <Image source={require('../../../assets/images/icons/Bookmark.png')} style={{width: 30, height: 30}}/>
+          <Image source={require(`${Base_URL}/assets/images/icons/Bookmark.png`)} style={{width: 30, height: 30}}/>
           <Text style={styles.achievementText}>
             Produce weekly Variety{'\n'}
             <Text style={styles.achievementSubtext}>you've earned a new reward</Text>

@@ -1,4 +1,4 @@
-# PlateFull - Children's Nutrition App
+# PlateFul - Children's Nutrition App
 
 A React Native app built with Expo Router for tracking children's nutrition and making healthy eating fun through gamification.
 

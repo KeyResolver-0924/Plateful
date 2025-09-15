@@ -3,6 +3,7 @@ import React, { memo } from 'react';
 import { Image, StyleSheet, TouchableOpacity, View } from 'react-native';
 import Animated, { FadeInDown, ZoomIn } from 'react-native-reanimated';
 import { Round } from '../types/navigation';
+const Base_URL = process.env.EXPO_PUBLIC_BASE_URL;
 
 interface TreasureBoxItemProps {
   round: Round;
@@ -48,7 +49,7 @@ const TreasureBoxItem: React.FC<TreasureBoxItemProps> = memo(({
         activeOpacity={0.8}
       >
         <Image
-          source={require('../../../../assets/images/characters/box.png')}
+          source={require(`${Base_URL}/assets/images/characters/box.png`)}
           style={[
             styles.treasureBoxImage,
             !isUnlocked && styles.lockedTreasureBoxImage,
@@ -93,7 +94,7 @@ const styles = StyleSheet.create({
   connectionLine: {
     position: 'absolute',
     top: -35,
-    width: 8,
+    // width: 8,
     height: 35,
     backgroundColor: '#e5e7eb',
     borderRadius: 4,

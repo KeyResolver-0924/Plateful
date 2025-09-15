@@ -6,12 +6,12 @@ import {
   StyleSheet,
   Text,
   TouchableOpacity,
-  View
+  View,
+  Dimensions
 } from 'react-native';
 import { colors } from '../../../../constants/colors';
 import LockedModal from '../components/LockedModal';
 import RewardModal from '../components/RewardModal';
-import RoundHeader from '../components/RoundHeader';
 import RoundItem from '../components/RoundItem';
 import RoundsListModal from '../components/RoundsListModal';
 import { useQuest } from '../context/QuestContext';
@@ -19,6 +19,8 @@ import { useFloatAnimation } from '../hooks/useFloatAnimation';
 import { useGameSession } from '../hooks/useGameSession';
 import GameScreen from '../quests/GameScreen';
 import ResultsScreen from '../quests/ResultsScreen';
+
+const { width: SCREEN_WIDTH } = Dimensions.get('window');
 
 interface RoundScreenProps {
   difficulty: 'EASY' | 'NORMAL' | 'HARD';
@@ -182,15 +184,36 @@ const RoundScreen: React.FC<RoundScreenProps> = ({ difficulty, onBack, onStartQu
 
   return (
     <View style={styles.container}>
-      <RoundHeader
-        currentVisibleRound={currentVisibleRound}
-        levelName={level.name || difficulty}
-        totalStars={level.totalStars}
-        completedRounds={level.rounds.filter(r => r.isCompleted).length}
-        totalRounds={level.rounds.length}
-        onBack={onBack}
-      />
+      {/* Duolingo-style Header */}
+      <View style={styles.header}>
+        <TouchableOpacity style={styles.headerButton} onPress={onBack}>
+          <Ionicons name="arrow-back" size={24} color="#666" />
+        </TouchableOpacity>
+        
+        <View style={styles.headerStats}>
+          <View style={styles.statItem}>
+            <Ionicons name="flame" size={20} color="#FF6B35" />
+            <Text style={styles.statText}>0</Text>
+          </View>
+          <View style={styles.statItem}>
+            <Ionicons name="diamond" size={20} color="#4A90E2" />
+            <Text style={styles.statText}>500</Text>
+          </View>
+          <View style={styles.statItem}>
+            <Ionicons name="heart" size={20} color="#FF6B6B" />
+            <Text style={styles.statText}>∞</Text>
+          </View>
+        </View>
+      </View>
+
+      {/* Current Section Banner */}
+      <View style={styles.sectionBanner}>
+        <Text style={styles.sectionText}>SECTION 1, UNIT {currentVisibleRound}</Text>
+        <Text style={styles.unitTitle}>{level.name || difficulty} Learning</Text>
+        <Ionicons name="list" size={24} color="white" />
+      </View>
       
+      {/* Learning Path */}
       <ScrollView
         ref={scrollViewRef}
         showsVerticalScrollIndicator={false}
@@ -198,23 +221,85 @@ const RoundScreen: React.FC<RoundScreenProps> = ({ difficulty, onBack, onStartQu
         onScroll={handleScroll}
         scrollEventThrottle={16}
       >
-        {/* All Rounds Vertically */}
-        {!level.isLocked && level.rounds.map((round, roundIndex) => (
-          <View 
-            key={`round-wrapper-${round.id}`} 
-            style={styles.roundWrapper}
-            onLayout={(event) => onRoundLayout(roundIndex, event)}
-          >
-            <RoundItem
-              round={round}
-              levelIndex={levelIndex}
-              roundIndex={roundIndex}
-              onSubRoundPress={handleSubRoundPress}
-              onTreasureBoxPress={handleBoxPress}
-              startBubbleAnimation={startBubbleAnimation}
-            />
+        <View style={styles.learningPath}>
+          {/* Active Lesson */}
+          <View style={styles.activeLessonContainer}>
+            <View style={styles.speechBubble}>
+              <Text style={styles.lessonTitle}>Start Learning!</Text>
+              <Text style={styles.lessonSubtitle}>Lesson 1 of {level.rounds.length}</Text>
+              <TouchableOpacity style={styles.startButton}>
+                <Text style={styles.startButtonText}>START +10 XP</Text>
+              </TouchableOpacity>
+            </View>
+            <View style={styles.activeLessonNode}>
+              <Ionicons name="star" size={32} color="white" />
+            </View>
           </View>
-        ))}
+
+          {/* Learning Path Nodes */}
+          {!level.isLocked && level.rounds.map((round, roundIndex) => (
+            <View 
+              key={`round-wrapper-${round.id}`} 
+              style={styles.roundWrapper}
+              onLayout={(event) => onRoundLayout(roundIndex, event)}
+            >
+              <View style={styles.learningNode}>
+                <View style={[
+                  styles.nodeCircle,
+                  round.isCompleted ? styles.completedNode : styles.lockedNode
+                ]}>
+                  <Ionicons 
+                    name={round.isCompleted ? "checkmark" : "star"} 
+                    size={24} 
+                    color={round.isCompleted ? "white" : "#ccc"} 
+                  />
+                </View>
+                
+                {roundIndex < level.rounds.length - 1 && (
+                  <View style={styles.connectingLine} />
+                )}
+              </View>
+
+              {/* Sub-rounds for this round */}
+              <View style={styles.subRoundsContainer}>
+                {round.subRounds.slice(0, 4).map((subRound, subRoundIndex) => (
+                  <TouchableOpacity
+                    key={subRound.id}
+                    style={[
+                      styles.subRoundNode,
+                      subRound.isCompleted ? styles.completedSubRound : styles.lockedSubRound
+                    ]}
+                    onPress={() => handleSubRoundPress(levelIndex, roundIndex, subRoundIndex)}
+                    disabled={subRound.isLocked}
+                  >
+                    <Ionicons 
+                      name={subRound.isCompleted ? "checkmark" : "play"} 
+                      size={16} 
+                      color={subRound.isCompleted ? "white" : "#ccc"} 
+                    />
+                  </TouchableOpacity>
+                ))}
+              </View>
+            </View>
+          ))}
+
+          {/* Treasure Chest */}
+          <View style={styles.treasureContainer}>
+            <TouchableOpacity 
+              style={styles.treasureNode}
+              onPress={() => handleBoxPress(levelIndex, 0)}
+            >
+              <Ionicons name="gift" size={24} color="#ccc" />
+            </TouchableOpacity>
+          </View>
+
+          {/* Trophy */}
+          <View style={styles.trophyContainer}>
+            <View style={styles.trophyNode}>
+              <Ionicons name="trophy" size={24} color="#ccc" />
+            </View>
+          </View>
+        </View>
       </ScrollView>
 
       {/* Modals */}
@@ -312,8 +397,191 @@ const RoundScreen: React.FC<RoundScreenProps> = ({ difficulty, onBack, onStartQu
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.background,
+    backgroundColor: '#FFFFFF',
   },
+  // Header Styles
+  header: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingHorizontal: 20,
+    paddingTop: 50,
+    paddingBottom: 15,
+    backgroundColor: '#FFFFFF',
+  },
+  headerButton: {
+    padding: 8,
+  },
+  headerStats: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  statItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginLeft: 20,
+  },
+  statText: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    marginLeft: 4,
+    color: '#333',
+  },
+  // Section Banner
+  sectionBanner: {
+    backgroundColor: '#58CC02',
+    marginHorizontal: 20,
+    marginBottom: 20,
+    paddingVertical: 20,
+    paddingHorizontal: 20,
+    borderRadius: 12,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  sectionText: {
+    fontSize: 14,
+    color: '#B2DF28',
+    fontWeight: '600',
+  },
+  unitTitle: {
+    fontSize: 20,
+    color: 'white',
+    fontWeight: 'bold',
+    marginTop: 4,
+  },
+  // Learning Path
+  learningPath: {
+    alignItems: 'center',
+    paddingHorizontal: 20,
+    paddingBottom: 50,
+  },
+  activeLessonContainer: {
+    alignItems: 'center',
+    marginBottom: 30,
+  },
+  speechBubble: {
+    backgroundColor: '#58CC02',
+    paddingVertical: 15,
+    paddingHorizontal: 20,
+    borderRadius: 20,
+    marginBottom: 15,
+    alignItems: 'center',
+    minWidth: 200,
+  },
+  lessonTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: 'white',
+    marginBottom: 4,
+  },
+  lessonSubtitle: {
+    fontSize: 14,
+    color: '#B2DF28',
+    marginBottom: 10,
+  },
+  startButton: {
+    backgroundColor: 'white',
+    paddingVertical: 8,
+    paddingHorizontal: 16,
+    borderRadius: 20,
+  },
+  startButtonText: {
+    color: '#58CC02',
+    fontWeight: 'bold',
+    fontSize: 14,
+  },
+  activeLessonNode: {
+    width: 80,
+    height: 80,
+    borderRadius: 40,
+    backgroundColor: '#58CC02',
+    borderWidth: 4,
+    borderColor: '#B2DF28',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  // Learning Nodes
+  learningNode: {
+    alignItems: 'center',
+    marginBottom: 20,
+  },
+  nodeCircle: {
+    width: 60,
+    height: 60,
+    borderRadius: 30,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderWidth: 3,
+  },
+  completedNode: {
+    backgroundColor: '#58CC02',
+    borderColor: '#B2DF28',
+  },
+  lockedNode: {
+    backgroundColor: '#E5E5E5',
+    borderColor: '#CCCCCC',
+  },
+  connectingLine: {
+    width: 4,
+    height: 40,
+    backgroundColor: '#E5E5E5',
+    marginTop: 10,
+  },
+  // Sub-rounds
+  subRoundsContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    marginTop: 10,
+    marginBottom: 20,
+  },
+  subRoundNode: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginHorizontal: 5,
+    borderWidth: 2,
+  },
+  completedSubRound: {
+    backgroundColor: '#58CC02',
+    borderColor: '#B2DF28',
+  },
+  lockedSubRound: {
+    backgroundColor: '#E5E5E5',
+    borderColor: '#CCCCCC',
+  },
+  // Treasure and Trophy
+  treasureContainer: {
+    alignItems: 'center',
+    marginVertical: 20,
+  },
+  treasureNode: {
+    width: 60,
+    height: 60,
+    borderRadius: 30,
+    backgroundColor: '#E5E5E5',
+    borderWidth: 3,
+    borderColor: '#CCCCCC',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  trophyContainer: {
+    alignItems: 'center',
+    marginTop: 20,
+  },
+  trophyNode: {
+    width: 60,
+    height: 60,
+    borderRadius: 30,
+    backgroundColor: '#E5E5E5',
+    borderWidth: 3,
+    borderColor: '#CCCCCC',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  // Utility Styles
   loadingContainer: {
     flex: 1,
     justifyContent: 'center',
@@ -321,7 +589,7 @@ const styles = StyleSheet.create({
   },
   loadingText: {
     fontSize: 16,
-    color: colors.text.secondary,
+    color: '#666',
   },
   errorContainer: {
     flex: 1,
@@ -330,7 +598,7 @@ const styles = StyleSheet.create({
   },
   errorText: {
     fontSize: 16,
-    color: colors.text.secondary,
+    color: '#666',
   },
   scrollContent: {
     paddingBottom: 0,

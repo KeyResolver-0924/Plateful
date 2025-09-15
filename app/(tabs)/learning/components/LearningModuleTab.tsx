@@ -1,25 +1,33 @@
-import { Ionicons } from '@expo/vector-icons';
-import React, { useState } from 'react';
+import { Ionicons } from "@expo/vector-icons";
+import { useVideoPlayer, VideoView } from "expo-video";
+import React, { useState } from "react";
 import {
+  Alert,
   Dimensions,
   Image,
   ImageSourcePropType,
   Modal,
+  SafeAreaView,
   ScrollView,
   StyleSheet,
   Text,
   TouchableOpacity,
   View
-} from 'react-native';
+} from "react-native";
 import Animated, {
   FadeInLeft,
   FadeInUp,
-  SlideInUp
-} from 'react-native-reanimated';
-import Button from '../../../../components/common/Button';
-import { colors } from '../../../../constants/colors';
+  SlideInUp,
+  SlideOutDown
+} from "react-native-reanimated";
+import Button from "../../../../components/common/Button";
+import { colors } from "../../../../constants/colors";
+import foodGuideData from "../../../../db/foods.json";
+import { getFoodImageSource } from "../../../../utils/imageUtils";
 
-const { width } = Dimensions.get('window');
+const Base_URL = process.env.EXPO_PUBLIC_BASE_URL;  
+
+const { width } = Dimensions.get("window");
 
 interface NavigationProp {
   navigate: (screen: string) => void;
@@ -39,9 +47,24 @@ interface Module {
   gradient: string[];
   progress?: number;
   isUnlocked: boolean;
+  category: string;
 }
 
-interface Video {
+interface FoodItem {
+  id: string;
+  name: string;
+  category: string;
+  description: string;
+  image: string;
+  nutrition: any;
+  how_grown?: string[];
+  how_produced?: string[];
+  how_to_eat?: string[];
+  quiz?: any[];
+  videoUrl?: string;
+}
+
+interface VideoData {
   id: string;
   title: string;
   duration: string;
@@ -49,129 +72,327 @@ interface Video {
   color: string;
   category: string;
   isPremium: boolean;
+  videoSource: ReturnType<typeof require>;
+  description: string;
+  foodItems: string[];
 }
 
 const LearningModuleTab: React.FC<LearningModuleTabProps> = ({ navigation }) => {
-  const [showSuccessModal, setShowSuccessModal] = useState<boolean>(false);
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [selectedModule, setSelectedModule] = useState<Module | null>(null);
+  const [showVideoModal, setShowVideoModal] = useState(false);
+  const [selectedVideo, setSelectedVideo] = useState<VideoData | null>(null);
+  const [selectedCategory, setSelectedCategory] = useState('all');
+  const [showFoodDetails, setShowFoodDetails] = useState(false);
+  const [selectedFood, setSelectedFood] = useState<FoodItem | null>(null);
+  const [videoSource, setVideoSource] = useState<string | null>(null);
 
-  // Enhanced modules with better visual design
+  const player = useVideoPlayer(videoSource, player => {
+    player.loop = true;
+    player.play();
+  });
+
   const modules: Module[] = [
     {
-      id: 'quiz',
-      title: 'Food Quest',
-      icon: require('../../../../assets/images/characters/zicon (40).png'),
-      description: 'Embark on an exciting journey through food knowledge with interactive quizzes and challenges.',
-      action: 'Start Quest',
-      color: '#4CAF50',
-      gradient: ['#4CAF50', '#45A049'],
+      id: "quiz",
+      title: "Food Quest",
+      icon: require(`${Base_URL}/assets/images/characters/zicon (40).png`),
+      description: "Embark on an exciting journey through food knowledge with interactive quizzes and challenges.",
+      action: "Start Quest",
+      color: colors.success,
+      gradient: [colors.success, "#45A049"],
       progress: 75,
-      isUnlocked: true
+      isUnlocked: true,
+      category: "interactive",
     },
     {
-      id: 'rewards',
-      title: 'Achievement Hall',
-      icon: require('../../../../assets/images/characters/zicon (24).png'),
-      description: 'Celebrate your accomplishments and collect badges for your food knowledge mastery.',
-      action: 'View Achievements',
-      color: '#FF9800',
-      gradient: ['#FF9800', '#F57C00'],
+      id: "rewards",
+      title: "Achievement Hall",
+      icon: require(`${Base_URL}/assets/images/characters/zicon (24).png`),
+      description: "Celebrate your accomplishments and collect badges for your food knowledge mastery.",
+      action: "View Achievements",
+      color: colors.warning,
+      gradient: [colors.warning, "#F57C00"],
       progress: 60,
-      isUnlocked: true
+      isUnlocked: true,
+      category: "rewards",
     },
     {
-      id: 'learning',
-      title: 'Knowledge Library',
-      icon: require('../../../../assets/images/characters/learn.png'),
-      description: 'Access comprehensive learning materials and educational content about healthy eating.',
-      action: 'Explore Library',
-      color: '#2196F3',
-      gradient: ['#2196F3', '#1976D2'],
+      id: "learning",
+      title: "Knowledge Library",
+      icon: require(`${Base_URL}/assets/images/characters/learn.png`),
+      description: "Access comprehensive learning materials and educational content about healthy eating.",
+      action: "Explore Library",
+      color: colors.primary,
+      gradient: [colors.primary, "#1976D2"],
       progress: 30,
-      isUnlocked: false
+      isUnlocked: true,
+      category: "education",
     },
     {
-      id: 'challenges',
-      title: 'Daily Challenges',
-      icon: require('../../../../assets/images/characters/fire.png'),
-      description: 'Take on daily food challenges to keep your knowledge fresh and earn bonus rewards.',
-      action: 'View Challenges',
-      color: '#E91E63',
-      gradient: ['#E91E63', '#C2185B'],
+      id: "challenges",
+      title: "Daily Challenges",
+      icon: require(`${Base_URL}/assets/images/characters/fire.png`),
+      description: "Take on daily food challenges to keep your knowledge fresh and earn bonus rewards.",
+      action: "View Challenges",
+      color: colors.error,
+      gradient: [colors.error, "#C2185B"],
       progress: 0,
-      isUnlocked: false
-    }
+      isUnlocked: true,
+      category: "challenges",
+    },
   ];
 
-  // Enhanced video content
-  const videos: Video[] = [
-    {
-      id: 'fruits',
-      title: 'Fruits & Berries',
-      duration: '10 Min',
-      thumbnail: '🍓',
-      color: '#FF6B6B',
-      category: 'Nutrition Basics',
-      isPremium: false
-    },
-    {
-      id: 'dairy',
-      title: 'Dairy & Alternatives',
-      duration: '8 Min',
-      thumbnail: '🥛',
-      color: '#4ECDC4',
-      category: 'Essential Nutrients',
-      isPremium: false
-    },
-    {
-      id: 'proteins',
-      title: 'Protein Power',
-      duration: '12 Min',
-      thumbnail: '🥩',
-      color: '#45B7D1',
-      category: 'Building Blocks',
-      isPremium: true
-    },
-    {
-      id: 'vegetables',
-      title: 'Veggie Variety',
-      duration: '15 Min',
-      thumbnail: '🥦',
-      color: '#96CEB4',
-      category: 'Health & Wellness',
-      isPremium: false
-    }
-  ];
+  // Generate videos from food data
+  const generateVideosFromFoods = (): VideoData[] => {
+    const videos: VideoData[] = [];
+    
+    // Fruits video
+    const fruits = Object.keys(foodGuideData.categories.fruits.foods).slice(0, 5);
+    videos.push({
+      id: "fruits",
+      title: "Fruits & Berries",
+      duration: "8 Min",
+      thumbnail: "🍓",
+      color: foodGuideData.categories.fruits.color,
+      category: "Nutrition Basics",
+      isPremium: false,
+      videoSource: require(`${Base_URL}/assets/videos/fruits.mp4`),
+      description: foodGuideData.categories.fruits.description,
+      foodItems: fruits,
+    });
+
+    // Vegetables video
+    const vegetables = Object.keys(foodGuideData.categories.vegetables.foods).slice(0, 5);
+    videos.push({
+      id: "vegetables",
+      title: "Veggie Power",
+      duration: "10 Min",
+      thumbnail: "🥦",
+      color: foodGuideData.categories.vegetables.color,
+      category: "Plant Nutrition",
+      isPremium: false,
+      videoSource: require(`${Base_URL}/assets/videos/vegetables.mp4`),
+      description: foodGuideData.categories.vegetables.description,
+      foodItems: vegetables,
+    });
+
+    //Carbohydrates video
+    const carbohydrates = Object.keys(foodGuideData.categories.carbohydrates.foods).slice(0, 5);
+    videos.push({
+      id: "carbohydrates",
+      title: "Carbohydrate Power",
+      duration: "10 Min",
+      thumbnail: "🍞",
+      color: foodGuideData.categories.carbohydrates.color,
+      category: "Carbohydrate Nutrition",
+      isPremium: false,
+      videoSource: require(`${Base_URL}/assets/videos/carbohydrates.mp4`),
+      description: foodGuideData.categories.carbohydrates.description,
+      foodItems: carbohydrates,
+    });
+
+    // Proteins video
+    const proteins = Object.keys(foodGuideData.categories.proteins.foods).slice(0, 5);
+    videos.push({
+      id: "proteins",
+      title: "Protein Power",
+      duration: "12 Min",
+      thumbnail: "🥩",
+      color: foodGuideData.categories.proteins.color,
+      category: "Building Blocks",
+      isPremium: true,
+      videoSource: require(`${Base_URL}/assets/videos/proteins.mp4`),
+      description: foodGuideData.categories.proteins.description,
+      foodItems: proteins,
+    });
+
+    //Fats video
+    const fats = Object.keys(foodGuideData.categories.fats.foods).slice(0, 5);
+    videos.push({
+      id: "fats",
+      title: "Fat Power",
+      duration: "12 Min",
+      thumbnail: "🥑",
+      color: foodGuideData.categories.fats.color,
+      category: "Fat Nutrition",
+      isPremium: true,
+      videoSource: require(`${Base_URL}/assets/videos/fats.mp4`),
+      description: foodGuideData.categories.fats.description,
+      foodItems: fats,
+    });
+
+    // Dairy video
+    const dairy = Object.keys(foodGuideData.categories.dairy.foods).slice(0, 5);
+    videos.push({
+      id: "dairy",
+      title: "Dairy Delights",
+      duration: "9 Min",
+      thumbnail: "🥛",
+      color: foodGuideData.categories.dairy.color,
+      category: "Calcium & Vitamins",
+      isPremium: true,
+      videoSource: require(`${Base_URL}/assets/videos/dairy.mp4`),
+      description: foodGuideData.categories.dairy.description,
+      foodItems: dairy,
+    });
+
+    return videos;
+  };
+
+  const videos = generateVideosFromFoods();
+
+  // Get all foods from the JSON data
+  const getAllFoods = (): FoodItem[] => {
+    const foods: FoodItem[] = [];
+    
+    // Add fruits
+    Object.keys(foodGuideData.categories.fruits.foods).forEach(fruitName => {
+      const fruitData = foodGuideData.categories.fruits.foods[fruitName as keyof typeof foodGuideData.categories.fruits.foods];
+      foods.push({
+        id: fruitName,
+        name: fruitData.name,
+        category: 'fruits',
+        description: fruitData.learning.summary,
+        image: '', // Images will be handled by getFoodImage function
+        nutrition: {}, // Nutrition data not available in current structure
+        how_grown: fruitData.learning.key_facts,
+        how_to_eat: [], // How to eat data not available in current structure
+        quiz: fruitData.quiz || [],
+      });
+    });
+
+    // Add vegetables
+    Object.keys(foodGuideData.categories.vegetables.foods).forEach(vegName => {
+      const vegData = foodGuideData.categories.vegetables.foods[vegName as keyof typeof foodGuideData.categories.vegetables.foods];
+      foods.push({
+        id: vegName,
+        name: vegData.name,
+        category: 'vegetables',
+        description: vegData.learning.summary,
+        image: '', // Images will be handled by getFoodImage function
+        nutrition: {}, // Nutrition data not available in current structure
+        how_grown: vegData.learning.key_facts,
+        how_to_eat: [], // How to eat data not available in current structure
+        quiz: vegData.quiz || [],
+      });
+    });
+
+    // Add proteins
+    Object.keys(foodGuideData.categories.proteins.foods).forEach(proteinName => {
+      const proteinData = foodGuideData.categories.proteins.foods[proteinName as keyof typeof foodGuideData.categories.proteins.foods];
+      foods.push({
+        id: proteinName,
+        name: proteinData.name,
+        category: 'proteins',
+        description: proteinData.learning.summary,
+        image: '', // Images will be handled by getFoodImage function
+        nutrition: {}, // Nutrition data not available in current structure
+        how_grown: undefined,
+        how_produced: proteinData.learning.key_facts,
+        how_to_eat: [], // How to eat data not available in current structure
+        quiz: proteinData.quiz || [],
+      });
+    });
+
+    // Add carbohydrates
+    Object.keys(foodGuideData.categories.carbohydrates.foods).forEach(carbName => {
+      const carbData = foodGuideData.categories.carbohydrates.foods[carbName as keyof typeof foodGuideData.categories.carbohydrates.foods];
+      foods.push({
+        id: carbName,
+        name: carbData.name,
+        category: 'carbohydrates',
+        description: carbData.learning.summary,
+        image: '', // Images will be handled by getFoodImage function
+        nutrition: {}, // Nutrition data not available in current structure
+        how_grown: carbData.learning.key_facts,
+        how_to_eat: [], // How to eat data not available in current structure
+        quiz: carbData.quiz || [],
+      });
+    });
+
+    // Add fats
+    Object.keys(foodGuideData.categories.fats.foods).forEach(fatName => {
+      const fatData = foodGuideData.categories.fats.foods[fatName as keyof typeof foodGuideData.categories.fats.foods];
+      foods.push({
+        id: fatName,
+        name: fatData.name,
+        category: 'fats',
+        description: fatData.learning.summary,
+        image: '', // Images will be handled by getFoodImage function
+        nutrition: {}, // Nutrition data not available in current structure
+        how_grown: fatData.learning.key_facts,
+        how_to_eat: [], // How to eat data not available in current structure
+        quiz: fatData.quiz || [],
+      });
+    });
+
+    // Add dairy
+    Object.keys(foodGuideData.categories.dairy.foods).forEach(dairyName => {
+      const dairyData = foodGuideData.categories.dairy.foods[dairyName as keyof typeof foodGuideData.categories.dairy.foods];
+      foods.push({
+        id: dairyName,
+        name: dairyData.name,
+        category: 'dairy',
+        description: dairyData.learning.summary,
+        image: '', // Images will be handled by getFoodImage function
+        nutrition: {}, // Nutrition data not available in current structure
+        how_grown: undefined,
+        how_produced: dairyData.learning.key_facts,
+        how_to_eat: [], // How to eat data not available in current structure
+        quiz: dairyData.quiz || [],
+      });
+    });
+
+    return foods;
+  };
+
+  const foods = getAllFoods();
+  const filteredFoods = foods.filter(food => {
+    if (selectedCategory === 'all') return true;
+    return food.category === selectedCategory;
+  });
 
   const handleModulePress = (module: Module): void => {
     if (!module.isUnlocked) {
-      // Show locked modal or upgrade prompt
+      Alert.alert(
+        "Locked Module",
+        "Complete earlier lessons or upgrade to unlock this module."
+      );
       return;
     }
-
-    if (module.id === 'quiz') {
-      if (navigation) {
-        navigation.navigate('Quiz');
-      }
-    } else if (module.id === 'rewards') {
-      setSelectedModule(module);
-      setShowSuccessModal(true);
+    
+    if (module.id === "quiz" && navigation) {
+      navigation.navigate("Quiz");
+    } else if (module.id === "learning") {
+      setSelectedCategory('all');
     } else {
-      // Handle other modules
       setSelectedModule(module);
       setShowSuccessModal(true);
     }
   };
 
-  const SuccessModal: React.FC = () => (
-    <Modal
-      visible={showSuccessModal}
-      transparent={true}
-      animationType="fade"
-    >
+  const handleVideoPress = (video: VideoData): void => {
+    setSelectedVideo(video);
+    setVideoSource(video.videoSource as any);
+    setShowVideoModal(true);
+  };
+
+  const handleFoodPress = (food: FoodItem): void => {
+    setSelectedFood(food);
+    setShowFoodDetails(true);
+  };
+
+  const getFoodImage = (foodName: string) => {
+    return getFoodImageSource(foodName);
+  };
+
+  const SuccessModal = () => (
+    <Modal transparent visible={showSuccessModal} animationType="fade">
       <View style={styles.modalOverlay}>
-        <Animated.View 
+        <Animated.View
           entering={SlideInUp.springify()}
+          exiting={SlideOutDown}
           style={styles.successModal}
         >
           <TouchableOpacity
@@ -180,56 +401,147 @@ const LearningModuleTab: React.FC<LearningModuleTabProps> = ({ navigation }) => 
           >
             <Ionicons name="close" size={24} color={colors.text.primary} />
           </TouchableOpacity>
-
-          <View style={styles.successIcon}>
-            <Image 
-              source={selectedModule?.icon || require('../../../../assets/images/characters/zicon (26).png')} 
-              style={styles.successEmoji} 
-            />
-          </View>
-
+          <Image
+            source={
+              selectedModule?.icon ||
+              require(`${Base_URL}/assets/images/characters/zicon (26).png`)
+            }
+            style={styles.successEmoji}
+          />
           <Text style={styles.successTitle}>
-            {selectedModule?.title || 'Module'} Unlocked!
+            {selectedModule?.title} Unlocked!
           </Text>
-          
           <Text style={styles.successDescription}>
-            {selectedModule?.description || 'You\'ve successfully unlocked this learning module. Start exploring now!'}
+            {selectedModule?.description}
           </Text>
-
           <Button
             title="Continue Learning"
             onPress={() => setShowSuccessModal(false)}
-            style={styles.continueButton}
           />
         </Animated.View>
       </View>
     </Modal>
   );
 
-  const renderProgressBar = (progress: number, color: string) => (
-    <View style={styles.progressContainer}>
-      <View style={styles.progressBar}>
-        <Animated.View 
-          style={[
-            styles.progressFill,
-            { 
-              width: `${progress}%`,
-              backgroundColor: color
-            }
-          ]} 
-        />
-      </View>
-      <Text style={styles.progressText}>{progress}% Complete</Text>
-    </View>
+  const VideoModal = () => (
+    <Modal transparent={false} visible={showVideoModal} animationType="slide">
+      <SafeAreaView style={styles.videoModalContainer}>
+        <View style={styles.videoModalHeader}>
+          <TouchableOpacity
+            onPress={() => setShowVideoModal(false)}
+            style={styles.closeVideoButton}
+          >
+            <Ionicons name="close" size={24} color="white" />
+          </TouchableOpacity>
+          <Text style={styles.videoModalTitle}>{selectedVideo?.title}</Text>
+        </View>
+        {selectedVideo && (
+          <View style={styles.videoContainer}>
+            <VideoView 
+              style={styles.video} 
+              player={player} 
+              allowsFullscreen 
+              allowsPictureInPicture 
+            />
+          </View>
+        )}
+        {selectedVideo && (
+          <View style={styles.videoModalInfo}>
+            <Text style={styles.videoInfoTitle}>Featured Foods:</Text>
+            <View style={styles.featuredFoods}>
+              {selectedVideo.foodItems.map((foodName, index) => (
+                <View key={index} style={styles.featuredFoodItem}>
+                  <Image source={getFoodImage(foodName)} style={styles.featuredFoodImage} />
+                  <Text style={styles.featuredFoodName}>
+                    {foodName.replace(/_/g, ' ').replace(/\b\w/g, (l: string) => l.toUpperCase())}
+                  </Text>
+                </View>
+              ))}
+            </View>
+          </View>
+        )}
+      </SafeAreaView>
+    </Modal>
+  );
+
+  const FoodDetailsModal = () => (
+    <Modal transparent visible={showFoodDetails} animationType="slide">
+      <SafeAreaView style={styles.foodDetailsContainer}>
+        <View style={styles.foodDetailsHeader}>
+          <TouchableOpacity
+            onPress={() => setShowFoodDetails(false)}
+            style={styles.closeFoodButton}
+          >
+            <Ionicons name="close" size={24} color="white" />
+          </TouchableOpacity>
+          <Text style={styles.foodDetailsTitle}>Food Details</Text>
+        </View>
+        {selectedFood && (
+          <ScrollView style={styles.foodDetailsContent}>
+            <Image source={getFoodImage(selectedFood.id)} style={styles.foodDetailImage} />
+            <Text style={styles.foodDetailName}>{selectedFood.name}</Text>
+            <Text style={styles.foodDetailDescription}>{selectedFood.description}</Text>
+            
+            {selectedFood.nutrition && (
+              <View style={styles.nutritionSection}>
+                <Text style={styles.sectionHeader}>Nutrition Facts</Text>
+                {selectedFood.nutrition.carbohydrates && (
+                  <Text style={styles.nutritionText}>🍞 {selectedFood.nutrition.carbohydrates}</Text>
+                )}
+                {selectedFood.nutrition.protein && (
+                  <Text style={styles.nutritionText}>🥩 {selectedFood.nutrition.protein}</Text>
+                )}
+                {selectedFood.nutrition.fat && (
+                  <Text style={styles.nutritionText}>🥑 {selectedFood.nutrition.fat}</Text>
+                )}
+              </View>
+            )}
+
+            {(selectedFood.how_grown || selectedFood.how_produced) && (
+              <View style={styles.howSection}>
+                <Text style={styles.sectionHeader}>
+                  {selectedFood.how_grown ? "How It's Grown" : "How It's Produced"}
+                </Text>
+                {(selectedFood.how_grown || selectedFood.how_produced)?.map((step, index) => (
+                  <Text key={index} style={styles.stepText}>• {step}</Text>
+                ))}
+              </View>
+            )}
+
+            {selectedFood.how_to_eat && (
+              <View style={styles.howSection}>
+                <Text style={styles.sectionHeader}>How to Eat</Text>
+                {selectedFood.how_to_eat.map((method, index) => (
+                  <Text key={index} style={styles.stepText}>• {method}</Text>
+                ))}
+              </View>
+            )}
+
+            {selectedFood.quiz && (
+              <View style={styles.quizSection}>
+                <Text style={styles.sectionHeader}>Quick Quiz</Text>
+                <Text style={styles.quizInfo}>
+                  This food has {(selectedFood.quiz as any).questions?.length || 0} quiz questions available!
+                </Text>
+                <Button
+                  title="Take Quiz"
+                  onPress={() => {
+                    setShowFoodDetails(false);
+                    // Navigate to quiz when implemented
+                    Alert.alert("Coming Soon", "Quiz functionality will be available soon!");
+                  }}
+                />
+              </View>
+            )}
+          </ScrollView>
+        )}
+      </SafeAreaView>
+    </Modal>
   );
 
   return (
-    <ScrollView 
-      style={styles.container}
-      showsVerticalScrollIndicator={false}
-      contentContainerStyle={styles.scrollContent}
-    >
-      <Animated.View entering={FadeInUp.delay(100)} style={styles.header}>
+    <ScrollView style={styles.container} contentContainerStyle={{ padding: 20 }}>
+      <Animated.View entering={FadeInUp.delay(100)}>
         <Text style={styles.sectionTitle}>Learning Hub</Text>
         <Text style={styles.sectionSubtitle}>
           Discover, Learn, and Master Food Knowledge! 🍎🥦
@@ -237,406 +549,501 @@ const LearningModuleTab: React.FC<LearningModuleTabProps> = ({ navigation }) => 
       </Animated.View>
 
       <View style={styles.modulesGrid}>
-        {modules.map((module: Module, index: number) => (
+        {modules.map((m, i) => (
           <Animated.View
-            key={module.id}
-            entering={FadeInUp.delay(index * 150).springify()}
+            key={m.id}
+            entering={FadeInUp.delay(i * 150).springify()}
             style={styles.moduleCardContainer}
           >
             <TouchableOpacity
-              style={[
-                styles.moduleCard,
-                { borderColor: module.color },
-                !module.isUnlocked && styles.lockedModuleCard
-              ]}
-              onPress={() => handleModulePress(module)}
-              activeOpacity={0.8}
-              disabled={!module.isUnlocked}
+              style={[styles.moduleCard, !m.isUnlocked && styles.lockedModuleCard]}
+              onPress={() => handleModulePress(m)}
             >
-              <View style={styles.moduleHeader}>
-                <View style={[styles.moduleIcon, { backgroundColor: module.color + '20' }]}>
-                  <Image source={module.icon} style={styles.moduleEmoji} />
+              <Image source={m.icon} style={styles.moduleEmoji} />
+              <Text style={[styles.moduleTitle, !m.isUnlocked && styles.lockedText]}>
+                {m.title}
+              </Text>
+              <Text
+                style={[
+                  styles.moduleDescription,
+                  !m.isUnlocked && styles.lockedText,
+                ]}
+              >
+                {m.description}
+              </Text>
+              {m.progress !== undefined && m.isUnlocked && (
+                <View style={styles.progressBar}>
+                  <View
+                    style={{
+                      height: "100%",
+                      width: `${m.progress}%`,
+                      backgroundColor: m.color,
+                    }}
+                  />
                 </View>
-                {!module.isUnlocked && (
-                  <View style={styles.lockIcon}>
-                    <Ionicons name="lock-closed" size={16} color="#666" />
-                  </View>
-                )}
-              </View>
-              
-              <Text style={[
-                styles.moduleTitle,
-                !module.isUnlocked && styles.lockedModuleTitle
-              ]}>
-                {module.title}
-              </Text>
-              
-              <Text style={[
-                styles.moduleDescription,
-                !module.isUnlocked && styles.lockedModuleDescription
-              ]}>
-                {module.description}
-              </Text>
-              
-              {module.isUnlocked && module.progress !== undefined && (
-                renderProgressBar(module.progress, module.color)
               )}
-              
-                              <Button
-                  title={module.isUnlocked ? module.action : 'Locked'}
-                  onPress={() => handleModulePress(module)}
-                  style={module.isUnlocked ? styles.moduleButton : [styles.moduleButton, styles.lockedModuleButton] as any}
-                  disabled={!module.isUnlocked}
-                />
+              <Button
+                title={m.isUnlocked ? m.action : "Locked"}
+                onPress={() => handleModulePress(m)}
+              />
             </TouchableOpacity>
           </Animated.View>
         ))}
       </View>
 
-      <Animated.View entering={FadeInUp.delay(600)} style={styles.videoSection}>
-        <View style={styles.sectionHeader}>
-          <Text style={styles.videoSectionTitle}>Learning Videos</Text>
-          <Text style={styles.videoSectionSubtitle}>Watch and learn from expert content</Text>
-        </View>
-        
-        {videos.map((video: Video, index: number) => (
+      <Animated.View entering={FadeInUp.delay(300)}>
+        <Text style={styles.sectionTitle}>Learning Videos</Text>
+        <Text style={styles.sectionSubtitle}>
+          Watch educational videos about different food categories
+        </Text>
+      </Animated.View>
+
+      {videos.map((v, i) => (
+        <Animated.View
+          key={v.id}
+          entering={FadeInLeft.delay(i * 150).springify()}
+          style={[styles.videoCard, { backgroundColor: v.color }]}
+        >
+          <TouchableOpacity onPress={() => handleVideoPress(v)}>
+            <View style={styles.videoHeader}>
+              <Text style={styles.videoThumbnail}>{v.thumbnail}</Text>
+              <View style={styles.videoInfo}>
+                <Text style={styles.videoCategory}>{v.category}</Text>
+                <Text style={styles.videoTitle}>{v.title}</Text>
+                <Text style={styles.videoDescription}>{v.description}</Text>
+                <Text style={styles.videoDuration}>{v.duration}</Text>
+              </View>
+              {v.isPremium && (
+                <View style={styles.premiumBadge}>
+                  <Ionicons name="star" size={16} color="gold" />
+                </View>
+              )}
+            </View>
+          </TouchableOpacity>
+        </Animated.View>
+      ))}
+
+      <Animated.View entering={FadeInUp.delay(400)}>
+        <Text style={styles.sectionTitle}>Food Knowledge Library</Text>
+        <Text style={styles.sectionSubtitle}>
+          Explore detailed information about different foods
+        </Text>
+      </Animated.View>
+
+      <View style={styles.categoryFilter}>
+        <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+          <TouchableOpacity
+            style={[styles.categoryButton, selectedCategory === 'all' && styles.categoryButtonActive]}
+            onPress={() => setSelectedCategory('all')}
+          >
+            <Text style={[styles.categoryText, selectedCategory === 'all' && styles.categoryTextActive]}>
+              All
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={[styles.categoryButton, selectedCategory === 'fruits' && styles.categoryButtonActive]}
+            onPress={() => setSelectedCategory('fruits')}
+          >
+            <Text style={[styles.categoryText, selectedCategory === 'fruits' && styles.categoryTextActive]}>
+              Fruits
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={[styles.categoryButton, selectedCategory === 'vegetables' && styles.categoryButtonActive]}
+            onPress={() => setSelectedCategory('vegetables')}
+          >
+            <Text style={[styles.categoryText, selectedCategory === 'vegetables' && styles.categoryTextActive]}>
+              Vegetables
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={[styles.categoryButton, selectedCategory === 'proteins' && styles.categoryButtonActive]}
+            onPress={() => setSelectedCategory('proteins')}
+          >
+            <Text style={[styles.categoryText, selectedCategory === 'proteins' && styles.categoryTextActive]}>
+              Proteins
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={[styles.categoryButton, selectedCategory === 'carbohydrates' && styles.categoryButtonActive]}
+            onPress={() => setSelectedCategory('carbohydrates')}
+          >
+            <Text style={[styles.categoryText, selectedCategory === 'carbohydrates' && styles.categoryTextActive]}>
+              Carbs
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={[styles.categoryButton, selectedCategory === 'fats' && styles.categoryButtonActive]}
+            onPress={() => setSelectedCategory('fats')}
+          >
+            <Text style={[styles.categoryText, selectedCategory === 'fats' && styles.categoryTextActive]}>
+              Fats
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={[styles.categoryButton, selectedCategory === 'dairy' && styles.categoryButtonActive]}
+            onPress={() => setSelectedCategory('dairy')}
+          >
+            <Text style={[styles.categoryText, selectedCategory === 'dairy' && styles.categoryTextActive]}>
+              Dairy
+            </Text>
+          </TouchableOpacity>
+        </ScrollView>
+      </View>
+
+      <View style={styles.foodList}>
+        {filteredFoods.slice(0, 10).map((food, i) => (
           <Animated.View
-            key={video.id}
-            entering={FadeInLeft.delay(700 + index * 100).springify()}
+            key={food.id}
+            entering={FadeInUp.delay(i * 50).springify()}
           >
             <TouchableOpacity
-              style={[styles.videoCard, { backgroundColor: video.color }]}
-              activeOpacity={0.8}
+              style={styles.foodItem}
+              onPress={() => handleFoodPress(food)}
+              activeOpacity={0.7}
             >
-              <View style={styles.videoContent}>
-                <View style={styles.videoInfo}>
-                  <Text style={styles.videoCategory}>{video.category}</Text>
-                  <Text style={styles.videoTitle}>{video.title}</Text>
-                  <View style={styles.videoMeta}>
-                    <View style={styles.durationBadge}>
-                      <Ionicons name="time-outline" size={14} color="white" />
-                      <Text style={styles.durationText}>{video.duration}</Text>
-                    </View>
-                    {video.isPremium && (
-                      <View style={styles.premiumBadge}>
-                        <Ionicons name="diamond" size={14} color="#FFD700" />
-                        <Text style={styles.premiumText}>Premium</Text>
-                      </View>
-                    )}
-                  </View>
-                </View>
-                
-                <View style={styles.videoThumbnail}>
-                  <Text style={styles.videoEmoji}>{video.thumbnail}</Text>
-                  <TouchableOpacity style={styles.playButton}>
-                    <Ionicons name="play" size={32} color="white" />
-                  </TouchableOpacity>
-                </View>
+              <Image source={getFoodImage(food.id)} style={styles.foodImage} />
+              <View style={styles.foodInfo}>
+                <Text style={styles.foodName}>{food.name}</Text>
+                <Text style={styles.foodDescription} numberOfLines={2}>
+                  {food.description}
+                </Text>
               </View>
+              <Ionicons name="chevron-forward" size={20} color="#666" />
             </TouchableOpacity>
           </Animated.View>
         ))}
-      </Animated.View>
+        
+        {filteredFoods.length > 10 && (
+          <TouchableOpacity style={styles.viewMoreButton}>
+            <Text style={styles.viewMoreText}>View All {filteredFoods.length} Foods</Text>
+            <Ionicons name="arrow-forward" size={16} color={colors.primary} />
+          </TouchableOpacity>
+        )}
+      </View>
 
       <SuccessModal />
+      <VideoModal />
+      <FoodDetailsModal />
     </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
+  container: { flex: 1, backgroundColor: colors.background },
+  sectionTitle: { fontSize: 24, fontWeight: "bold", color: colors.text.primary},
+  sectionSubtitle: { fontSize: 16, color: colors.text.secondary, marginTop: 5, marginBottom: 15 },
+  modulesGrid: { 
+    flexDirection: "row", 
+    flexWrap: "wrap", 
+    gap: 12, 
+    marginTop: 20,
+    justifyContent: "center",
+    alignItems: "flex-start",
   },
-  scrollContent: {
-    paddingBottom: 40,
-  },
-  header: {
-    alignItems: 'center',
-    marginBottom: 32,
-    paddingHorizontal: 20,
-  },
-  sectionTitle: {
-    fontSize: 28,
-    fontWeight: 'bold',
-    color: colors.text.primary,
-    marginBottom: 8,
-    textAlign: 'center',
-  },
-  sectionSubtitle: {
-    fontSize: 16,
-    color: colors.text.secondary,
-    textAlign: 'center',
-    lineHeight: 22,
-  },
-  modulesGrid: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'space-between',
-    paddingHorizontal: 20,
-    marginBottom: 32,
-  },
-  moduleCardContainer: {
-    width: (width - 56) / 2,
-    marginBottom: 16,
+  moduleCardContainer: { 
+    width: width > 400 ? (width - 56) / 2 : width - 32,
+    justifyContent: "center",
+    alignItems: "center",
   },
   moduleCard: {
     backgroundColor: colors.background2,
-    borderRadius: 20,
-    padding: 20,
-    alignItems: 'center',
-    borderWidth: 2,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.1,
-    shadowRadius: 8,
-    elevation: 4,
+    padding: 16,
+    borderRadius: 16,
+    alignItems: "center",
     minHeight: 200,
   },
-  lockedModuleCard: {
-    opacity: 0.6,
-    backgroundColor: '#f5f5f5',
-    borderColor: '#ddd',
-  },
-  moduleHeader: {
-    position: 'relative',
-    marginBottom: 16,
-  },
-  moduleIcon: {
-    width: 64,
-    height: 64,
-    borderRadius: 32,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginBottom: 8,
-  },
-  moduleEmoji: {
-    width: 48,
-    height: 48,
-  },
-  lockIcon: {
-    position: 'absolute',
-    top: -8,
-    right: -8,
-    backgroundColor: 'white',
-    borderRadius: 12,
-    padding: 4,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
-    shadowRadius: 4,
-    elevation: 3,
-  },
-  moduleTitle: {
-    fontSize: 18,
-    fontWeight: '700',
-    color: colors.text.primary,
-    marginBottom: 8,
-    textAlign: 'center',
-  },
-  lockedModuleTitle: {
-    color: '#999',
-  },
-  moduleDescription: {
-    fontSize: 13,
-    color: colors.text.secondary,
-    textAlign: 'center',
-    marginBottom: 16,
-    lineHeight: 18,
-  },
-  lockedModuleDescription: {
-    color: '#bbb',
-  },
-  progressContainer: {
-    width: '100%',
-    marginBottom: 16,
-  },
+  lockedModuleCard: { opacity: 0.6 },
+  lockedText: { color: "#999" },
+  moduleEmoji: { width: 64, height: 64, marginBottom: 8 },
+  moduleTitle: { fontWeight: "bold", fontSize: 16, textAlign: "center", marginBottom: 8 },
+  moduleDescription: { fontSize: 13, textAlign: "center", marginBottom: 12, lineHeight: 18 },
   progressBar: {
     height: 6,
-    backgroundColor: '#e0e0e0',
+    backgroundColor: "#eee",
     borderRadius: 3,
-    marginBottom: 6,
-    overflow: 'hidden',
+    overflow: "hidden",
+    marginBottom: 12,
+    width: "100%",
   },
-  progressFill: {
-    height: '100%',
-    borderRadius: 3,
-  },
-  progressText: {
-    fontSize: 12,
-    color: colors.text.secondary,
-    textAlign: 'center',
-    fontWeight: '600',
-  },
-  moduleButton: {
-    paddingVertical: 8,
-    paddingHorizontal: 16,
-    borderRadius: 20,
-    minWidth: 100,
-  },
-  lockedModuleButton: {
-    backgroundColor: '#ddd',
-    opacity: 0.7,
-  },
-  videoSection: {
-    paddingHorizontal: 20,
-  },
-  sectionHeader: {
-    alignItems: 'center',
-    marginBottom: 24,
-  },
-  videoSectionTitle: {
-    fontSize: 22,
-    fontWeight: 'bold',
-    color: colors.text.primary,
-    marginBottom: 4,
-  },
-  videoSectionSubtitle: {
-    fontSize: 14,
-    color: colors.text.secondary,
-    textAlign: 'center',
-  },
-  videoCard: {
-    borderRadius: 20,
-    padding: 20,
+  videoCard: { 
+    padding: 16, 
+    borderRadius: 12, 
     marginBottom: 16,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.15,
-    shadowRadius: 8,
-    elevation: 6,
+    elevation: 3,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
   },
-  videoContent: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
+  videoHeader: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  videoThumbnail: {
+    fontSize: 32,
+    marginRight: 12,
   },
   videoInfo: {
     flex: 1,
-    marginRight: 20,
   },
-  videoCategory: {
-    fontSize: 12,
-    color: 'rgba(255, 255, 255, 0.8)',
-    fontWeight: '600',
-    marginBottom: 4,
-    textTransform: 'uppercase',
-    letterSpacing: 0.5,
-  },
-  videoTitle: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    color: 'white',
-    marginBottom: 12,
-    lineHeight: 24,
-  },
-  videoMeta: {
-    flexDirection: 'row',
-    gap: 8,
-  },
-  durationBadge: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: 'rgba(255, 255, 255, 0.2)',
-    paddingHorizontal: 8,
-    paddingVertical: 4,
-    borderRadius: 12,
-    gap: 4,
-  },
-  durationText: {
-    fontSize: 12,
-    color: 'white',
-    fontWeight: '600',
-  },
+  videoCategory: { color: "white", fontWeight: "600", fontSize: 12, opacity: 0.8 },
+  videoTitle: { color: "white", fontSize: 18, fontWeight: "bold", marginVertical: 4 },
+  videoDescription: { color: "white", opacity: 0.9, fontSize: 14, lineHeight: 18 },
+  videoDuration: { color: "white", opacity: 0.7, fontSize: 12, marginTop: 4 },
   premiumBadge: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: 'rgba(255, 215, 0, 0.2)',
-    paddingHorizontal: 8,
-    paddingVertical: 4,
+    backgroundColor: "rgba(255,255,255,0.2)",
     borderRadius: 12,
-    gap: 4,
+    padding: 4,
   },
-  premiumText: {
-    fontSize: 12,
-    color: '#FFD700',
-    fontWeight: '600',
+  categoryFilter: {
+    marginBottom: 20,
   },
-  videoThumbnail: {
-    height: 80,
-    width: 80,
-    justifyContent: 'center',
-    alignItems: 'center',
-    position: 'relative',
+  categoryButton: {
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+    marginRight: 10,
+    borderRadius: 20,
+    backgroundColor: "#F5F5F5",
   },
-  videoEmoji: {
-    fontSize: 48,
-    position: 'absolute',
+  categoryButtonActive: {
+    backgroundColor: colors.primary,
   },
-  playButton: {
-    width: 48,
-    height: 48,
-    borderRadius: 24,
-    backgroundColor: 'rgba(255, 255, 255, 0.3)',
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderWidth: 2,
-    borderColor: 'rgba(255, 255, 255, 0.5)',
+  categoryText: {
+    fontSize: 14,
+    fontWeight: "500",
+    color: "#666",
   },
-  // Modal styles
+  categoryTextActive: {
+    color: "white",
+  },
+  foodList: {
+    marginBottom: 20,
+  },
+  foodItem: {
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "#F8F8F8",
+    borderRadius: 15,
+    padding: 15,
+    marginBottom: 10,
+    elevation: 2,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.05,
+    shadowRadius: 2,
+  },
+  foodImage: {
+    width: 50,
+    height: 50,
+    borderRadius: 10,
+    marginRight: 15,
+  },
+  foodInfo: {
+    flex: 1,
+  },
+  foodName: {
+    fontSize: 16,
+    fontWeight: "600",
+    color: "#333",
+    marginBottom: 4,
+  },
+  foodDescription: {
+    fontSize: 14,
+    color: "#666",
+    lineHeight: 18,
+  },
+  viewMoreButton: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    padding: 15,
+    backgroundColor: "#F0F0F0",
+    borderRadius: 15,
+    marginTop: 10,
+  },
+  viewMoreText: {
+    fontSize: 16,
+    fontWeight: "600",
+    color: colors.primary,
+    marginRight: 8,
+  },
   modalOverlay: {
     flex: 1,
-    backgroundColor: 'rgba(0, 0, 0, 0.6)',
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "rgba(0,0,0,0.6)",
+  },
+  successModal: { 
+    backgroundColor: colors.background, 
+    padding: 24, 
+    borderRadius: 16,
+    maxWidth: width * 0.8,
+  },
+  successEmoji: { width: 80, height: 80, marginBottom: 16, alignSelf: "center" },
+  successTitle: { fontSize: 20, fontWeight: "bold", textAlign: "center", marginBottom: 8 },
+  successDescription: { textAlign: "center", marginBottom: 16, lineHeight: 22 },
+  closeButton: { position: "absolute", right: 8, top: 8, zIndex: 1 },
+  videoModalContainer: { 
+    flex: 1, 
+    backgroundColor: "black",
+    justifyContent: 'space-between',
+  },
+  videoModalHeader: {
+    flexDirection: "row",
+    alignItems: "center",
+    padding: 16,
+    justifyContent: "space-between",
+    backgroundColor: "rgba(0,0,0,0.8)",
+  },
+  closeVideoButton: { 
+    padding: 8, 
+    backgroundColor: "rgba(255,255,255,0.2)", 
+    borderRadius: 20 
+  },
+  videoModalTitle: { color: "white", fontSize: 18, flex: 1, textAlign: "center" },
+  videoContainer: {
+    alignItems: 'center',
     justifyContent: 'center',
-    alignItems: 'center',
+    paddingHorizontal: 16,
+    paddingVertical: 20,
+    backgroundColor: 'rgba(0,0,0,0.1)',
   },
-  successModal: {
-    backgroundColor: colors.background,
-    borderRadius: 24,
-    padding: 32,
-    width: width - 48,
-    alignItems: 'center',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 8 },
-    shadowOpacity: 0.25,
-    shadowRadius: 16,
-    elevation: 10,
+  video: {
+    width: "100%",
+    height: "100%",
+    alignSelf: 'center',
+    borderRadius: 8,
   },
-  closeButton: {
-    position: 'absolute',
-    top: 16,
-    right: 16,
-    padding: 8,
-    borderRadius: 20,
-    backgroundColor: '#f5f5f5',
+  videoPlayer: {
+    paddingLeft: 10,
+    flex: 1,
+    width: "100%",
+    height: 100,
+    justifyContent: "center",
+    alignItems: "center",
   },
-  successIcon: {
-    width: 80,
-    height: 80,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginBottom: 24,
+  videoModalInfo: {
+    padding: 16,
+    backgroundColor: "rgba(255,255,255,0.1)",
   },
-  successEmoji: {
-    width: 80,
-    height: 80,
-  },
-  successTitle: {
-    fontSize: 22,
-    fontWeight: 'bold',
-    color: colors.text.primary,
-    marginBottom: 12,
-    textAlign: 'center',
-  },
-  successDescription: {
+  videoInfoTitle: {
+    color: "white",
     fontSize: 16,
-    color: colors.text.secondary,
-    textAlign: 'center',
-    marginBottom: 24,
+    fontWeight: "bold",
+    marginBottom: 12,
+  },
+  featuredFoods: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    gap: 12,
+  },
+  featuredFoodItem: {
+    alignItems: "center",
+    backgroundColor: "rgba(255,255,255,0.1)",
+    padding: 8,
+    borderRadius: 8,
+    minWidth: 30,
+  },
+  featuredFoodImage: {
+    width: 30,
+    height: 30,
+    borderRadius: 8,
+    marginBottom: 4,
+  },
+  featuredFoodName: {
+    color: "white",
+    fontSize: 12,
+    textAlign: "center",
+  },
+  foodDetailsContainer: {
+    flex: 1,
+    backgroundColor: "white",
+  },
+  foodDetailsHeader: {
+    flexDirection: "row",
+    alignItems: "center",
+    padding: 16,
+    backgroundColor: colors.primary,
+    justifyContent: "space-between",
+  },
+  closeFoodButton: {
+    padding: 8,
+    backgroundColor: "rgba(255,255,255,0.2)",
+    borderRadius: 20,
+  },
+  foodDetailsTitle: {
+    color: "white",
+    fontSize: 18,
+    fontWeight: "bold",
+    flex: 1,
+    textAlign: "center",
+  },
+  foodDetailsContent: {
+    flex: 1,
+    padding: 20,
+  },
+  foodDetailImage: {
+    width: 120,
+    height: 120,
+    borderRadius: 15,
+    alignSelf: "center",
+    marginBottom: 16,
+  },
+  foodDetailName: {
+    fontSize: 24,
+    fontWeight: "bold",
+    textAlign: "center",
+    marginBottom: 12,
+    color: "#333",
+  },
+  foodDetailDescription: {
+    fontSize: 16,
+    lineHeight: 24,
+    textAlign: "center",
+    marginBottom: 20,
+    color: "#666",
+  },
+  nutritionSection: {
+    backgroundColor: "#F8F8F8",
+    padding: 16,
+    borderRadius: 12,
+    marginBottom: 16,
+  },
+  sectionHeader: {
+    fontSize: 18,
+    fontWeight: "bold",
+    marginBottom: 12,
+    color: "#333",
+  },
+  nutritionText: {
+    fontSize: 16,
+    marginBottom: 8,
+    color: "#555",
+  },
+  howSection: {
+    backgroundColor: "#F8F8F8",
+    padding: 16,
+    borderRadius: 12,
+    marginBottom: 16,
+  },
+  stepText: {
+    fontSize: 16,
+    marginBottom: 8,
+    color: "#555",
     lineHeight: 22,
   },
-  continueButton: {
-    width: '100%',
-    paddingVertical: 12,
+  quizSection: {
+    backgroundColor: "#F8F8F8",
+    padding: 16,
+    borderRadius: 12,
+    marginBottom: 16,
+  },
+  quizInfo: {
+    fontSize: 16,
+    marginBottom: 16,
+    color: "#555",
+    textAlign: "center",
   },
 });
 

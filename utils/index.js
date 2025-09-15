@@ -333,3 +333,11 @@ export default {
   gamificationUtils,
   api,
 };
+
+// Message Handling Utilities
+export { default as ApiHandler } from './apiHandler';
+export { default as MessageHandler } from './messageHandler';
+
+// Avatar Utilities
+export { avatarMap, default as getAvatarSource } from './avatarUtils';
+

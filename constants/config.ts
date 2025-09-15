@@ -37,7 +37,8 @@ export interface FoodCategories {
   fruits: string;
   vegetables: string;
   proteins: string;
-  grains: string;
+  carbohydrates: string;
+  fats: string;
   dairy: string;
 }
 
@@ -56,9 +57,9 @@ export interface Config {
 }
 
 export const config: Config = {
-  APP_NAME: 'PlateFull',
+  APP_NAME: 'PlateFul',
   API_BASE_URL: process.env.NODE_ENV === 'development' 
-    ? 'http://192.168.142.31:5000/api'  // Use proxy in development
+    ? 'http://localhost:5000/api'  // Use proxy in development
     : 'https://api.platefull.com',
   
   // Google OAuth Configuration
@@ -99,31 +100,32 @@ export const config: Config = {
     fruits: 'Fruits',
     vegetables: 'Vegetables',
     proteins: 'Proteins',
-    grains: 'Grains',
+    carbohydrates: 'Carbohydrates',
+    fats: 'Fats',
     dairy: 'Dairy'
   },
   
   // Age Ranges
   ageRanges: [
-    { label: '6-12 months', value: '6-12m' },
-    { label: '1-2 years', value: '1-2y' },
-    { label: '2-3 years', value: '2-3y' },
-    { label: '3-4 years', value: '3-4y' },
-    { label: '4-5 years', value: '4-5y' },
-    { label: '5-6 years', value: '5-6y' },
-    { label: '6+ years', value: '6+y' }
+    { label: '6-9 months', value: '6-9m' },
+    { label: '9-12 months', value: '9-12m' },
+    { label: '12-18 months', value: '12-18m' },
+    { label: '18-24 months', value: '18-24m' },
+    { label: '24-30 months', value: '24-30m' },
+    { label: '30-36 months', value: '30-36m' },
+    { label: '36+ months', value: '36+ m' },
+
   ],
   
   // Dietary Restrictions
   dietaryRestrictions: [
     { label: 'None', value: 'none' },
-    { label: 'Vegetarian', value: 'vegetarian' },
-    { label: 'Vegan', value: 'vegan' },
-    { label: 'Gluten Free', value: 'gluten_free' },
-    { label: 'Dairy Free', value: 'dairy_free' },
-    { label: 'Nut Free', value: 'nut_free' },
-    { label: 'Egg Free', value: 'egg_free' },
-    { label: 'Soy Free', value: 'soy_free' }
+    { label: 'Protein', value: 'protein' },
+    { label: 'Carbohydrates', value: 'carbohydrates' },
+    { label: 'Vegetables', value: 'vegetables' },
+    { label: 'Fruits', value: 'fruits' },
+    { label: 'Dairy', value: 'dairy' },
+    { label: 'Fats', value: 'fats' },
   ]
 };
 

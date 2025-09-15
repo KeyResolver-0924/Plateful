@@ -14,6 +14,7 @@ import {
 import HeaderProfile from '../../../components/common/HeaderProfile';
 
 const { width } = Dimensions.get('window');
+const Base_URL = process.env.EXPO_PUBLIC_BASE_URL;
 
 interface UserData {
   name: string;
@@ -39,7 +40,7 @@ const HomeScreen: React.FC = () => {
   const [userData, setUserData] = useState<UserData>({
     name: 'Laurentia Claris',
     childName: 'Emma',
-    avatar: require('../../../assets/images/avatars/boy.png'),
+    avatar: require(`${Base_URL}/assets/images/avatars/boy.png`),
     childAge: '2',
     streak: 7,
     level: 3,
@@ -79,7 +80,7 @@ const HomeScreen: React.FC = () => {
             activeOpacity={0.7}
           >
             <View style={styles.menuIconContainer}>
-              <Image source={require('../../../assets/images/characters/fruits.png')} style={styles.menuIcon} />
+              <Image source={require(`${Base_URL}/assets/images/characters/fruits.png`)} style={styles.menuIcon} />
             </View>
             <Text style={styles.menuTitle}>What Are We Eating?</Text>
           </TouchableOpacity>
@@ -90,7 +91,7 @@ const HomeScreen: React.FC = () => {
             activeOpacity={0.7}
           >
             <View style={styles.menuIconContainer}>
-              <Image source={require('../../../assets/images/characters/splash-icon.png')} style={styles.menuIcon} />
+              <Image source={require(`${Base_URL}/assets/images/characters/splash-icon.png`)} style={styles.menuIcon} />
             </View>
             <Text style={styles.menuTitle}>Lets Learn</Text>
           </TouchableOpacity>
@@ -101,7 +102,7 @@ const HomeScreen: React.FC = () => {
             activeOpacity={0.7}
           >
             <View style={styles.menuIconContainer}>
-              <Image source={require('../../../assets/images/characters/meal.png')} style={styles.menuIcon} />
+              <Image source={require(`${Base_URL}/assets/images/characters/meal.png`)} style={styles.menuIcon} />
             </View>
             <Text style={styles.menuTitle}>Time To Eat</Text>
           </TouchableOpacity>
@@ -112,7 +113,7 @@ const HomeScreen: React.FC = () => {
             activeOpacity={0.7}
           >
             <View style={styles.menuIconContainer}>
-              <Image source={require('../../../assets/images/characters/zicon (4).png')} style={styles.menuIcon} />
+              <Image source={require(`${Base_URL}/assets/images/characters/zicon (4).png`)} style={styles.menuIcon} />
             </View>
             <Text style={styles.menuTitle}>Ours Chart</Text>
           </TouchableOpacity>

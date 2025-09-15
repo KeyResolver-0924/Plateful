@@ -66,7 +66,7 @@ const FoodSelectionScreen = () => {
     // Navigate to next step
     if (category === 'fats') {
       router.push({
-        pathname: '/(tabs)/food/selection',
+        pathname: './(tabs)/food/selection',
         params: {
           category: 'dairy',
           step: (step || 0) + 1
@@ -74,7 +74,7 @@ const FoodSelectionScreen = () => {
       });
     } else if (category === 'dairy') {
       router.push({
-        pathname: '/(tabs)/food/selection',
+        pathname: './(tabs)/food/selection',
         params: {
           category: 'proteins',
           step: (step || 0) + 1

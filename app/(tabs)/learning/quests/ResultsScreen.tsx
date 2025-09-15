@@ -20,9 +20,8 @@ const ResultsScreen = ({ navigation, route }: ResultsScreenProps) => {
 
   const shareResults = async () => {
     try {
-      const passStatus = score > 8 ? "PASSED" : "FAILED";
       await Share.share({
-        message: `I ${passStatus} the Healthy Food Quiz with ${score}/10 points and earned ${starsEarned} stars! ${score > 8 ? '🎉' : '💪'} Can you beat my score? 🍎🥦 #HealthyFoodQuiz`,
+        message: `I learned about healthy foods and earned ${starsEarned} stars! 🌟 Got ${score}/10 questions right! 🎉 Can you beat my score? 🍎🥦 #HealthyFoodQuiz`,
       });
     } catch (error) {
       console.error('Error sharing:', error);
@@ -30,15 +29,19 @@ const ResultsScreen = ({ navigation, route }: ResultsScreenProps) => {
   };
 
   const getResultMessage = () => {
-    // New scoring system based on actual score (not percentage)
-    if (score >= 9) return "Wonderful! 🎉";
-    if (score >= 7) return "Good Job! 👍";
-    if (score >= 5) return "Try Hard! 😊";
-    return "Poor... Keep Practicing! 💪";
+    // Positive and encouraging messages for all scores
+    if (score >= 9) return "Amazing! You're a food expert! 🌟";
+    if (score >= 7) return "Great job! You know your foods! 🎉";
+    if (score >= 5) return "Good work! Keep learning! 😊";
+    if (score >= 3) return "Nice try! You're getting better! 🌱";
+    return "Great effort! Every answer helps you learn! 💪";
   };
 
-  const getPassFailMessage = () => {
-    return score > 8 ? "PASSED ✅" : "FAILED ❌";
+  const getEncouragementMessage = () => {
+    if (score >= 8) return "You're doing fantastic! 🎊";
+    if (score >= 6) return "You're learning so much! 🌟";
+    if (score >= 4) return "You're getting smarter! 🧠";
+    return "Every question makes you stronger! 💪";
   };
 
   return (
@@ -46,28 +49,40 @@ const ResultsScreen = ({ navigation, route }: ResultsScreenProps) => {
       <StatusBar barStyle="dark-content" />
       
       <View style={styles.content}>
-        <Text style={styles.title}>Quiz Complete!</Text>
+        <Text style={styles.title}>Great Learning! 🎉</Text>
         
         <View style={styles.resultCard}>
-          <Text style={styles.passFailText}>{getPassFailMessage()}</Text>
-          <Text style={styles.scoreText}>
-            {score}<Text style={styles.totalText}>/10</Text>
-          </Text>
-          <Text style={styles.message}>{getResultMessage()}</Text>
+          <Text style={styles.encouragementText}>{getEncouragementMessage()}</Text>
           
-          <View style={styles.starsContainer}>
-            {[...Array(3)].map((_, i) => (
-              <Ionicons 
-                key={i} 
-                name="star" 
-                size={32} 
-                color={i < starsEarned ? '#FFD700' : '#e0e0e0'} 
-                style={styles.starIcon}
-              />
-            ))}
+          <View style={styles.scoreContainer}>
+            <Text style={styles.scoreText}>
+              {score}<Text style={styles.totalText}>/10</Text>
+            </Text>
+            <Text style={styles.correctAnswersText}>Correct Answers!</Text>
           </View>
           
-          <Text style={styles.starsEarned}>+{starsEarned} Stars</Text>
+          <Text style={styles.message}>{getResultMessage()}</Text>
+          
+          <View style={styles.rewardsContainer}>
+            <View style={styles.starsContainer}>
+              {[...Array(3)].map((_, i) => (
+                <Ionicons 
+                  key={i} 
+                  name="star" 
+                  size={32} 
+                  color={i < starsEarned ? '#FFD700' : '#e0e0e0'} 
+                  style={styles.starIcon}
+                />
+              ))}
+            </View>
+            
+            <Text style={styles.starsEarned}>+{starsEarned} Stars Earned! 🌟</Text>
+            
+            <View style={styles.coinsContainer}>
+              <Ionicons name="diamond" size={24} color="#FFD700" />
+              <Text style={styles.coinsText}>+{score * 10} Coins!</Text>
+            </View>
+          </View>
         </View>
         
         <View style={styles.buttonContainer}>
@@ -83,8 +98,8 @@ const ResultsScreen = ({ navigation, route }: ResultsScreenProps) => {
             style={[styles.button, styles.playAgainButton]}
             onPress={() => navigation.goBack && navigation.goBack()}
           >
-            <Ionicons name="home" size={20} color="white" />
-            <Text style={[styles.buttonText, { color: 'white' }]}>Continue</Text>
+            <Ionicons name="play" size={20} color="white" />
+            <Text style={[styles.buttonText, { color: 'white' }]}>Keep Learning!</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -109,11 +124,42 @@ const styles = StyleSheet.create({
     color: '#2c3e50',
     marginBottom: 30,
   },
-  passFailText: {
-    fontSize: 24,
+  encouragementText: {
+    fontSize: 20,
     fontWeight: 'bold',
-    marginBottom: 10,
-    color: '#2c3e50',
+    marginBottom: 15,
+    color: '#27ae60',
+    textAlign: 'center',
+  },
+  scoreContainer: {
+    alignItems: 'center',
+    marginBottom: 15,
+  },
+  correctAnswersText: {
+    fontSize: 16,
+    color: '#7f8c8d',
+    marginTop: 5,
+  },
+  rewardsContainer: {
+    alignItems: 'center',
+    marginTop: 10,
+  },
+  coinsContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 10,
+    backgroundColor: '#fff3cd',
+    paddingHorizontal: 15,
+    paddingVertical: 8,
+    borderRadius: 20,
+    borderWidth: 1,
+    borderColor: '#ffeaa7',
+  },
+  coinsText: {
+    fontSize: 16,
+    color: '#f39c12',
+    fontWeight: 'bold',
+    marginLeft: 5,
   },
   resultCard: {
     backgroundColor: 'white',
@@ -145,10 +191,11 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   message: {
-    fontSize: 20,
+    fontSize: 18,
     fontWeight: 'bold',
-    color: '#2ecc71',
+    color: '#27ae60',
     marginBottom: 20,
+    textAlign: 'center',
   },
   starsContainer: {
     flexDirection: 'row',

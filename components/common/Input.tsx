@@ -1,3 +1,4 @@
+import { Ionicons } from '@expo/vector-icons';
 import React, { useEffect, useRef, useState } from 'react';
 import {
   StyleSheet,
@@ -10,6 +11,7 @@ import {
   ViewStyle
 } from 'react-native';
 import Animated, {
+  interpolate,
   useAnimatedStyle,
   useSharedValue,
   withTiming
@@ -63,33 +65,35 @@ const Input: React.FC<InputProps> = ({
     }
   };
   
-  // const labelAnimatedStyle = useAnimatedStyle(() => {
-  //   const translateY = interpolate(
-  //     focusAnimation.value,
-  //     [0, 1],
-  //     [18, -8]
-  //   );
-  //   const scale = interpolate(
-  //     focusAnimation.value,
-  //     [0, 1],
-  //     [1, 0.8]
-  //   );
+  const labelAnimatedStyle = useAnimatedStyle(() => {
+    const translateY = interpolate(
+      focusAnimation.value,
+      [0, 1],
+      [18, -8]
+    );
+    const scale = interpolate(
+      focusAnimation.value,
+      [0, 1],
+      [1, 0.8]
+    );
     
-  //   return {
-  //     transform: [
-  //       { translateY },
-  //       { scale }
-  //     ]
-  //   };
-  // });
+    return {
+      transform: [
+        { translateY },
+        { scale }
+      ]
+    };
+  });
   
   const borderAnimatedStyle = useAnimatedStyle(() => {
     return {
       borderColor: withTiming(
-        error ? colors.error : colors.border,
+         error ? colors.error : isFocused ? colors.primary :  colors.border,
         { duration: 200 }
       ),
-      borderWidth: withTiming(isFocused ? 2 : 1, { duration: 200 })
+      borderWidth: withTiming(isFocused ? 2 : 1, { duration: 200 }),
+      borderRadius: withTiming(isFocused ? 12 : 12, { duration: 200 }),
+      borderStyle: withTiming(isFocused ? 'solid' : 'solid', { duration: 200 }),
     };
   });
   
@@ -116,11 +120,13 @@ const Input: React.FC<InputProps> = ({
           )}
           
           <View style={styles.inputWrapper}>
-            {/* {label && (
-              <Animated.Text style={[styles.label, labelAnimatedStyle]}>
+             {label && (
+              <Animated.Text style={[styles.label, labelAnimatedStyle, {
+                color: isFocused ? colors.primary : colors.text.secondary
+              }]}>
                 {label}
               </Animated.Text>
-            )} */}
+            )} 
             
             <TextInput
               ref={inputRef}
@@ -131,7 +137,7 @@ const Input: React.FC<InputProps> = ({
               placeholderTextColor={colors.text.disabled}
               onFocus={handleFocus}
               onBlur={handleBlur}
-              // secureTextEntry={secureTextEntry && !showPassword}
+              secureTextEntry={secureTextEntry && !showPassword}
               keyboardType={keyboardType}
               maxLength={maxLength}
               editable={editable}
@@ -139,7 +145,7 @@ const Input: React.FC<InputProps> = ({
             />
           </View>
           
-          {/* {secureTextEntry && (
+          {secureTextEntry && (
             <TouchableOpacity
               style={styles.eyeIcon}
               onPress={() => setShowPassword(!showPassword)}
@@ -150,7 +156,7 @@ const Input: React.FC<InputProps> = ({
                 color={colors.text.secondary}
               />
             </TouchableOpacity>
-          )} */}
+          )} 
         </Animated.View>
       </TouchableOpacity>
       
@@ -159,7 +165,7 @@ const Input: React.FC<InputProps> = ({
       )}
     </View>
   );
-};
+};    
 
 const styles = StyleSheet.create({
   container: {
@@ -194,6 +200,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: colors.text.primary,
     paddingVertical: 12,
+    outlineColor: 'transparent',
   },
   eyeIcon: {
     padding: 8,

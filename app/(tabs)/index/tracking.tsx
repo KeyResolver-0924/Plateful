@@ -25,6 +25,7 @@ import { colors } from '../../../constants/colors';
 import { getAllFoods } from '../../../db/foods';
 import { useMealStore } from '../../../stores/mealStore';
 import { useUserStore } from '../../../stores/userStore';
+const Base_URL = process.env.EXPO_PUBLIC_BASE_URL;
 
 const { width } = Dimensions.get('window');
 
@@ -628,7 +629,7 @@ const MealTrackingScreen = ({ navigation }: { navigation: NavigationProps }) => 
           <Text style={styles.caloriesText}>Create Meal</Text>
 
           <View style={styles.pairingImage}>
-            <Image source={require('../../../assets/images/logo/1.png')} style={{width: 180, height: 170}} />
+            <Image source={require(`${Base_URL}/assets/images/logo/1.png`)} style={{width: 180, height: 170}} />
           </View>
 
           <Text style={styles.modalTitle}>Successfully Meal created</Text>
@@ -659,7 +660,7 @@ const MealTrackingScreen = ({ navigation }: { navigation: NavigationProps }) => 
         <Text style={styles.headerTitle}>Meal</Text>
         
         <View style={styles.headerImage}>
-          <Image source={require('../../../assets/images/characters/meal_fruit_logo.png')} style={styles.headerImage1} />
+          <Image source={require(`${Base_URL}/assets/images/characters/meal_fruit_logo.png`)} style={styles.headerImage1} />
         </View>
         <Text style={styles.title}>Which Meal Are You Eating</Text>
         <Text style={styles.subtitle}>Select Meal Type</Text>

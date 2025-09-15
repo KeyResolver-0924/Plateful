@@ -1,5 +1,6 @@
 import { apiService } from '@/utils/apiService';
 import { create } from 'zustand';
+import MessageHandler from '../utils/messageHandler';
 
 export interface FoodItem {
   id: string;
@@ -81,9 +82,28 @@ export const useMealStore = create<MealStore>((set, get) => ({
     set({ isLoading: true, error: null });
     try {
       const result = await apiService.addMeal(mealData);
-      set({ meals: [...get().meals, result.data], isLoading: false });
-      return result.data;
+      
+      if (result.success && result.data) {
+        set({ meals: [...get().meals, result.data], isLoading: false });
+        
+        // Show success message
+        MessageHandler.showSuccess('Meal added successfully!');
+        return result.data;
+      } else {
+        // Handle error response
+        MessageHandler.handleApiResponse(result, {
+          title: 'Add Meal',
+          errorMessage: 'Failed to add meal. Please try again.'
+        });
+        throw new Error(result.error || 'Failed to add meal');
+      }
     } catch (error) {
+      // Handle caught errors
+      MessageHandler.handleApiError(error, {
+        title: 'Add Meal Error',
+        errorMessage: 'Failed to add meal. Please check your connection and try again.'
+      });
+      
       set({
         error: error instanceof Error ? error.message : 'Failed to add meal',
         isLoading: false,
@@ -95,9 +115,28 @@ export const useMealStore = create<MealStore>((set, get) => ({
     set({ isLoading: true, error: null });
     try {
       const result = await apiService.recordMeal(mealData);
-      set({ meals: [...get().meals, result.data], isLoading: false });
-      return result.data;
+      
+      if (result.success && result.data) {
+        set({ meals: [...get().meals, result.data], isLoading: false });
+        
+        // Show success message
+        MessageHandler.showSuccess('Meal recorded successfully!');
+        return result.data;
+      } else {
+        // Handle error response
+        MessageHandler.handleApiResponse(result, {
+          title: 'Record Meal',
+          errorMessage: 'Failed to record meal. Please try again.'
+        });
+        throw new Error(result.error || 'Failed to record meal');
+      }
     } catch (error) {
+      // Handle caught errors
+      MessageHandler.handleApiError(error, {
+        title: 'Record Meal Error',
+        errorMessage: 'Failed to record meal. Please check your connection and try again.'
+      });
+      
       set({
         error: error instanceof Error ? error.message : 'Failed to record meal',
         isLoading: false,

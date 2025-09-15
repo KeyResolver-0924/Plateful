@@ -12,6 +12,8 @@ import {
   View
 } from 'react-native';
 import { useUserStore } from '../../stores/userStore';
+import { avatarMap, getAvatarSource } from '../../utils/avatarUtils';
+const Base_URL = process.env.EXPO_PUBLIC_BASE_URL;
 
 interface ChildData {
   id: string; // Changed from _id to id to match your usage
@@ -40,15 +42,18 @@ interface UserData {
 
 const HeaderProfile: React.FC = () => {
   const [isDropdownVisible, setIsDropdownVisible] = useState(false);
+  const [avatarLoadErrors, setAvatarLoadErrors] = useState<Set<string>>(new Set());
   const { profile, selectedChildId, selectChild } = useUserStore();
   const childProfile = (profile as any)?.data?.user?.children || profile?.children;
+
+
   
   // Default fallback data when no backend data is available
   const defaultChildren = [
     {
       id: '1',
       name: 'Add child',
-      avatar: require('../../assets/images/avatars/boy.png'),
+      avatar: 'boy', // Use string reference instead of require
       ageRange: '',
       streak: 0,
       level: 1,
@@ -67,20 +72,7 @@ const HeaderProfile: React.FC = () => {
     children: defaultChildren
   });
 
-  // Helper function to get avatar source safely
-  const getAvatarSource = (child: any): ImageSourcePropType => {
-    if (child.avatar && typeof child.avatar === 'string') {
-      // If avatar is a URL string, you might want to handle it differently
-      // For now, return default avatar
-      return require('../../assets/images/avatars/boy.png');
-    } else if (child.avatar && typeof child.avatar === 'number') {
-      // If avatar is a require() result
-      return child.avatar;
-    } else {
-      // Default fallback avatar
-      return require('../../assets/images/avatars/boy.png');
-    }
-  };
+
 
   useEffect(()=>{
     if (childProfile && Array.isArray(childProfile) && childProfile.length > 0) {
@@ -88,7 +80,7 @@ const HeaderProfile: React.FC = () => {
       const transformedChildren = childProfile.map(child => ({
         id: child._id || child.id || 'unknown', // Use _id from API or fallback to id
         name: child.name || 'Unknown Child',
-        avatar: getAvatarSource(child), // Use helper function
+        avatar: child.avatar || 'boy', // Keep the original avatar value (filename or predefined option)
         ageRange: child.ageRange || 'Unknown',
         streak: child.gamification?.streak || 0,
         level: child.gamification?.level || 1,
@@ -111,7 +103,6 @@ const HeaderProfile: React.FC = () => {
       
       // Set selected child to first available child if none is selected
       if (transformedChildren.length > 0 && !selectedChildId) {
-        console.log('Setting initial selected child:', transformedChildren[0].id);
         selectChild(transformedChildren[0].id);
       }
     } else {
@@ -131,7 +122,8 @@ const HeaderProfile: React.FC = () => {
   useEffect(() => {
     console.log('HeaderProfile - selectedChildId from store:', selectedChildId);
     console.log('HeaderProfile - current selectedChildId:', selectedChild);
-  }, [selectedChildId, userData.children]);
+    console.log('HeaderProfile - avatar load errors:', Array.from(avatarLoadErrors));
+  }, [selectedChildId, userData.children, avatarLoadErrors]);
 
   // Ensure we always have a valid selected child
   const selectedChild = userData.children.find(child => child.id === selectedChildId) || userData.children[0];
@@ -142,18 +134,18 @@ const HeaderProfile: React.FC = () => {
       <View style={styles.headerProfile}>
         <View style={styles.profileInfo}>
           <View style={styles.profileAvatar}>
-            <Image source={require('../../assets/images/avatars/boy.png')} style={styles.avatarImage} />
+            <Image source={avatarMap.boy} style={styles.avatarImage} />
           </View>
           <View>
             <Text style={styles.profileName}>Loading...</Text>
             <Text style={styles.profileStatus}>
-              <Image source={require('../../assets/images/icons/premium.svg')} style={styles.premiumIcon} />
+              <Image source={require(`${Base_URL}/assets/images/icons/premium.svg`)} style={styles.premiumIcon} />
               Premium
             </Text>
           </View>
         </View>
         <View style={styles.chargeIconContainer}>
-          <Image source={require('../../assets/images/icons/charge.svg')} style={styles.chargeIcon} />
+          <Image source={require(`${Base_URL}/assets/images/icons/charge.svg`)} style={styles.chargeIcon} />
         </View>
       </View>
     );
@@ -162,6 +154,7 @@ const HeaderProfile: React.FC = () => {
   const handleChildSelect = (childId: string) => {
     selectChild(childId); // Use the store's selectChild function
     setIsDropdownVisible(false);
+    console.log('selectedChild: >>--->',getAvatarSource(selectedChild, avatarLoadErrors));
   };
 
   const handleAddNewChild = () => {
@@ -176,18 +169,26 @@ const HeaderProfile: React.FC = () => {
           style={styles.profileAvatar}
           onPress={() => setIsDropdownVisible(true)}
         >
-          <Image source={selectedChild.avatar} style={styles.avatarImage} />
+          <Image 
+            source={getAvatarSource(selectedChild, avatarLoadErrors)} 
+            style={styles.avatarImage}
+            onError={() => {
+              console.log('Failed to load avatar:', selectedChild.avatar);
+              setAvatarLoadErrors(prev => new Set(prev).add(selectedChild.id));
+            }}
+            defaultSource={avatarMap.boy}
+          />
         </TouchableOpacity>
         <View>
           <Text style={styles.profileName}>{selectedChild.name}</Text>
           <Text style={styles.profileStatus}>
-            <Image source={require('../../assets/images/icons/premium.svg')} style={styles.premiumIcon} />
+            <Image source={require(`${Base_URL}/assets/images/icons/premium.svg`)} style={styles.premiumIcon} />
             Premium
           </Text>
         </View>
       </View>
       <View style={styles.chargeIconContainer}>
-        <Image source={require('../../assets/images/icons/charge.svg')} style={styles.chargeIcon} />
+        <Image source={require(`${Base_URL}/assets/images/icons/charge.svg`)} style={styles.chargeIcon} />
       </View>
 
       {/* Child Selection Dropdown Modal */}
@@ -212,7 +213,15 @@ const HeaderProfile: React.FC = () => {
                   ]}
                   onPress={() => handleChildSelect(child.id)}
                 >
-                  <Image source={child.avatar} style={styles.childAvatar} />
+                  <Image 
+                    source={getAvatarSource(child, avatarLoadErrors)} 
+                    style={styles.childAvatar}
+                    onError={() => {
+                      console.log('Failed to load dropdown avatar:', child.avatar);
+                      setAvatarLoadErrors(prev => new Set(prev).add(child.id));
+                    }}
+                    defaultSource={avatarMap.boy}
+                  />
                   <View style={styles.childInfo}>
                     <Text style={styles.childName}>{child.name}</Text>
                     <Text style={styles.childAge}>{child.ageRange} years old</Text>

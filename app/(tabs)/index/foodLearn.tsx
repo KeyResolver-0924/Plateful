@@ -30,7 +30,9 @@ const FoodLearn = () => {
   const allowedFruits = selectedChild.fruits || [];
   const allowedVegetables = selectedChild.vegetables || [];
   const allowedProteins = selectedChild.proteins || [];
-
+  const allowedCarbohydrates = selectedChild.carbohydrates || [];
+  const allowedFats = selectedChild.fats || [];
+  const allowedDairy = selectedChild.dairy || [];
   // Reset selected category and food data when switching children
   useEffect(() => {
     console.log('FoodLearn - selectedChildId changed to:', selectedChildId);
@@ -41,39 +43,71 @@ const FoodLearn = () => {
 
   const getAllFoods = () => {
     const foods: { name: string; category: string; description: string }[] = [];
-    
+
+    Object.keys(foodGuideData.categories.carbohydrates.foods).forEach(carbohydrateName => {
+      if (allowedCarbohydrates.includes(carbohydrateName)) {
+        const carbohydrateData = foodGuideData.categories.carbohydrates.foods[carbohydrateName as keyof typeof foodGuideData.categories.carbohydrates.foods];
+        foods.push({
+          name: carbohydrateName,
+          category: 'carbohydrates',
+          description: carbohydrateData.learning.summary,
+        });
+      }
+    });
+
+    Object.keys(foodGuideData.categories.fats.foods).forEach(fatName => {
+      if (allowedFats.includes(fatName)) {
+        const fatData = foodGuideData.categories.fats.foods[fatName as keyof typeof foodGuideData.categories.fats.foods];
+        foods.push({
+          name: fatName,
+          category: 'fats',
+          description: fatData.learning.summary,
+        });
+      }
+    });
+
+    Object.keys(foodGuideData.categories.dairy.foods).forEach(dairyName => {
+      if (allowedDairy.includes(dairyName)) {
+        const dairyData = foodGuideData.categories.dairy.foods[dairyName as keyof typeof foodGuideData.categories.dairy.foods];
+        foods.push({
+          name: dairyName,
+          category: 'dairy',
+          description: dairyData.learning.summary,
+        });
+      }
+    });
     // Only add fruits that are in the allowedFruits array
-    Object.keys(foodGuideData.fruits).forEach(fruitName => {
+    Object.keys(foodGuideData.categories.fruits.foods).forEach(fruitName => {
       if (allowedFruits.includes(fruitName)) {
-        const fruitData = foodGuideData.fruits[fruitName as keyof typeof foodGuideData.fruits];
+        const fruitData = foodGuideData.categories.fruits.foods[fruitName as keyof typeof foodGuideData.categories.fruits.foods];
         foods.push({
           name: fruitName,
           category: 'fruits',
-          description: fruitData.description,
+          description: fruitData.learning.summary,
         });
       }
     });
 
     // Only add vegetables that are in the allowedVegetables array
-    Object.keys(foodGuideData.vegetables).forEach(vegName => {
+    Object.keys(foodGuideData.categories.vegetables.foods).forEach(vegName => {
       if (allowedVegetables.includes(vegName)) {
-        const vegData = foodGuideData.vegetables[vegName as keyof typeof foodGuideData.vegetables];
+        const vegData = foodGuideData.categories.vegetables.foods[vegName as keyof typeof foodGuideData.categories.vegetables.foods];
         foods.push({
           name: vegName,
           category: 'vegetables',
-          description: vegData.description,
+          description: vegData.learning.summary,
         });
       }
     });
 
     // Only add proteins that are in the allowedProteins array
-    Object.keys(foodGuideData.proteins).forEach(proteinName => {
+    Object.keys(foodGuideData.categories.proteins.foods).forEach(proteinName => {
       if (allowedProteins.includes(proteinName)) {
-        const proteinData = foodGuideData.proteins[proteinName as keyof typeof foodGuideData.proteins];
+        const proteinData = foodGuideData.categories.proteins.foods[proteinName as keyof typeof foodGuideData.categories.proteins.foods];
         foods.push({
           name: proteinName,
           category: 'proteins',
-          description: proteinData.description,
+          description: proteinData.learning.summary,
         });
       }
     });
@@ -94,20 +128,35 @@ const FoodLearn = () => {
     // Get food data from the JSON file
     let foodData = null;
     
-    if (category === 'fruits' && foodGuideData.fruits[foodName as keyof typeof foodGuideData.fruits]) {
+    if (category === 'fruits' && foodGuideData.categories.fruits.foods[foodName as keyof typeof foodGuideData.categories.fruits.foods]) {
       foodData = {
-        name: foodName.replace(/_/g, ' ').replace(/\b\w/g, (l: string) => l.toUpperCase()),
-        ...foodGuideData.fruits[foodName as keyof typeof foodGuideData.fruits]
+        ...foodGuideData.categories.fruits.foods[foodName as keyof typeof foodGuideData.categories.fruits.foods],
+        name: foodName.replace(/_/g, ' ').replace(/\b\w/g, (l: string) => l.toUpperCase())
       };
-    } else if (category === 'vegetables' && foodGuideData.vegetables[foodName as keyof typeof foodGuideData.vegetables]) {
+    } else if (category === 'vegetables' && foodGuideData.categories.vegetables.foods[foodName as keyof typeof foodGuideData.categories.vegetables.foods]) {
       foodData = {
-        name: foodName.replace(/_/g, ' ').replace(/\b\w/g, (l: string) => l.toUpperCase()),
-        ...foodGuideData.vegetables[foodName as keyof typeof foodGuideData.vegetables]
+        ...foodGuideData.categories.vegetables.foods[foodName as keyof typeof foodGuideData.categories.vegetables.foods],
+        name: foodName.replace(/_/g, ' ').replace(/\b\w/g, (l: string) => l.toUpperCase())
       };
-    } else if (category === 'proteins' && foodGuideData.proteins[foodName as keyof typeof foodGuideData.proteins]) {
+    } else if (category === 'proteins' && foodGuideData.categories.proteins.foods[foodName as keyof typeof foodGuideData.categories.proteins.foods]) {
       foodData = {
-        name: foodName.replace(/_/g, ' ').replace(/\b\w/g, (l: string) => l.toUpperCase()),
-        ...foodGuideData.proteins[foodName as keyof typeof foodGuideData.proteins]
+        ...foodGuideData.categories.proteins.foods[foodName as keyof typeof foodGuideData.categories.proteins.foods],
+        name: foodName.replace(/_/g, ' ').replace(/\b\w/g, (l: string) => l.toUpperCase())
+      };
+    } else if (category === 'carbohydrates' && foodGuideData.categories.carbohydrates.foods[foodName as keyof typeof foodGuideData.categories.carbohydrates.foods]) {
+      foodData = {
+        ...foodGuideData.categories.carbohydrates.foods[foodName as keyof typeof foodGuideData.categories.carbohydrates.foods],
+        name: foodName.replace(/_/g, ' ').replace(/\b\w/g, (l: string) => l.toUpperCase())
+      };
+    } else if (category === 'fats' && foodGuideData.categories.fats.foods[foodName as keyof typeof foodGuideData.categories.fats.foods]) {
+      foodData = {
+        ...foodGuideData.categories.fats.foods[foodName as keyof typeof foodGuideData.categories.fats.foods],
+        name: foodName.replace(/_/g, ' ').replace(/\b\w/g, (l: string) => l.toUpperCase())
+      };
+    } else if (category === 'dairy' && foodGuideData.categories.dairy.foods[foodName as keyof typeof foodGuideData.categories.dairy.foods]) {
+      foodData = {
+        ...foodGuideData.categories.dairy.foods[foodName as keyof typeof foodGuideData.categories.dairy.foods],
+        name: foodName.replace(/_/g, ' ').replace(/\b\w/g, (l: string) => l.toUpperCase())
       };
     }
     
@@ -160,11 +209,35 @@ const FoodLearn = () => {
               </Text>
             </TouchableOpacity>
             <TouchableOpacity
+              style={[styles.categoryButton, selectedCategory === 'carbohydrates' && styles.categoryButtonActive]}
+              onPress={() => setSelectedCategory('carbohydrates')}
+            >
+              <Text style={[styles.categoryText, selectedCategory === 'carbohydrates' && styles.categoryTextActive]}>
+                Carbohydrates
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
               style={[styles.categoryButton, selectedCategory === 'proteins' && styles.categoryButtonActive]}
               onPress={() => setSelectedCategory('proteins')}
             >
               <Text style={[styles.categoryText, selectedCategory === 'proteins' && styles.categoryTextActive]}>
                 Proteins
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={[styles.categoryButton, selectedCategory === 'dairy' && styles.categoryButtonActive]}
+              onPress={() => setSelectedCategory('dairy')}
+            >
+              <Text style={[styles.categoryText, selectedCategory === 'dairy' && styles.categoryTextActive]}>
+                Dairy
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={[styles.categoryButton, selectedCategory === 'fats' && styles.categoryButtonActive]}
+              onPress={() => setSelectedCategory('fats')}
+            >
+              <Text style={[styles.categoryText, selectedCategory === 'fats' && styles.categoryTextActive]}>
+                Fats
               </Text>
             </TouchableOpacity>
           </ScrollView>

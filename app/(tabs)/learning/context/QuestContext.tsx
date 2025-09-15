@@ -83,7 +83,7 @@ export const QuestProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     if (state.questProgress) {
       try {
         const updatedProgress = QuestProgressManager.completeSubRound(
-          state.questProgress,
+            state.questProgress,
           levelIndex,
           roundIndex,
           subRoundIndex,
